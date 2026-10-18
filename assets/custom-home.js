@@ -87,3 +87,58 @@ if (!customElements.get('tg-slider')) {
 
   customElements.define('tg-slider', TgSlider);
 }
+
+/**
+ * <tg-tabs> — switches product panels and keeps the "View all" link in sync.
+ * Accessible tabs: click, Arrow keys, Home / End. Theme editor block select opens the tab.
+ */
+if (!customElements.get('tg-tabs')) {
+  class TgTabs extends HTMLElement {
+    connectedCallback() {
+      this.tabs = Array.from(this.querySelectorAll('[role="tab"]'));
+      this.panels = Array.from(this.querySelectorAll('[role="tabpanel"]'));
+      this.viewAll = this.querySelector('[data-view-all-link]');
+      if (this.tabs.length < 2) return;
+
+      this.tabs.forEach((tab, i) => {
+        tab.addEventListener('click', () => this.select(i));
+        tab.addEventListener('keydown', (event) => this.onKey(event, i));
+      });
+
+      this.onBlockSelect = (event) => {
+        const i = this.tabs.findIndex((t) => t.dataset.blockId === event.detail.blockId);
+        if (i > -1) this.select(i);
+      };
+      document.addEventListener('shopify:block:select', this.onBlockSelect);
+    }
+
+    disconnectedCallback() {
+      document.removeEventListener('shopify:block:select', this.onBlockSelect);
+    }
+
+    onKey(event, i) {
+      const last = this.tabs.length - 1;
+      const keys = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: last };
+      if (!(event.key in keys)) return;
+      event.preventDefault();
+      const next = (keys[event.key] + this.tabs.length) % this.tabs.length;
+      this.select(next);
+      this.tabs[next].focus();
+    }
+
+    select(index) {
+      this.tabs.forEach((tab, i) => {
+        const active = i === index;
+        tab.setAttribute('aria-selected', active ? 'true' : 'false');
+        tab.tabIndex = active ? 0 : -1;
+        this.panels[i].hidden = !active;
+      });
+      this.tabs[index].scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+      if (this.viewAll && this.panels[index].dataset.viewAll) {
+        this.viewAll.href = this.panels[index].dataset.viewAll;
+      }
+    }
+  }
+
+  customElements.define('tg-tabs', TgTabs);
+}

@@ -1,0 +1,98 @@
+{%- comment -%}
+  Toggi Toys — product card (clean, centered, discount % + sold-out badges)
+  Usage:
+    {% render 'tg-product-card', product: product %}
+    {% render 'tg-product-card', placeholder_index: 1 %}   (no product → placeholder card)
+  Optional: show_secondary_image (boolean)
+{%- endcomment -%}
+{%- if product != blank -%}
+  {%- liquid
+    assign on_sale = false
+    if product.compare_at_price > product.price
+      assign on_sale = true
+      assign discount = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round
+    endif
+    assign image = product.featured_media.preview_image
+    assign second_image = product.media[1].preview_image
+    assign image_alt = image.alt | default: product.title
+    assign price_min = product.price_min | money
+  -%}
+  <div class="tg-card{% if product.available == false %} tg-card--sold-out{% endif %}">
+    <a href="{{ product.url }}" class="tg-card__link" aria-label="{{ product.title | escape }}"></a>
+
+    <div class="tg-card__media{% if show_secondary_image and second_image %} tg-card__media--hover{% endif %}">
+      {%- if image -%}
+        {{
+          image
+          | image_url: width: 600
+          | image_tag:
+            widths: '250, 360, 480, 600',
+            sizes: '(min-width: 990px) 280px, (min-width: 750px) 33vw, 50vw',
+            loading: 'lazy',
+            class: 'tg-card__img',
+            alt: image_alt
+        }}
+        {%- if show_secondary_image and second_image -%}
+          {{
+            second_image
+            | image_url: width: 600
+            | image_tag:
+              widths: '250, 360, 480, 600',
+              sizes: '(min-width: 990px) 280px, (min-width: 750px) 33vw, 50vw',
+              loading: 'lazy',
+              class: 'tg-card__img tg-card__img--second',
+              alt: ''
+          }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+
+      <div class="tg-card__badges">
+        {%- if on_sale -%}
+          <span class="tg-card__badge tg-card__badge--sale">-{{ discount }}%</span>
+        {%- endif -%}
+        {%- if product.available == false -%}
+          <span class="tg-card__badge tg-card__badge--sold">{{ 'products.product.sold_out' | t }}</span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="tg-card__info">
+      <h3 class="tg-card__title">{{ product.title | escape }}</h3>
+      <div class="tg-card__price">
+        <span class="tg-card__price-now">
+          {%- if product.price_varies -%}
+            {{ 'products.product.price.from_price_html' | t: price: price_min }}
+          {%- else -%}
+            {{ product.price | money }}
+          {%- endif -%}
+        </span>
+        {%- if on_sale -%}
+          <s class="tg-card__price-was">
+            <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+            {{- product.compare_at_price | money -}}
+          </s>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- else -%}
+  {%- comment -%} Placeholder shown in the editor until a collection is chosen {%- endcomment -%}
+  {%- assign ph = placeholder_index | default: 1 | modulo: 4 | plus: 1 -%}
+  <div class="tg-card tg-card--placeholder">
+    <div class="tg-card__media">
+      {{ 'product-' | append: ph | placeholder_svg_tag: 'placeholder-svg' }}
+      <div class="tg-card__badges">
+        <span class="tg-card__badge tg-card__badge--sale">-10%</span>
+      </div>
+    </div>
+    <div class="tg-card__info">
+      <h3 class="tg-card__title">Example toy product name</h3>
+      <div class="tg-card__price">
+        <span class="tg-card__price-now">{{ 45000 | money }}</span>
+        <s class="tg-card__price-was">{{ 50000 | money }}</s>
+      </div>
+    </div>
+  </div>
+{%- endif -%}

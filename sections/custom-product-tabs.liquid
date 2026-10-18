@@ -1,0 +1,235 @@
+{%- comment -%}
+  Toggi Toys — Trending products with collection tabs
+  Each "Tab" block = one collection. Panels are rendered server-side; a tiny
+  <tg-tabs> element switches them (images in hidden panels stay lazy).
+{%- endcomment -%}
+<script src="{{ 'custom-home.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .tg-section {
+    --tg-bg: {{ section.settings.bg_color }};
+    --tg-heading: {{ section.settings.heading_color }};
+    --tg-tab-active: {{ section.settings.accent_color }};
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="tg-section tg-tabs-section section-{{ section.id }}-padding">
+  <div class="page-width">
+    <tg-tabs class="tg-tabs">
+      <div class="tg-section__header tg-section__header--center">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="tg-heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="tg-subheading">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- if section.blocks.size > 1 -%}
+        <div class="tg-tabs__bar-wrap">
+          <div class="tg-tabs__bar" role="tablist" aria-label="{{ section.settings.heading | escape }}">
+            {%- for block in section.blocks -%}
+              <button
+                type="button"
+                class="tg-tabs__tab"
+                role="tab"
+                id="Tab-{{ section.id }}-{{ forloop.index }}"
+                aria-controls="Panel-{{ section.id }}-{{ forloop.index }}"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+                data-block-id="{{ block.id }}"
+                {{ block.shopify_attributes }}
+              >
+                {{- block.settings.label | default: block.settings.collection.title | default: 'Tab' | escape -}}
+              </button>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign collection_obj = block.settings.collection
+          assign view_all_url = block.settings.view_all_link | default: collection_obj.url | default: routes.all_products_collection_url
+        -%}
+        <div
+          class="tg-tabs__panel"
+          role="tabpanel"
+          id="Panel-{{ section.id }}-{{ forloop.index }}"
+          aria-labelledby="Tab-{{ section.id }}-{{ forloop.index }}"
+          data-view-all="{{ view_all_url }}"
+          {% unless forloop.first %}hidden{% endunless %}
+        >
+          <ul class="tg-tabs__grid" style="--tg-cols: {{ section.settings.columns_desktop }};" role="list">
+            {%- if collection_obj != blank and collection_obj.products_count > 0 -%}
+              {%- for product in collection_obj.products limit: section.settings.products_to_show -%}
+                <li>{% render 'tg-product-card', product: product, show_secondary_image: section.settings.show_secondary_image %}</li>
+              {%- endfor -%}
+            {%- else -%}
+              {%- for i in (1..section.settings.products_to_show) -%}
+                <li>{% render 'tg-product-card', placeholder_index: forloop.index %}</li>
+              {%- endfor -%}
+            {%- endif -%}
+          </ul>
+        </div>
+      {%- endfor -%}
+
+      {%- if section.settings.view_all_label != blank and section.blocks.size > 0 -%}
+        {%- liquid
+          assign first_block = section.blocks.first
+          assign first_url = first_block.settings.view_all_link | default: first_block.settings.collection.url | default: routes.all_products_collection_url
+        -%}
+        <div class="tg-tabs__footer">
+          <a class="tg-btn tg-tabs__view-all" href="{{ first_url }}" data-view-all-link>
+            {{- section.settings.view_all_label | escape -}}
+          </a>
+        </div>
+      {%- endif -%}
+    </tg-tabs>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Toggi product tabs",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Trending products"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products per tab",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "label": "Show second image on hover",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View all button label",
+      "default": "View all"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background",
+      "default": "#F6F7F5"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#1F2A24"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Active tab & button",
+      "default": "#1A7F41"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Tab label",
+          "info": "Uses the collection title if empty. Emoji welcome, e.g. 🔥 Hot deals",
+          "default": "New arrivals"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "url",
+          "id": "view_all_link",
+          "label": "View all link",
+          "info": "Optional. Uses the collection link if empty."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Toggi product tabs",
+      "blocks": [
+        { "type": "tab", "settings": { "label": "New arrivals" } },
+        { "type": "tab", "settings": { "label": "Best sellers" } },
+        { "type": "tab", "settings": { "label": "On sale" } },
+        { "type": "tab", "settings": { "label": "🔥 Hot deals" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

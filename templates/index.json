@@ -191,28 +191,6 @@
         "padding_bottom": 32
       }
     },
-    "new_arrivals": {
-      "type": "custom-featured-products",
-      "settings": {
-        "heading": "New arrivals",
-        "subheading": "Fresh picks the kids will love",
-        "heading_align": "left",
-        "collection": "all",
-        "products_to_show": 8,
-        "view_all_label": "View all",
-        "columns_desktop": 4,
-        "mobile_layout": "swipe",
-        "columns_mobile": "2",
-        "image_ratio": "square",
-        "show_secondary_image": true,
-        "show_rating": false,
-        "quick_add": "standard",
-        "bg_color": "#FFFFFF",
-        "heading_color": "#135B33",
-        "padding_top": 32,
-        "padding_bottom": 32
-      }
-    },
     "promos": {
       "type": "custom-promo-banners",
       "blocks": {
@@ -432,12 +410,61 @@
         "padding_top": 56,
         "padding_bottom": 64
       }
+    },
+    "trending": {
+      "type": "custom-product-tabs",
+      "blocks": {
+        "tab_1": {
+          "type": "tab",
+          "settings": {
+            "label": "New arrivals",
+            "collection": "all"
+          }
+        },
+        "tab_2": {
+          "type": "tab",
+          "settings": {
+            "label": "Best sellers"
+          }
+        },
+        "tab_3": {
+          "type": "tab",
+          "settings": {
+            "label": "Big deals – up to 20% off"
+          }
+        },
+        "tab_4": {
+          "type": "tab",
+          "settings": {
+            "label": "🔥 Ride-ons & RC cars"
+          }
+        }
+      },
+      "block_order": [
+        "tab_1",
+        "tab_2",
+        "tab_3",
+        "tab_4"
+      ],
+      "settings": {
+        "heading": "Trending products",
+        "subheading": "",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "show_secondary_image": true,
+        "view_all_label": "View all",
+        "bg_color": "#F6F7F5",
+        "heading_color": "#1F2A24",
+        "accent_color": "#1A7F41",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
     }
   },
   "order": [
     "hero",
     "categories",
-    "new_arrivals",
+    "trending",
     "promos",
     "big_deals",
     "shop_by_age",
