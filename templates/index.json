@@ -281,7 +281,13 @@
         "bg_color": "#FFFFFF",
         "heading_color": "#135B33",
         "padding_top": 32,
-        "padding_bottom": 56
+        "padding_bottom": 56,
+        "card_style": "toggi",
+        "show_description": true,
+        "show_quick_view": true,
+        "show_add_to_cart": true,
+        "show_buy_now": true,
+        "buy_now_label": "Buy now"
       }
     },
     "shop_by_age": {
@@ -382,7 +388,13 @@
         "bg_color": "#FFFFFF",
         "heading_color": "#135B33",
         "padding_top": 56,
-        "padding_bottom": 32
+        "padding_bottom": 32,
+        "card_style": "toggi",
+        "show_description": true,
+        "show_quick_view": true,
+        "show_add_to_cart": true,
+        "show_buy_now": true,
+        "buy_now_label": "Buy now"
       }
     },
     "trust": {
@@ -499,7 +511,12 @@
         "heading_color": "#1F2A24",
         "accent_color": "#1A7F41",
         "padding_top": 56,
-        "padding_bottom": 56
+        "padding_bottom": 56,
+        "show_description": true,
+        "show_quick_view": true,
+        "show_add_to_cart": true,
+        "show_buy_now": true,
+        "buy_now_label": "Buy now"
       }
     },
     "brands": {
@@ -629,7 +646,12 @@
         "heading_color": "#1F2A24",
         "accent_color": "#1A7F41",
         "padding_top": 32,
-        "padding_bottom": 56
+        "padding_bottom": 56,
+        "show_description": true,
+        "show_quick_view": true,
+        "show_add_to_cart": true,
+        "show_buy_now": true,
+        "buy_now_label": "Buy now"
       }
     }
   },

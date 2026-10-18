@@ -40,3 +40,278 @@
   color: var(--tg-green);
 }
 
+/* ==========================================================================
+   Toggi footer (sections/custom-footer.liquid) — site-wide
+   ========================================================================== */
+.tg-footer {
+  background: var(--tg-footer-bg, #ffffff);
+  color: var(--tg-footer-text, #2f3a33);
+  border-top: 1px solid #e6ebe7;
+}
+
+.tg-footer a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.tg-footer a:hover {
+  color: var(--tg-green);
+}
+
+.tg-footer a:focus-visible {
+  outline: 2px solid var(--tg-green);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Row 1 */
+.tg-footer__top {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3.2rem 2rem;
+  padding-top: 4.8rem;
+  padding-bottom: 4rem;
+}
+
+.tg-footer__brand {
+  grid-column: 1 / -1;
+}
+
+.tg-footer__logo {
+  display: inline-block;
+}
+
+.tg-footer__logo img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.tg-footer__logo-text {
+  color: var(--tg-green-dark);
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: 2.4rem;
+}
+
+.tg-footer__tagline {
+  max-width: 26rem;
+  margin-top: 1.6rem;
+  font-size: 1.5rem;
+  line-height: 1.6;
+}
+
+.tg-footer__tagline p {
+  margin: 0;
+}
+
+.tg-footer__heading {
+  margin: 0 0 1.8rem;
+  color: var(--tg-footer-heading, #1f2a24);
+  font-family: var(--font-body-family);
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.7rem;
+  letter-spacing: 0;
+}
+
+.tg-footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+
+.tg-footer__social a {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tg-footer__social-icon {
+  display: inline-flex;
+  width: 1.8rem;
+  height: 1.8rem;
+  color: var(--tg-footer-heading, #1f2a24);
+}
+
+.tg-footer__social-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.tg-footer__social a:hover .tg-footer__social-icon {
+  color: var(--tg-green);
+}
+
+.tg-footer__hint {
+  margin: 0;
+  color: #8a948e;
+  font-size: 1.3rem;
+  font-style: italic;
+}
+
+/* Row 2 — payment strip */
+.tg-footer__strip {
+  background: var(--tg-footer-strip, #f6f7f5);
+}
+
+.tg-footer__strip-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.4rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.tg-footer__secure {
+  flex: 0 0 auto;
+  margin: 0;
+  color: var(--tg-footer-heading, #1f2a24);
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.6rem;
+}
+
+.tg-footer__payments {
+  width: 100%;
+  min-width: 0;
+}
+
+.tg-footer__payment-img {
+  display: block;
+  width: 100%;
+  max-width: 96rem;
+  height: auto;
+  margin-left: auto;
+  padding: 0.8rem 1.2rem;
+  border-radius: 1.2rem;
+  background: #ffffff;
+}
+
+.tg-footer__payment-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tg-footer__payment-icons .icon {
+  width: 3.8rem;
+  height: 2.4rem;
+}
+
+/* Row 3 — bottom bar */
+.tg-footer__bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.2rem;
+  padding-top: 2rem;
+  padding-bottom: 2.4rem;
+  border-top: 1px solid #e6ebe7;
+  color: #6b756f;
+  font-size: 1.3rem;
+}
+
+.tg-footer__copy p {
+  margin: 0;
+}
+
+.tg-footer__copy a {
+  color: var(--tg-footer-heading, #1f2a24);
+  font-weight: var(--font-body-weight-bold);
+}
+
+.tg-footer__policies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tg-footer__policies a {
+  color: var(--tg-footer-heading, #1f2a24);
+}
+
+@media screen and (min-width: 750px) {
+  .tg-footer__top {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding-top: 6rem;
+    padding-bottom: 5.2rem;
+  }
+
+  .tg-footer__strip-inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3.2rem;
+  }
+
+  .tg-footer__payments {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .tg-footer__bottom {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  /* One row: brand column a little wider than the others */
+  .tg-footer__top {
+    display: flex;
+    gap: 3.2rem;
+  }
+
+  .tg-footer__col {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .tg-footer__brand {
+    flex-grow: 1.3;
+  }
+}
+
+/* Default payment name badges (until a payment logos image is uploaded) */
+.tg-footer__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tg-footer__badges li {
+  display: inline-flex;
+  align-items: center;
+  min-height: 3.4rem;
+  padding: 0 1.2rem;
+  border: 1px solid #e3e7e4;
+  border-radius: 0.8rem;
+  background: #ffffff;
+  color: #2f3a33;
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-footer__badges {
+    justify-content: flex-end;
+  }
+}

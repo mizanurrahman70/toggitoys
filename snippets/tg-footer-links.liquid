@@ -1,0 +1,21 @@
+{%- comment -%}
+  Toggi Toys — renders <li> links from a Shopify menu, or from simple text lines.
+  Usage: {% render 'tg-footer-links', menu: block.settings.menu, text: block.settings.default_links %}
+  Text format, one link per line:  Label | /url   (url optional → "#")
+  The menu wins when it has links; the text lines are the ready-made default.
+{%- endcomment -%}
+{%- if menu != blank and menu.links.size > 0 -%}
+  {%- for link in menu.links -%}
+    <li><a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a></li>
+  {%- endfor -%}
+{%- elsif text != blank -%}
+  {%- assign lines = text | newline_to_br | split: '<br />' -%}
+  {%- for line in lines -%}
+    {%- assign parts = line | strip_newlines | split: '|' -%}
+    {%- assign label = parts[0] | strip -%}
+    {%- assign url = parts[1] | strip -%}
+    {%- if label != blank -%}
+      <li><a href="{{ url | default: '#' }}">{{ label | escape }}</a></li>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}

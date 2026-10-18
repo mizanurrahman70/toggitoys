@@ -1,12 +1,23 @@
 {%- comment -%}
   Toggi Toys — Featured products grid
-  Reuses Dawn's `card-product` snippet so sale badges, prices and quick add keep working.
+  Card style "toggi" (default): tg-product-card with Buy now, add-to-cart icon, quick view and
+  short description. Card style "dawn": Dawn's own card-product (badges, prices, quick add).
   Use multiple instances for New Arrivals, Big Deals, Best Sellers, etc.
 {%- endcomment -%}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 
-{%- if section.settings.quick_add == 'standard' -%}
+{%- liquid
+  assign toggi_card = true
+  if section.settings.card_style == 'dawn'
+    assign toggi_card = false
+  endif
+-%}
+{%- if toggi_card -%}
+  {% render 'tg-card-assets', buy_now_label: section.settings.buy_now_label %}
+{%- endif -%}
+
+{%- if toggi_card == false and section.settings.quick_add == 'standard' -%}
   {{ 'quick-add.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
@@ -65,6 +76,9 @@
       {%- if collection_obj != blank and collection_obj.products_count > 0 -%}
         {%- for product in collection_obj.products limit: section.settings.products_to_show -%}
           <li>
+            {%- if toggi_card -%}
+              {% render 'tg-product-card', product: product, show_secondary_image: section.settings.show_secondary_image, show_description: section.settings.show_description, show_quick_view: section.settings.show_quick_view, show_add_to_cart: section.settings.show_add_to_cart, show_buy_now: section.settings.show_buy_now, buy_now_label: section.settings.buy_now_label, id_prefix: section.id %}
+            {%- else -%}
             {% render 'card-product',
               card_product: product,
               media_aspect_ratio: section.settings.image_ratio,
@@ -77,6 +91,7 @@
               quick_add: section.settings.quick_add,
               product_view_context: 'collection'
             %}
+            {%- endif -%}
           </li>
           {%- assign skip_card_product_styles = true -%}
         {%- endfor -%}
@@ -88,11 +103,15 @@
             assign placeholder_image = 'product-apparel-' | append: ridx
           -%}
           <li>
-            {% render 'card-product',
-              media_aspect_ratio: section.settings.image_ratio,
-              lazy_load: true,
-              placeholder_image: placeholder_image
-            %}
+            {%- if toggi_card -%}
+              {% render 'tg-product-card', placeholder_index: forloop.index, show_secondary_image: section.settings.show_secondary_image, show_description: section.settings.show_description, show_quick_view: section.settings.show_quick_view, show_add_to_cart: section.settings.show_add_to_cart, show_buy_now: section.settings.show_buy_now, buy_now_label: section.settings.buy_now_label %}
+            {%- else -%}
+              {% render 'card-product',
+                media_aspect_ratio: section.settings.image_ratio,
+                lazy_load: true,
+                placeholder_image: placeholder_image
+              %}
+            {%- endif -%}
           </li>
         {%- endfor -%}
       {%- endif -%}
@@ -224,8 +243,48 @@
     },
     {
       "type": "select",
+      "id": "card_style",
+      "label": "Card style",
+      "options": [
+        { "value": "toggi", "label": "Toggi (Buy now, cart icon, quick view)" },
+        { "value": "dawn", "label": "Dawn default" }
+      ],
+      "default": "toggi"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show short description (Toggi card)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_view",
+      "label": "Show quick view button (Toggi card)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_add_to_cart",
+      "label": "Show add to cart icon (Toggi card)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_buy_now",
+      "label": "Show Buy now button (Toggi card)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "buy_now_label",
+      "label": "Buy now button label",
+      "default": "Buy now"
+    },
+    {
+      "type": "select",
       "id": "quick_add",
-      "label": "Quick add",
+      "label": "Quick add (Dawn card)",
       "options": [
         { "value": "none", "label": "None" },
         { "value": "standard", "label": "Standard" }

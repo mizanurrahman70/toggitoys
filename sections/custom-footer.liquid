@@ -1,0 +1,379 @@
+{%- comment -%}
+  Toggi Toys — footer
+  Row 1: brand (logo + tagline), menu columns, social links (blocks — reorder in the editor).
+  Row 2: "payment is secured" strip with a payment-logos image (falls back to Shopify's payment icons).
+  Row 3: copyright + policy links (menu, or Shopify's own policy pages if no menu is chosen).
+  Styles live in assets/custom-theme.css (loaded on every page).
+{%- endcomment -%}
+{%- style -%}
+  #shopify-section-{{ section.id }} .tg-footer {
+    --tg-footer-bg: {{ section.settings.bg_color }};
+    --tg-footer-text: {{ section.settings.text_color }};
+    --tg-footer-heading: {{ section.settings.heading_color }};
+    --tg-footer-strip: {{ section.settings.strip_color }};
+  }
+{%- endstyle -%}
+
+<footer class="tg-footer">
+  {%- comment -%} ---------- Row 1: columns ---------- {%- endcomment -%}
+  <div class="page-width tg-footer__top" style="--tg-footer-cols: {{ section.blocks.size | at_least: 1 }};">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'brand' -%}
+          <div class="tg-footer__col tg-footer__brand" {{ block.shopify_attributes }}>
+            {%- assign logo = block.settings.logo | default: settings.logo -%}
+            {%- assign logo_style_default = 'width: ' | append: block.settings.logo_width | append: 'px' -%}
+            <a href="{{ routes.root_url }}" class="tg-footer__logo" aria-label="{{ shop.name | escape }}">
+              {%- if logo != blank -%}
+                {%- assign logo_w2 = block.settings.logo_width | times: 2 -%}
+                {%- assign logo_style = 'width: ' | append: block.settings.logo_width | append: 'px' -%}
+                {{
+                  logo
+                  | image_url: width: logo_w2
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '100, 200, 300, 400',
+                    sizes: '200px',
+                    style: logo_style,
+                    alt: shop.name
+                }}
+              {%- else -%}
+                <img
+                  src="{{ 'toggi-logo.webp' | asset_url }}"
+                  alt="{{ shop.name | escape }}"
+                  width="360"
+                  height="266"
+                  loading="lazy"
+                  style="{{ logo_style_default }}"
+                >
+              {%- endif -%}
+            </a>
+            {%- if block.settings.tagline != blank -%}
+              <div class="tg-footer__tagline">{{ block.settings.tagline }}</div>
+            {%- endif -%}
+          </div>
+
+        {%- when 'menu' -%}
+          <div class="tg-footer__col" {{ block.shopify_attributes }}>
+            {%- if block.settings.heading != blank -%}
+              <h2 class="tg-footer__heading">{{ block.settings.heading | escape }}</h2>
+            {%- endif -%}
+            <ul class="tg-footer__links" role="list">
+              {%- render 'tg-footer-links', menu: block.settings.menu, text: block.settings.default_links -%}
+            </ul>
+          </div>
+
+        {%- when 'social' -%}
+          {%- liquid
+            assign facebook = block.settings.facebook | default: settings.social_facebook_link
+            assign instagram = block.settings.instagram | default: settings.social_instagram_link
+            assign tiktok = block.settings.tiktok | default: settings.social_tiktok_link
+            assign youtube = block.settings.youtube | default: settings.social_youtube_link
+            assign whatsapp = block.settings.whatsapp
+          -%}
+          <div class="tg-footer__col" {{ block.shopify_attributes }}>
+            {%- if block.settings.heading != blank -%}
+              <h2 class="tg-footer__heading">{{ block.settings.heading | escape }}</h2>
+            {%- endif -%}
+            <ul class="tg-footer__links tg-footer__social" role="list">
+              {%- if facebook != blank -%}
+                <li>
+                  <a href="{{ facebook }}" target="_blank" rel="noopener">
+                    <span class="tg-footer__social-icon">{{ 'icon-facebook.svg' | inline_asset_content }}</span>Facebook
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if instagram != blank -%}
+                <li>
+                  <a href="{{ instagram }}" target="_blank" rel="noopener">
+                    <span class="tg-footer__social-icon">{{ 'icon-instagram.svg' | inline_asset_content }}</span>Instagram
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if tiktok != blank -%}
+                <li>
+                  <a href="{{ tiktok }}" target="_blank" rel="noopener">
+                    <span class="tg-footer__social-icon">{{ 'icon-tiktok.svg' | inline_asset_content }}</span>TikTok
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if youtube != blank -%}
+                <li>
+                  <a href="{{ youtube }}" target="_blank" rel="noopener">
+                    <span class="tg-footer__social-icon">{{ 'icon-youtube.svg' | inline_asset_content }}</span>YouTube
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if whatsapp != blank -%}
+                <li>
+                  <a href="{{ whatsapp }}" target="_blank" rel="noopener">
+                    <span class="tg-footer__social-icon">{% render 'tg-icon', icon: 'whatsapp' %}</span>WhatsApp
+                  </a>
+                </li>
+              {%- endif -%}
+            </ul>
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} ---------- Row 2: payment strip ---------- {%- endcomment -%}
+  {%- if section.settings.show_payment -%}
+    <div class="tg-footer__strip">
+      <div class="page-width tg-footer__strip-inner">
+        {%- if section.settings.payment_text != blank -%}
+          <p class="tg-footer__secure">{{ section.settings.payment_text | escape }}</p>
+        {%- endif -%}
+        <div class="tg-footer__payments">
+          {%- if section.settings.payment_image != blank -%}
+            {{
+              section.settings.payment_image
+              | image_url: width: 1800
+              | image_tag:
+                loading: 'lazy',
+                widths: '600, 900, 1200, 1800',
+                sizes: '(min-width: 990px) 900px, 100vw',
+                class: 'tg-footer__payment-img',
+                alt: section.settings.payment_image.alt | default: 'Payment methods'
+            }}
+          {%- elsif section.settings.payment_names != blank -%}
+            {%- comment -%} Default: tidy name badges until a logos image is uploaded {%- endcomment -%}
+            <ul class="tg-footer__badges" role="list" aria-label="{{ section.settings.payment_text | escape }}">
+              {%- assign names = section.settings.payment_names | split: ',' -%}
+              {%- for name in names -%}
+                {%- assign clean = name | strip -%}
+                {%- if clean != blank -%}
+                  <li>{{ clean | escape }}</li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- elsif shop.enabled_payment_types.size > 0 -%}
+            <ul class="tg-footer__payment-icons" role="list">
+              {%- for type in shop.enabled_payment_types -%}
+                <li>{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ---------- Row 3: copyright + policies ---------- {%- endcomment -%}
+  <div class="page-width tg-footer__bottom">
+    <div class="tg-footer__copy">
+      {%- assign year = 'now' | date: '%Y' -%}
+      {{ section.settings.copyright | replace: '[year]', year | replace: '[shop]', shop.name }}
+    </div>
+    {%- assign policy_menu = section.settings.policy_menu -%}
+    <ul class="tg-footer__policies" role="list">
+      {%- render 'tg-footer-links', menu: policy_menu, text: section.settings.policy_links -%}
+    </ul>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Toggi footer",
+  "tag": "section",
+  "class": "section tg-footer-section",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "max_blocks": 7,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Payment strip"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment",
+      "label": "Show payment strip",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "payment_text",
+      "label": "Text",
+      "default": "Your payment is secured with us"
+    },
+    {
+      "type": "image_picker",
+      "id": "payment_image",
+      "label": "Payment logos image",
+      "info": "One wide image with your logos (Visa, Mastercard, bKash, Nagad, Rocket…). Transparent PNG, about 1800 x 120 px."
+    },
+    {
+      "type": "text",
+      "id": "payment_names",
+      "label": "Payment names (shown if no image)",
+      "info": "Comma separated.",
+      "default": "VISA, Mastercard, AMEX, bKash, Nagad, Rocket, Upay"
+    },
+    {
+      "type": "header",
+      "content": "Bottom bar"
+    },
+    {
+      "type": "richtext",
+      "id": "copyright",
+      "label": "Copyright text",
+      "info": "[year] = current year, [shop] = store name.",
+      "default": "<p>Copyright [year] © toggitoys.com. All rights reserved.</p>"
+    },
+    {
+      "type": "link_list",
+      "id": "policy_menu",
+      "label": "Policy links menu",
+      "info": "Optional. Replaces the default links below."
+    },
+    {
+      "type": "textarea",
+      "id": "policy_links",
+      "label": "Default policy links",
+      "info": "One per line: Label | /url",
+      "default": "Terms & Conditions | /policies/terms-of-service\nPrivacy Policy | /policies/privacy-policy\nRefund Policy | /policies/refund-policy\nCookie Policy | /pages/cookie-policy"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "strip_color",
+      "label": "Payment strip background",
+      "default": "#F6F7F5"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Headings",
+      "default": "#1F2A24"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text & links",
+      "default": "#2F3A33"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Logo & tagline",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo",
+          "info": "Uses the store logo from Theme settings if empty."
+        },
+        {
+          "type": "range",
+          "id": "logo_width",
+          "label": "Logo width",
+          "min": 50,
+          "max": 220,
+          "step": 5,
+          "unit": "px",
+          "default": 90
+        },
+        {
+          "type": "richtext",
+          "id": "tagline",
+          "label": "Tagline",
+          "default": "<p>Bangladesh's Trusted Kid's Toy Brand</p>"
+        }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "Menu column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Know More"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "info": "Optional. Create menus in Online Store › Navigation. Replaces the default links below."
+        },
+        {
+          "type": "textarea",
+          "id": "default_links",
+          "label": "Default links",
+          "info": "One per line: Label | /url",
+          "default": "FAQ | /pages/faq\nBlog | /blogs/news"
+        }
+      ]
+    },
+    {
+      "type": "social",
+      "name": "Social links",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Social Menus"
+        },
+        {
+          "type": "paragraph",
+          "content": "Empty fields use the links from Theme settings › Social media."
+        },
+        {
+          "type": "url",
+          "id": "facebook",
+          "label": "Facebook"
+        },
+        {
+          "type": "url",
+          "id": "instagram",
+          "label": "Instagram"
+        },
+        {
+          "type": "url",
+          "id": "tiktok",
+          "label": "TikTok"
+        },
+        {
+          "type": "url",
+          "id": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "type": "url",
+          "id": "whatsapp",
+          "label": "WhatsApp link",
+          "info": "e.g. https://wa.me/8801704112525"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Toggi footer",
+      "blocks": [
+        { "type": "brand" },
+        { "type": "menu", "settings": { "heading": "Know More" } },
+        { "type": "menu", "settings": { "heading": "Let Us Help You" } },
+        { "type": "menu", "settings": { "heading": "Get to Know Us" } },
+        { "type": "social" }
+      ]
+    }
+  ]
+}
+{% endschema %}

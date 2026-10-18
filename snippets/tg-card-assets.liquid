@@ -1,0 +1,25 @@
+{%- comment -%}
+  Toggi Toys — loads what the tg-product-card buttons and quick view need.
+  Render once per section that shows tg-product-card:
+    {% render 'tg-card-assets', buy_now_label: section.settings.buy_now_label %}
+  The script is deduplicated by the browser cache + a guard inside the file;
+  window.tgTheme is only set by the first section on the page.
+{%- endcomment -%}
+<script src="{{ 'tg-product-card.js' | asset_url }}" defer="defer"></script>
+<script>
+  window.tgTheme = window.tgTheme || {
+    moneyFormat: {{ shop.money_format | json }},
+    checkoutUrl: '/checkout',
+    strings: {
+      addToCart: {{ 'products.product.add_to_cart' | t | json }},
+      buyNow: {{ buy_now_label | default: 'Buy now' | json }},
+      soldOut: {{ 'products.product.sold_out' | t | json }},
+      unavailable: {{ 'products.product.unavailable' | t | json }},
+      viewDetails: {{ 'products.product.view_full_details' | t | json }},
+      quantity: {{ 'products.product.quantity.label' | t | json }},
+      close: {{ 'accessibility.close' | t | json }},
+      added: 'Added to cart',
+      error: 'Something went wrong. Please try again.'
+    }
+  };
+</script>

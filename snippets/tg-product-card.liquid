@@ -3,7 +3,17 @@
   Usage:
     {% render 'tg-product-card', product: product %}
     {% render 'tg-product-card', placeholder_index: 1 %}   (no product → placeholder card)
-  Optional: show_secondary_image (boolean), show_swatches (boolean — lists Color/Colour option values)
+  Optional:
+    show_secondary_image (boolean)
+    show_swatches        (boolean — lists Color/Colour option values)
+    show_description     (boolean — custom.short_description metafield, else description excerpt)
+    show_quick_view      (boolean — eye icon opens the quick view, needs tg-product-card.js)
+    show_add_to_cart     (boolean — cart icon on the image)
+    show_buy_now         (boolean — "Buy now" button → straight to checkout)
+    buy_now_label        (string)
+    id_prefix            (string — keeps form IDs unique when a product appears twice on a page)
+  Products with one variant add to cart / buy directly. Products with options open the quick
+  view so the shopper can choose first (links to the product page if JavaScript is off).
 {%- endcomment -%}
 {%- if product != blank -%}
   {%- liquid
@@ -16,6 +26,21 @@
     assign second_image = product.media[1].preview_image
     assign image_alt = image.alt | default: product.title
     assign price_min = product.price_min | money
+
+    assign single_variant = false
+    if product.has_only_default_variant or product.variants.size == 1
+      assign single_variant = true
+    endif
+    assign variant = product.selected_or_first_available_variant
+    assign form_id = 'TgCardForm-' | append: id_prefix | append: '-' | append: product.id
+    assign buy_label = buy_now_label | default: 'Buy now'
+
+    if show_description
+      assign short_description = product.metafields.custom.short_description.value
+      if short_description == blank
+        assign short_description = product.description | strip_html | strip_newlines | truncatewords: 14, '…'
+      endif
+    endif
   -%}
   <div class="tg-card{% if product.available == false %} tg-card--sold-out{% endif %}">
     <a href="{{ product.url }}" class="tg-card__link" aria-label="{{ product.title | escape }}"></a>
@@ -56,6 +81,45 @@
           <span class="tg-card__badge tg-card__badge--sold">{{ 'products.product.sold_out' | t }}</span>
         {%- endif -%}
       </div>
+
+      {%- if show_quick_view or show_add_to_cart -%}
+        <div class="tg-card__actions">
+          {%- if show_quick_view -%}
+            <a
+              href="{{ product.url }}"
+              class="tg-card__icon"
+              data-tg-quick-view="{{ product.handle }}"
+              aria-label="Quick view: {{ product.title | escape }}"
+              title="Quick view"
+            >
+              {%- render 'tg-icon', icon: 'eye' -%}
+            </a>
+          {%- endif -%}
+          {%- if show_add_to_cart and product.available -%}
+            {%- if single_variant -%}
+              <button
+                type="submit"
+                form="{{ form_id }}"
+                class="tg-card__icon"
+                aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title | escape }}"
+                title="{{ 'products.product.add_to_cart' | t }}"
+              >
+                {%- render 'tg-icon', icon: 'cart' -%}
+              </button>
+            {%- else -%}
+              <a
+                href="{{ product.url }}"
+                class="tg-card__icon"
+                data-tg-quick-view="{{ product.handle }}"
+                aria-label="{{ 'products.product.choose_options' | t }}: {{ product.title | escape }}"
+                title="{{ 'products.product.choose_options' | t }}"
+              >
+                {%- render 'tg-icon', icon: 'cart' -%}
+              </a>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
     </div>
 
     <div class="tg-card__info">
@@ -76,6 +140,9 @@
         {%- endfor -%}
       {%- endif -%}
       <h3 class="tg-card__title">{{ product.title | escape }}</h3>
+      {%- if show_description and short_description != blank -%}
+        <p class="tg-card__desc">{{ short_description | strip_html | escape }}</p>
+      {%- endif -%}
       <div class="tg-card__price">
         <span class="tg-card__price-now">
           {%- if product.price_varies -%}
@@ -91,7 +158,33 @@
           </s>
         {%- endif -%}
       </div>
+
+      {%- if show_buy_now -%}
+        {%- if product.available == false -%}
+          <button type="button" class="tg-card__buy" disabled>{{ 'products.product.sold_out' | t }}</button>
+        {%- elsif single_variant -%}
+          {%- comment -%} Normal form POST with return_to → Shopify adds the item and opens checkout {%- endcomment -%}
+          <button type="submit" form="{{ form_id }}" name="return_to" value="/checkout" class="tg-card__buy">
+            {%- render 'tg-icon', icon: 'bag' -%}
+            {{- buy_label | escape -}}
+          </button>
+        {%- else -%}
+          <a href="{{ product.url }}" class="tg-card__buy" data-tg-quick-view="{{ product.handle }}">
+            {%- render 'tg-icon', icon: 'bag' -%}
+            {{- buy_label | escape -}}
+          </a>
+        {%- endif -%}
+      {%- endif -%}
     </div>
+
+    {%- if single_variant and product.available -%}
+      {%- if show_add_to_cart or show_buy_now -%}
+        <form id="{{ form_id }}" action="{{ routes.cart_add_url }}" method="post" class="tg-card__form" data-tg-cart-form hidden>
+          <input type="hidden" name="id" value="{{ variant.id }}">
+          <input type="hidden" name="quantity" value="1">
+        </form>
+      {%- endif -%}
+    {%- endif -%}
   </div>
 {%- else -%}
   {%- comment -%} Placeholder shown in the editor until a collection is chosen {%- endcomment -%}
@@ -102,13 +195,28 @@
       <div class="tg-card__badges">
         <span class="tg-card__badge tg-card__badge--sale">-10%</span>
       </div>
+      {%- if show_quick_view or show_add_to_cart -%}
+        <div class="tg-card__actions" aria-hidden="true">
+          {%- if show_quick_view -%}<span class="tg-card__icon">{% render 'tg-icon', icon: 'eye' %}</span>{%- endif -%}
+          {%- if show_add_to_cart -%}<span class="tg-card__icon">{% render 'tg-icon', icon: 'cart' %}</span>{%- endif -%}
+        </div>
+      {%- endif -%}
     </div>
     <div class="tg-card__info">
       <h3 class="tg-card__title">Example toy product name</h3>
+      {%- if show_description -%}
+        <p class="tg-card__desc">A short, friendly description of the toy appears here.</p>
+      {%- endif -%}
       <div class="tg-card__price">
         <span class="tg-card__price-now">{{ 45000 | money }}</span>
         <s class="tg-card__price-was">{{ 50000 | money }}</s>
       </div>
+      {%- if show_buy_now -%}
+        <span class="tg-card__buy" aria-hidden="true">
+          {%- render 'tg-icon', icon: 'bag' -%}
+          {{- buy_now_label | default: 'Buy now' | escape -}}
+        </span>
+      {%- endif -%}
     </div>
   </div>
 {%- endif -%}

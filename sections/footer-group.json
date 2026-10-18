@@ -26,10 +26,74 @@
         "margin_top": 0,
         "padding_top": 36,
         "padding_bottom": 36
+      },
+      "disabled": true
+    },
+    "toggi_footer": {
+      "type": "custom-footer",
+      "blocks": {
+        "brand": {
+          "type": "brand",
+          "settings": {
+            "logo_width": 90,
+            "tagline": "<p>Bangladesh's Trusted Kid's Toy Brand</p>"
+          }
+        },
+        "menu_know": {
+          "type": "menu",
+          "settings": {
+            "heading": "Know More",
+            "default_links": "FAQ | /pages/faq\nBlog | /blogs/news"
+          }
+        },
+        "menu_help": {
+          "type": "menu",
+          "settings": {
+            "heading": "Let Us Help You",
+            "default_links": "Your Account | /account\nYour Orders | /account\nMy Tickets | /pages/contact\nSubmit Ticket | /pages/contact"
+          }
+        },
+        "menu_about": {
+          "type": "menu",
+          "settings": {
+            "heading": "Get to Know Us",
+            "default_links": "About Toggi Toys | /pages/about-us\nCareers | /pages/careers\nContact Us | /pages/contact"
+          }
+        },
+        "social": {
+          "type": "social",
+          "settings": {
+            "heading": "Social Menus",
+            "facebook": "https://www.facebook.com/toggitoys",
+            "instagram": "https://www.instagram.com/toggitoys",
+            "tiktok": "https://www.tiktok.com/@toggi.toys",
+            "youtube": "",
+            "whatsapp": "https://wa.me/8801704112525"
+          }
+        }
+      },
+      "block_order": [
+        "brand",
+        "menu_know",
+        "menu_help",
+        "menu_about",
+        "social"
+      ],
+      "settings": {
+        "show_payment": true,
+        "payment_text": "Your payment is secured with us",
+        "copyright": "<p>Copyright [year] © toggitoys.com. All right's reserved. Powered By <strong>Ajer X Limited!</strong></p>",
+        "bg_color": "#FFFFFF",
+        "strip_color": "#F6F7F5",
+        "heading_color": "#1F2A24",
+        "text_color": "#2F3A33",
+        "payment_names": "VISA, Mastercard, AMEX, bKash, Nagad, Rocket, Upay",
+        "policy_links": "Terms & Conditions | /policies/terms-of-service\nPrivacy Policy | /policies/privacy-policy\nRefund Policy | /policies/refund-policy\nCookie Policy | /pages/cookie-policy"
       }
     }
   },
   "order": [
-    "footer"
+    "footer",
+    "toggi_footer"
   ]
 }
