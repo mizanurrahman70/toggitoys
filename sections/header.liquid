@@ -205,7 +205,8 @@
             }}
           </div>
         {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
+          {%- comment -%} Toggi: bundled logo instead of the store name {%- endcomment -%}
+          {% render 'tg-header-logo' %}
         {%- endif -%}
       </a>
       {%- if request.page_type == 'index' -%}
@@ -248,7 +249,8 @@
             }}
           </div>
         {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
+          {%- comment -%} Toggi: bundled logo instead of the store name {%- endcomment -%}
+          {% render 'tg-header-logo' %}
         {%- endif -%}
       </a>
       {%- if request.page_type == 'index' -%}

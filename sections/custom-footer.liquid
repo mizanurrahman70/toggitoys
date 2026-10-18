@@ -126,6 +126,7 @@
         {%- endif -%}
         <div class="tg-footer__payments">
           {%- if section.settings.payment_image != blank -%}
+            {%- assign payment_alt = section.settings.payment_image.alt | default: 'Payment methods' -%}
             {{
               section.settings.payment_image
               | image_url: width: 1800
@@ -134,8 +135,18 @@
                 widths: '600, 900, 1200, 1800',
                 sizes: '(min-width: 990px) 900px, 100vw',
                 class: 'tg-footer__payment-img',
-                alt: section.settings.payment_image.alt | default: 'Payment methods'
+                alt: payment_alt
             }}
+          {%- elsif section.settings.use_default_payment_image -%}
+            {%- comment -%} Bundled Toggi payment logos (Visa, Mastercard, AMEX, DBBL Nexus, bKash, Rocket, mCash, SureCash, iPay, Upay, OK Wallet) {%- endcomment -%}
+            <img
+              src="{{ 'toggi-payment-methods.png' | asset_url }}"
+              class="tg-footer__payment-img tg-footer__payment-img--bundled"
+              alt="Visa, Mastercard, American Express, DBBL Nexus, bKash, Rocket, mCash, SureCash, iPay, Upay, OK Wallet"
+              width="2074"
+              height="124"
+              loading="lazy"
+            >
           {%- elsif section.settings.payment_names != blank -%}
             {%- comment -%} Default: tidy name badges until a logos image is uploaded {%- endcomment -%}
             <ul class="tg-footer__badges" role="list" aria-label="{{ section.settings.payment_text | escape }}">
@@ -202,7 +213,14 @@
       "type": "image_picker",
       "id": "payment_image",
       "label": "Payment logos image",
-      "info": "One wide image with your logos (Visa, Mastercard, bKash, Nagad, Rocket…). Transparent PNG, about 1800 x 120 px."
+      "info": "Optional. Replaces the built-in Toggi payment logos. Transparent PNG, about 1800 x 120 px."
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_payment_image",
+      "label": "Use built-in Toggi payment logos",
+      "info": "Visa, Mastercard, AMEX, DBBL Nexus, bKash, Rocket, mCash, SureCash, iPay, Upay, OK Wallet.",
+      "default": true
     },
     {
       "type": "text",

@@ -1,0 +1,20 @@
+{%- comment -%}
+  Toggi Toys — fallback header logo.
+  Dawn shows the store name as text when no logo is set in Theme settings › Logo.
+  This shows the bundled Toggi Toys logo instead (assets/toggi-logo.webp, 360 x 266).
+  Uploading a logo in Theme settings still takes priority (Dawn's own markup).
+{%- endcomment -%}
+{%- liquid
+  assign logo_w = settings.logo_width | default: 140
+  assign logo_h = logo_w | times: 266 | divided_by: 360
+-%}
+<div class="header__heading-logo-wrapper">
+  <img
+    src="{{ 'toggi-logo.webp' | asset_url }}"
+    class="header__heading-logo motion-reduce"
+    alt="{{ shop.name | escape }}"
+    width="{{ logo_w }}"
+    height="{{ logo_h }}"
+    fetchpriority="high"
+  >
+</div>

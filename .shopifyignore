@@ -1,0 +1,2 @@
+# Not theme files: keep the product import out of `shopify theme push`
+import/

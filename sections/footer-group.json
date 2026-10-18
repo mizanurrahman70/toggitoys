@@ -88,7 +88,8 @@
         "heading_color": "#1F2A24",
         "text_color": "#2F3A33",
         "payment_names": "VISA, Mastercard, AMEX, bKash, Nagad, Rocket, Upay",
-        "policy_links": "Terms & Conditions | /policies/terms-of-service\nPrivacy Policy | /policies/privacy-policy\nRefund Policy | /policies/refund-policy\nCookie Policy | /pages/cookie-policy"
+        "policy_links": "Terms & Conditions | /policies/terms-of-service\nPrivacy Policy | /policies/privacy-policy\nRefund Policy | /policies/refund-policy\nCookie Policy | /pages/cookie-policy",
+        "use_default_payment_image": true
       }
     }
   },
