@@ -255,10 +255,80 @@ if (!customElements.get('tg-carousel')) {
       // Fires on resize and when a hidden tab panel becomes visible (width 0 -> n).
       this.resizeObserver = new ResizeObserver(() => this.build());
       this.resizeObserver.observe(this.track);
+
+      this.setupAutoplay();
     }
 
     disconnectedCallback() {
       this.resizeObserver?.disconnect();
+      this.visibilityObserver?.disconnect();
+      document.removeEventListener('visibilitychange', this.onVisibility);
+      this.stopAutoplay();
+    }
+
+    /**
+     * Optional autoplay: data-autoplay="3" advances one card every 3 s and loops.
+     * Pauses on hover, focus, touch/drag, when off screen or the browser tab is hidden,
+     * and never runs for shoppers who prefer reduced motion.
+     */
+    setupAutoplay() {
+      this.autoplayMs = (parseFloat(this.dataset.autoplay) || 0) * 1000;
+      if (!this.autoplayMs || this.reduceMotion) return;
+      this.pauses = new Set();
+
+      const pause = (reason) => {
+        this.pauses.add(reason);
+        this.stopAutoplay();
+      };
+      const resume = (reason) => {
+        this.pauses.delete(reason);
+        this.startAutoplay();
+      };
+
+      this.addEventListener('mouseenter', () => pause('hover'));
+      this.addEventListener('mouseleave', () => resume('hover'));
+      this.addEventListener('focusin', () => pause('focus'));
+      this.addEventListener('focusout', (e) => {
+        if (!this.contains(e.relatedTarget)) resume('focus');
+      });
+      // A touch/drag means the shopper is browsing: stop for good.
+      this.track.addEventListener('pointerdown', () => pause('user'), { passive: true });
+
+      this.visibilityObserver = new IntersectionObserver(
+        ([entry]) => (entry.isIntersecting ? resume('offscreen') : pause('offscreen')),
+        { threshold: 0.3 }
+      );
+      this.visibilityObserver.observe(this);
+      this.onVisibility = () => (document.hidden ? pause('tab') : resume('tab'));
+      document.addEventListener('visibilitychange', this.onVisibility);
+
+      // Theme editor: hold still while a block is selected.
+      document.addEventListener('shopify:block:select', (e) => {
+        if (this.contains(e.target)) pause('editor');
+      });
+      document.addEventListener('shopify:block:deselect', (e) => {
+        if (this.contains(e.target)) resume('editor');
+      });
+    }
+
+    startAutoplay() {
+      if (!this.autoplayMs || this.pauses?.size) return;
+      this.stopAutoplay();
+      this.autoplayTimer = setInterval(() => this.advance(), this.autoplayMs);
+    }
+
+    stopAutoplay() {
+      clearInterval(this.autoplayTimer);
+    }
+
+    /** Move one card forward; from the last position jump back to the start. */
+    advance() {
+      if (!this.metrics) this.build();
+      if (!this.metrics || this.metrics.pages < 2) return;
+      const { scrollLeft, scrollWidth, clientWidth } = this.track;
+      const atEnd = scrollLeft >= scrollWidth - clientWidth - 4;
+      const left = atEnd ? 0 : Math.round(scrollLeft / this.metrics.step + 1) * this.metrics.step;
+      this.track.scrollTo({ left, behavior: 'smooth' });
     }
 
     build() {

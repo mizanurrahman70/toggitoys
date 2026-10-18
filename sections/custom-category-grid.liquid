@@ -1,8 +1,20 @@
 {%- comment -%}
   Toggi Toys — Shop by category
-  Circle or card tiles. Each block links to a collection (image falls back to the collection's image).
-  Mobile: swipeable row. Desktop: grid.
+  Style "carousel" (default): heading left + round arrows right, tall image cards that slide
+  (uses <tg-carousel> from custom-home.js: arrows, mouse drag, touch swipe, dots on mobile).
+  Styles "circle" / "card": compact tiles (swipe row on mobile, grid on desktop).
+  Image priority: block image → collection image → built-in artwork (assets/tg-cat-1..6.svg).
 {%- endcomment -%}
+{%- liquid
+  assign carousel = false
+  if section.settings.style == 'carousel'
+    assign carousel = true
+  endif
+-%}
+{%- if carousel -%}
+  <script src="{{ 'custom-home.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
 {%- style -%}
   #shopify-section-{{ section.id }} .tg-section {
     --tg-bg: {{ section.settings.bg_color }};
@@ -22,56 +34,136 @@
 
 <div class="tg-section section-{{ section.id }}-padding">
   <div class="page-width">
-    {%- if section.settings.heading != blank or section.settings.link_label != blank -%}
-      <div class="tg-section__header">
-        <div>
-          {%- if section.settings.heading != blank -%}
-            <h2 class="tg-heading">{{ section.settings.heading | escape }}</h2>
-          {%- endif -%}
-          {%- if section.settings.subheading != blank -%}
-            <p class="tg-subheading">{{ section.settings.subheading | escape }}</p>
+    {%- if carousel -%}
+      {%- comment -%} ---------- Carousel style ---------- {%- endcomment -%}
+      <tg-carousel
+        class="tg-carousel tg-catcar"
+        {% if section.settings.autoplay %}data-autoplay="{{ section.settings.autoplay_speed }}"{% endif %}
+      >
+        <div class="tg-catcar__header">
+          <div>
+            {%- if section.settings.heading != blank -%}
+              <h2 class="tg-heading">{{ section.settings.heading | escape }}</h2>
+            {%- endif -%}
+            {%- if section.settings.subheading != blank -%}
+              <p class="tg-subheading">{{ section.settings.subheading | escape }}</p>
+            {%- endif -%}
+          </div>
+          <div class="tg-catcar__nav">
+            {%- if section.settings.link_label != blank and section.settings.link != blank -%}
+              <a class="tg-link tg-catcar__all" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }}</a>
+            {%- endif -%}
+            <button type="button" class="tg-catcar__arrow tg-catcar__arrow--prev" data-prev aria-label="{{ 'general.slider.previous_slide' | t }}">
+              {% render 'tg-icon', icon: 'arrow' %}
+            </button>
+            <button type="button" class="tg-catcar__arrow" data-next aria-label="{{ 'general.slider.next_slide' | t }}">
+              {% render 'tg-icon', icon: 'arrow' %}
+            </button>
+          </div>
+        </div>
+
+        <ul
+          class="tg-catcar__track"
+          data-carousel
+          tabindex="0"
+          aria-label="{{ section.settings.heading | escape }}"
+          style="--tg-cols: {{ section.settings.columns_desktop }};"
+          role="list"
+        >
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign collection_obj = block.settings.collection
+              assign image = block.settings.image | default: collection_obj.featured_image
+              assign label = block.settings.label | default: collection_obj.title | default: 'Category'
+              assign url = block.settings.link | default: collection_obj.url
+              assign art_index = forloop.index0 | modulo: 6 | plus: 1
+            -%}
+            <li {{ block.shopify_attributes }}>
+              <a class="tg-cat-card" {% if url != blank %}href="{{ url }}"{% else %}role="link" aria-disabled="true"{% endif %}>
+                <span class="tg-cat-card__media">
+                  {%- if image != blank -%}
+                    {{
+                      image
+                      | image_url: width: 900
+                      | image_tag:
+                        widths: '360, 540, 720, 900',
+                        sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 72vw',
+                        loading: 'lazy',
+                        alt: ''
+                    }}
+                  {%- else -%}
+                    <img
+                      src="{{ 'tg-cat-' | append: art_index | append: '.svg' | asset_url }}"
+                      alt=""
+                      width="800"
+                      height="1000"
+                      loading="lazy"
+                    >
+                  {%- endif -%}
+                </span>
+                <span class="tg-cat-card__label">
+                  {{- label | escape -}}
+                  <span class="tg-cat-card__arrow" aria-hidden="true">{% render 'tg-icon', icon: 'arrow' %}</span>
+                </span>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <div class="tg-dots tg-catcar__dots" data-dots></div>
+      </tg-carousel>
+    {%- else -%}
+      {%- comment -%} ---------- Circle / card style ---------- {%- endcomment -%}
+      {%- if section.settings.heading != blank or section.settings.link_label != blank -%}
+        <div class="tg-section__header">
+          <div>
+            {%- if section.settings.heading != blank -%}
+              <h2 class="tg-heading">{{ section.settings.heading | escape }}</h2>
+            {%- endif -%}
+            {%- if section.settings.subheading != blank -%}
+              <p class="tg-subheading">{{ section.settings.subheading | escape }}</p>
+            {%- endif -%}
+          </div>
+          {%- if section.settings.link_label != blank and section.settings.link != blank -%}
+            <a class="tg-link" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }} →</a>
           {%- endif -%}
         </div>
-        {%- if section.settings.link_label != blank and section.settings.link != blank -%}
-          <a class="tg-link" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }} →</a>
-        {%- endif -%}
-      </div>
-    {%- endif -%}
+      {%- endif -%}
 
-    <ul
-      class="tg-scroller tg-categories tg-categories--{{ section.settings.style }}"
-      style="--tg-cols: {{ section.settings.columns_desktop }};"
-      role="list"
-    >
-      {%- for block in section.blocks -%}
-        {%- liquid
-          assign collection_obj = block.settings.collection
-          assign image = block.settings.image | default: collection_obj.featured_image
-          assign label = block.settings.label | default: collection_obj.title
-          assign url = block.settings.link | default: collection_obj.url
-        -%}
-        <li {{ block.shopify_attributes }}>
-          <a class="tg-category" {% if url != blank %}href="{{ url }}"{% else %}role="link" aria-disabled="true"{% endif %}>
-            <span class="tg-category__media" style="--tg-cat-bg: {{ block.settings.bg_color }};">
-              {%- if image != blank -%}
-                {{
-                  image
-                  | image_url: width: 400
-                  | image_tag:
-                    widths: '150, 200, 300, 400',
-                    sizes: '(min-width: 750px) 180px, 30vw',
-                    loading: 'lazy',
-                    alt: label
-                }}
-              {%- else -%}
-                {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
-              {%- endif -%}
-            </span>
-            <span class="tg-category__label">{{ label | default: 'Category' | escape }}</span>
-          </a>
-        </li>
-      {%- endfor -%}
-    </ul>
+      <ul
+        class="tg-scroller tg-categories tg-categories--{{ section.settings.style }}"
+        style="--tg-cols: {{ section.settings.columns_desktop }};"
+        role="list"
+      >
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign collection_obj = block.settings.collection
+            assign image = block.settings.image | default: collection_obj.featured_image
+            assign label = block.settings.label | default: collection_obj.title
+            assign url = block.settings.link | default: collection_obj.url
+          -%}
+          <li {{ block.shopify_attributes }}>
+            <a class="tg-category" {% if url != blank %}href="{{ url }}"{% else %}role="link" aria-disabled="true"{% endif %}>
+              <span class="tg-category__media" style="--tg-cat-bg: {{ block.settings.bg_color }};">
+                {%- if image != blank -%}
+                  {{
+                    image
+                    | image_url: width: 400
+                    | image_tag:
+                      widths: '150, 200, 300, 400',
+                      sizes: '(min-width: 750px) 180px, 30vw',
+                      loading: 'lazy',
+                      alt: label
+                  }}
+                {%- else -%}
+                  {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </span>
+              <span class="tg-category__label">{{ label | default: 'Category' | escape }}</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
   </div>
 </div>
 
@@ -109,21 +201,39 @@
     {
       "type": "select",
       "id": "style",
-      "label": "Tile style",
+      "label": "Style",
       "options": [
+        { "value": "carousel", "label": "Image carousel" },
         { "value": "circle", "label": "Circle" },
         { "value": "card", "label": "Rounded card" }
       ],
-      "default": "circle"
+      "default": "carousel"
     },
     {
       "type": "range",
       "id": "columns_desktop",
-      "label": "Columns on desktop",
-      "min": 4,
+      "label": "Cards visible on desktop",
+      "min": 3,
       "max": 8,
       "step": 1,
-      "default": 6
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto-slide (carousel style)",
+      "info": "Pauses on hover, touch and when off screen.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Slide every",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 3
     },
     {
       "type": "header",
@@ -153,7 +263,7 @@
       "step": 4,
       "unit": "px",
       "label": "Top padding",
-      "default": 32
+      "default": 48
     },
     {
       "type": "range",
@@ -163,7 +273,7 @@
       "step": 4,
       "unit": "px",
       "label": "Bottom padding",
-      "default": 32
+      "default": 48
     }
   ],
   "blocks": [
@@ -180,7 +290,7 @@
           "type": "image_picker",
           "id": "image",
           "label": "Custom image",
-          "info": "Optional. Uses the collection image if empty. Square images work best."
+          "info": "Optional. Uses the collection image if empty. Portrait 900 x 1125 px works best for the carousel."
         },
         {
           "type": "text",
@@ -197,7 +307,7 @@
         {
           "type": "color",
           "id": "bg_color",
-          "label": "Tile background",
+          "label": "Tile background (circle / card style)",
           "default": "#EFF7F1"
         }
       ]
@@ -208,11 +318,11 @@
       "name": "Toggi category grid",
       "blocks": [
         { "type": "category", "settings": { "label": "Ride-ons & Vehicles" } },
-        { "type": "category", "settings": { "label": "Building Blocks", "bg_color": "#FFF3EA" } },
-        { "type": "category", "settings": { "label": "Dolls & Accessories", "bg_color": "#FFF8E8" } },
+        { "type": "category", "settings": { "label": "Building Blocks" } },
+        { "type": "category", "settings": { "label": "Dolls & Plush" } },
         { "type": "category", "settings": { "label": "Pretend Play" } },
-        { "type": "category", "settings": { "label": "Baby & Toddler", "bg_color": "#FFF3EA" } },
-        { "type": "category", "settings": { "label": "Remote Control", "bg_color": "#FFF8E8" } }
+        { "type": "category", "settings": { "label": "Baby & Toddler" } },
+        { "type": "category", "settings": { "label": "Remote Control" } }
       ]
     }
   ]

@@ -2509,3 +2509,236 @@ a.tg-promo:hover .tg-promo__media img {
     transition: none;
   }
 }
+
+/* ==========================================================================
+   11. Shop by category — image carousel (heading left, arrows right)
+   ========================================================================== */
+.tg-catcar {
+  position: relative;
+  display: block;
+}
+
+.tg-catcar__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.6rem;
+  margin-bottom: 2rem;
+}
+
+.tg-catcar__nav {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tg-catcar__all {
+  margin-right: 0.6rem;
+}
+
+.tg-catcar__arrow {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 0;
+  border: 1.5px solid #cdd3cf;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--tg-ink);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+
+.tg-catcar__arrow svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.tg-catcar__arrow--prev svg {
+  transform: rotate(180deg);
+}
+
+.tg-catcar__arrow:hover:not([disabled]) {
+  border-color: var(--tg-green);
+  background: var(--tg-green);
+  color: var(--tg-white);
+}
+
+.tg-catcar__arrow[disabled] {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.tg-catcar.is-static .tg-catcar__arrow {
+  display: none;
+}
+
+/* Track: one big card + peek on phones, 3 on tablet, N on desktop */
+.tg-catcar__track {
+  --tg-c: 1.4;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - (var(--tg-c) - 1) * 1.2rem) / var(--tg-c));
+  gap: 1.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.tg-catcar__track::-webkit-scrollbar {
+  display: none;
+}
+
+.tg-catcar__track > li {
+  scroll-snap-align: start;
+}
+
+.tg-catcar__track:focus-visible {
+  outline: 2px solid var(--tg-green);
+  outline-offset: 4px;
+}
+
+.tg-catcar__track.is-dragging {
+  scroll-snap-type: none;
+  cursor: grabbing;
+  user-select: none;
+}
+
+.tg-catcar__track.is-dragging .tg-cat-card {
+  pointer-events: none;
+}
+
+.tg-catcar__track img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tg-catcar__track {
+    cursor: grab;
+  }
+}
+
+/* Card */
+.tg-cat-card {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 1.6rem;
+  background: #eef0ed;
+  color: var(--tg-white);
+  text-decoration: none;
+}
+
+.tg-cat-card__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+.tg-cat-card:hover .tg-cat-card__media img {
+  transform: scale(1.06);
+}
+
+/* Bottom shade so the white label is always readable */
+.tg-cat-card::after {
+  content: '';
+  position: absolute;
+  inset: 45% 0 0;
+  background: linear-gradient(to top, rgba(10, 20, 14, 0.62), rgba(10, 20, 14, 0));
+  pointer-events: none;
+}
+
+.tg-cat-card__label {
+  position: absolute;
+  left: 1.8rem;
+  right: 1.8rem;
+  bottom: 1.6rem;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: 1.8rem;
+  line-height: 1.2;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Arrow slides in next to the label on hover */
+.tg-cat-card__arrow {
+  display: inline-flex;
+  opacity: 0;
+  transform: translateX(-0.6rem);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.tg-cat-card__arrow svg {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.tg-cat-card:hover .tg-cat-card__arrow,
+.tg-cat-card:focus-visible .tg-cat-card__arrow {
+  opacity: 1;
+  transform: none;
+}
+
+.tg-cat-card:focus-visible {
+  outline: 3px solid var(--tg-green);
+  outline-offset: 3px;
+}
+
+.tg-catcar__dots {
+  margin-top: 1.6rem;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-catcar__header {
+    margin-bottom: 3.2rem;
+  }
+
+  .tg-catcar__arrow {
+    display: inline-flex;
+  }
+
+  .tg-catcar__track {
+    --tg-c: 3;
+    grid-auto-columns: calc((100% - (var(--tg-c) - 1) * 2.4rem) / var(--tg-c));
+    gap: 2.4rem;
+  }
+
+  .tg-catcar__dots {
+    display: none;
+  }
+
+  .tg-cat-card__label {
+    left: 2.4rem;
+    bottom: 2.2rem;
+    font-size: 2rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .tg-catcar__track {
+    --tg-c: var(--tg-cols, 4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tg-cat-card__media img,
+  .tg-cat-card__arrow {
+    transition: none;
+  }
+}
