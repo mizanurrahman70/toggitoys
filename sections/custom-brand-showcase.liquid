@@ -1,0 +1,257 @@
+{%- comment -%}
+  Toggi Toys — Our brands (image tiles)
+  Each "Brand" block = one banner image linking to a brand collection.
+  Until an image is uploaded, a built-in colourful banner (assets/tg-brand-1..6.svg) is shown.
+{%- endcomment -%}
+{%- style -%}
+  #shopify-section-{{ section.id }} .tg-section {
+    --tg-bg: {{ section.settings.bg_color }};
+    --tg-heading: {{ section.settings.heading_color }};
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  case section.settings.image_ratio
+    when 'portrait'
+      assign ratio = '4 / 5'
+    when 'landscape'
+      assign ratio = '4 / 3'
+    else
+      assign ratio = '1 / 1'
+  endcase
+-%}
+
+<div class="tg-section tg-brands-section section-{{ section.id }}-padding">
+  <div class="{% if section.settings.full_width %}tg-brands--full{% else %}page-width{% endif %}">
+    {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+      <div class="tg-section__header tg-section__header--center{% if section.settings.full_width %} page-width{% endif %}">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="tg-heading tg-brands__heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="tg-subheading">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <ul
+      class="tg-brands{% if section.settings.mobile_layout == 'swipe' %} tg-brands--swipe{% endif %}"
+      style="--tg-cols: {{ section.settings.columns_desktop }}; --tg-cols-mobile: {{ section.settings.columns_mobile }}; --tg-ratio: {{ ratio }};"
+      role="list"
+    >
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign url = block.settings.link | default: block.settings.collection.url
+          assign name = block.settings.brand_name | default: block.settings.collection.title
+        -%}
+        <li {{ block.shopify_attributes }}>
+          <a
+            class="tg-brand"
+            {% if url != blank %}href="{{ url }}"{% else %}role="link" aria-disabled="true"{% endif %}
+          >
+            {%- if block.settings.image != blank -%}
+              {%- assign alt = block.settings.image.alt | default: name -%}
+              {{
+                block.settings.image
+                | image_url: width: 1200
+                | image_tag:
+                  widths: '360, 550, 720, 900, 1200',
+                  sizes: '(min-width: 990px) calc(100vw / 3), (min-width: 750px) 50vw, 100vw',
+                  loading: 'lazy',
+                  class: 'tg-brand__img',
+                  alt: alt
+              }}
+            {%- else -%}
+              {%- assign default_art = forloop.index0 | modulo: 6 | plus: 1 -%}
+              <img
+                class="tg-brand__img"
+                src="{{ 'tg-brand-' | append: default_art | append: '.svg' | asset_url }}"
+                alt="{{ name | escape }}"
+                width="600"
+                height="600"
+                loading="lazy"
+              >
+            {%- endif -%}
+            {%- if block.settings.image != blank and section.settings.show_names and name != blank -%}
+              <span class="tg-brand__label">{{ name | escape }}</span>
+            {%- endif -%}
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Toggi brand showcase",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our brands"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Shop toys from the brands kids love — 100% genuine, quality-checked products."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "swipe", "label": "Swipe row" }
+      ],
+      "default": "swipe"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile (grid layout)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image shape",
+      "options": [
+        { "value": "square", "label": "Square" },
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "landscape", "label": "Landscape" }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_names",
+      "label": "Show brand name on image",
+      "info": "Leave off if your banners already include the brand logo.",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background",
+      "default": "#F7F8FA"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#1F2A24"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Brand banner",
+          "info": "Square 1200 x 1200 px works best. Include the brand logo in the artwork. A colourful default banner shows until you upload one."
+        },
+        {
+          "type": "text",
+          "id": "brand_name",
+          "label": "Brand name",
+          "info": "Used for image alt text and the placeholder. Uses the collection title if empty."
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Brand collection"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Custom link",
+          "info": "Optional. Uses the collection link if empty."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Toggi brand showcase",
+      "blocks": [
+        { "type": "brand" },
+        { "type": "brand" },
+        { "type": "brand" },
+        { "type": "brand" },
+        { "type": "brand" },
+        { "type": "brand" }
+      ]
+    }
+  ]
+}
+{% endschema %}

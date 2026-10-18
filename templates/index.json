@@ -459,6 +459,57 @@
         "padding_top": 56,
         "padding_bottom": 56
       }
+    },
+    "brands": {
+      "type": "custom-brand-showcase",
+      "blocks": {
+        "brand_1": {
+          "type": "brand",
+          "settings": {}
+        },
+        "brand_2": {
+          "type": "brand",
+          "settings": {}
+        },
+        "brand_3": {
+          "type": "brand",
+          "settings": {}
+        },
+        "brand_4": {
+          "type": "brand",
+          "settings": {}
+        },
+        "brand_5": {
+          "type": "brand",
+          "settings": {}
+        },
+        "brand_6": {
+          "type": "brand",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "brand_1",
+        "brand_2",
+        "brand_3",
+        "brand_4",
+        "brand_5",
+        "brand_6"
+      ],
+      "settings": {
+        "heading": "Our brands",
+        "subheading": "Shop toys from the brands kids love — 100% genuine, quality-checked products.",
+        "columns_desktop": 3,
+        "mobile_layout": "swipe",
+        "columns_mobile": "2",
+        "image_ratio": "square",
+        "full_width": true,
+        "show_names": false,
+        "bg_color": "#F7F8FA",
+        "heading_color": "#1F2A24",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
     }
   },
   "order": [
@@ -466,6 +517,7 @@
     "categories",
     "trending",
     "promos",
+    "brands",
     "big_deals",
     "shop_by_age",
     "best_sellers",

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <!-- Toggi Toys default brand-tile art #4 (original artwork; replace with your brand banner) -->
+  <rect width="600" height="600" fill="#2FAE66"/><circle cx="600" cy="600" r="300" fill="#62C85A"/><circle cx="40" cy="80" r="140" fill="#239A57"/>
+  <g transform="translate(70 60) scale(1.2)" opacity="0.9"><path d="M0 -14 L4 -4 L14 0 L4 4 L0 14 L-4 4 L-14 0 L-4 -4 Z" fill="#FFFFFF"/></g><g transform="translate(540 250) scale(0.8)" opacity="0.8"><path d="M0 -14 L4 -4 L14 0 L4 4 L0 14 L-4 4 L-14 0 L-4 -4 Z" fill="#FFFFFF"/></g><g transform="translate(40 300) scale(0.7)" opacity="0.7"><path d="M0 -14 L4 -4 L14 0 L4 4 L0 14 L-4 4 L-14 0 L-4 -4 Z" fill="#FFFFFF"/></g><g transform="translate(560 40) scale(1)" opacity="0.9"><path d="M0 -14 L4 -4 L14 0 L4 4 L0 14 L-4 4 L-14 0 L-4 -4 Z" fill="#FFFFFF"/></g>
+  <text x="300" y="100" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="58" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="10" stroke-linejoin="round" paint-order="stroke">Learn</text>
+  <text x="300" y="168" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="58" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="10" stroke-linejoin="round" paint-order="stroke">Through Play</text>
+  <g transform="translate(60 225) scale(0.8)">
+  <circle cx="470" cy="120" r="46" fill="#FFFFFF" opacity="0.7"/>
+  <ellipse cx="320" cy="442" rx="250" ry="16" fill="#1F2A24" opacity="0.08"/>
+
+  
+  <polygon points="130,300 160,270 290,270 260,300" fill="#3FA463"/>
+  <polygon points="260,300 290,270 290,400 260,430" fill="#135B33"/>
+  <rect x="130" y="300" width="130" height="130" rx="10" fill="#1A7F41"/>
+  <rect x="146" y="316" width="98" height="98" rx="8" fill="none" stroke="#FFFFFF" stroke-width="4" opacity="0.5"/>
+  <text x="195" y="395" text-anchor="middle" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-weight="900" font-size="78" fill="#FFFFFF">A</text>
+
+  
+  <polygon points="300,300 330,270 460,270 430,300" fill="#F58A52"/>
+  <polygon points="430,300 460,270 460,400 430,430" fill="#C94F12"/>
+  <rect x="300" y="300" width="130" height="130" rx="10" fill="#F26B2A"/>
+  <rect x="316" y="316" width="98" height="98" rx="8" fill="none" stroke="#FFFFFF" stroke-width="4" opacity="0.5"/>
+  <text x="365" y="395" text-anchor="middle" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-weight="900" font-size="78" fill="#FFFFFF">B</text>
+
+  
+  <g transform="rotate(-6 280 205)">
+    <polygon points="215,140 245,110 375,110 345,140" fill="#FBC273"/>
+    <polygon points="345,140 375,110 375,240 345,270" fill="#D98A1F"/>
+    <rect x="215" y="140" width="130" height="130" rx="10" fill="#F7A23B"/>
+    <rect x="231" y="156" width="98" height="98" rx="8" fill="none" stroke="#FFFFFF" stroke-width="4" opacity="0.55"/>
+    <text x="280" y="235" text-anchor="middle" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-weight="900" font-size="78" fill="#FFFFFF">C</text>
+  </g>
+
+  
+  <circle cx="525" cy="392" r="50" fill="#8DC63F"/>
+  <path d="M478 375 Q525 350 572 375 L574 395 Q525 370 476 395 Z" fill="#FFFFFF" opacity="0.9"/>
+  <path d="M500 345 Q515 392 500 438" fill="none" stroke="#1A7F41" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="507" cy="365" r="9" fill="#FFFFFF" opacity="0.6"/>
+
+  
+  <path d="M90 150 l10 22 24 3 -18 16 5 24 -21 -12 -21 12 5 -24 -18 -16 24 -3z" fill="#F5E625"/>
+  <path d="M470 205 l6 13 14 2 -10 9 3 14 -13 -7 -13 7 3 -14 -10 -9 14 -2z" fill="#F7A23B"/>
+  <circle cx="80" cy="300" r="9" fill="#F26B2A"/>
+  <circle cx="150" cy="90" r="7" fill="#1A7F41"/>
+  <circle cx="420" cy="70" r="8" fill="#8DC63F"/>
+  <rect x="60" y="380" width="16" height="16" rx="3" fill="#8DC63F" transform="rotate(20 68 388)"/>
+</g>
+</svg>

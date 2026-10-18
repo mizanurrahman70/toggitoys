@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <!-- Toggi Toys default brand-tile art #5 (original artwork; replace with your brand banner) -->
+  <defs><radialGradient id="g" cx="0.5" cy="0.3" r="0.8"><stop offset="0" stop-color="#B49CFF"/><stop offset="1" stop-color="#7A55E8"/></radialGradient></defs><rect width="600" height="600" fill="url(#g)"/>
+  <g transform="translate(70 60) scale(1.2)" opacity="0.9"><path d="M0 -14 L4 -4 L14 0 L4 4 L0 14 L-4 4 L-14 0 L-4 -4 Z" fill="#FFFFFF"/></g><g transform="translate(540 250) scale(0.8)" opacity="0.8"><path d="M0 -14 L4 -4 L14 0 L4 4 L0 14 L-4 4 L-14 0 L-4 -4 Z" fill="#FFFFFF"/></g><g transform="translate(40 300) scale(0.7)" opacity="0.7"><path d="M0 -14 L4 -4 L14 0 L4 4 L0 14 L-4 4 L-14 0 L-4 -4 Z" fill="#FFFFFF"/></g><g transform="translate(560 40) scale(1)" opacity="0.9"><path d="M0 -14 L4 -4 L14 0 L4 4 L0 14 L-4 4 L-14 0 L-4 -4 Z" fill="#FFFFFF"/></g>
+  <text x="300" y="100" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="58" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="10" stroke-linejoin="round" paint-order="stroke">Ride-Ons</text>
+  <text x="300" y="168" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="58" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="10" stroke-linejoin="round" paint-order="stroke">&amp; More</text>
+  <g transform="translate(60 225) scale(0.8)">
+
+  
+  <g fill="#FFFFFF">
+    <ellipse cx="150" cy="120" rx="52" ry="24"/>
+    <circle cx="130" cy="108" r="24"/>
+    <circle cx="165" cy="100" r="30"/>
+    <ellipse cx="455" cy="90" rx="40" ry="18"/>
+    <circle cx="470" cy="78" r="22"/>
+  </g>
+
+  
+  <rect x="40" y="432" width="540" height="14" rx="7" fill="#1F2A24" opacity="0.1"/>
+  <g stroke="#1F2A24" stroke-width="5" stroke-linecap="round" opacity="0.18">
+    <line x1="90" y1="439" x2="130" y2="439"/>
+    <line x1="270" y1="439" x2="310" y2="439"/>
+    <line x1="450" y1="439" x2="490" y2="439"/>
+  </g>
+
+  
+  <g stroke="#1A7F41" stroke-width="8" stroke-linecap="round">
+    <line x1="40" y1="300" x2="95" y2="300"/>
+    <line x1="25" y1="332" x2="95" y2="332"/>
+    <line x1="50" y1="364" x2="95" y2="364"/>
+  </g>
+
+  
+  <path d="M200 285 Q215 200 285 195 L365 195 Q420 200 445 285 Z" fill="#E85F22"/>
+  <path d="M228 280 Q238 224 282 219 L305 219 L305 280 Z" fill="#CFE8F7"/>
+  <path d="M325 280 L325 219 L362 219 Q402 224 418 280 Z" fill="#CFE8F7"/>
+  <path d="M240 250 L262 228" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity="0.8"/>
+  <rect x="115" y="275" width="370" height="110" rx="42" fill="#F26B2A"/>
+  <rect x="140" y="318" width="320" height="14" rx="7" fill="#FFFFFF" opacity="0.65"/>
+  <circle cx="470" cy="305" r="11" fill="#F5E625"/>
+  <rect x="112" y="300" width="18" height="20" rx="6" fill="#C94F12"/>
+  <rect x="290" y="295" width="22" height="7" rx="3.5" fill="#C94F12"/>
+
+  
+  <g>
+    <circle cx="210" cy="388" r="48" fill="#1F2A24"/>
+    <circle cx="210" cy="388" r="23" fill="#FFFFFF"/>
+    <circle cx="210" cy="388" r="9" fill="#1A7F41"/>
+    <circle cx="395" cy="388" r="48" fill="#1F2A24"/>
+    <circle cx="395" cy="388" r="23" fill="#FFFFFF"/>
+    <circle cx="395" cy="388" r="9" fill="#1A7F41"/>
+  </g>
+
+  
+  <path d="M520 432 L548 300 L576 432 Z" fill="#F7A23B"/>
+  <path d="M530 386 L566 386 L570 405 L526 405 Z" fill="#FFFFFF"/>
+  <path d="M538 340 L558 340 L561 356 L535 356 Z" fill="#FFFFFF"/>
+  <rect x="505" y="428" width="86" height="12" rx="4" fill="#C94F12"/>
+
+  
+  <line x1="470" y1="160" x2="470" y2="250" stroke="#1F2A24" stroke-width="5" stroke-linecap="round"/>
+  <path d="M472 162 L522 175 L472 192 Z" fill="#1A7F41"/>
+  <path d="M90 200 l7 15 16 2 -12 11 3 16 -14 -8 -14 8 3 -16 -12 -11 16 -2z" fill="#F5E625"/>
+</g>
+</svg>

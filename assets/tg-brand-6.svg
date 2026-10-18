@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <!-- Toggi Toys default brand-tile art #6 (original artwork; replace with your brand banner) -->
+  <rect width="600" height="600" fill="#22B8C9"/><g fill="#4FD0DD" opacity="0.8"><circle cx="500" cy="90" r="22"/><circle cx="545" cy="140" r="12"/><circle cx="470" cy="150" r="9"/><circle cx="80" cy="470" r="30"/><circle cx="130" cy="520" r="14"/></g>
+  <g transform="translate(70 60) scale(1.2)" opacity="0.9"><path d="M0 -14 L4 -4 L14 0 L4 4 L0 14 L-4 4 L-14 0 L-4 -4 Z" fill="#FFFFFF"/></g><g transform="translate(540 250) scale(0.8)" opacity="0.8"><path d="M0 -14 L4 -4 L14 0 L4 4 L0 14 L-4 4 L-14 0 L-4 -4 Z" fill="#FFFFFF"/></g><g transform="translate(40 300) scale(0.7)" opacity="0.7"><path d="M0 -14 L4 -4 L14 0 L4 4 L0 14 L-4 4 L-14 0 L-4 -4 Z" fill="#FFFFFF"/></g><g transform="translate(560 40) scale(1)" opacity="0.9"><path d="M0 -14 L4 -4 L14 0 L4 4 L0 14 L-4 4 L-14 0 L-4 -4 Z" fill="#FFFFFF"/></g>
+  <text x="300" y="100" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="58" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="10" stroke-linejoin="round" paint-order="stroke">Perfect</text>
+  <text x="300" y="168" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="58" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="10" stroke-linejoin="round" paint-order="stroke">Gifts</text>
+  <g transform="translate(60 225) scale(0.8)">
+  <ellipse cx="300" cy="455" rx="240" ry="15" fill="#1F2A24" opacity="0.08"/>
+
+  
+  <path d="M455 165 Q440 280 470 330 Q490 370 455 420" fill="none" stroke="#1F2A24" stroke-width="2.5" opacity="0.45"/>
+  <path d="M505 190 Q500 290 515 340" fill="none" stroke="#1F2A24" stroke-width="2.5" opacity="0.45"/>
+  <ellipse cx="455" cy="110" rx="44" ry="54" fill="#8DC63F"/>
+  <path d="M449 163 L461 163 L455 172 Z" fill="#8DC63F"/>
+  <ellipse cx="440" cy="90" rx="10" ry="16" fill="#FFFFFF" opacity="0.5"/>
+  <ellipse cx="510" cy="135" rx="46" ry="56" fill="#F26B2A"/>
+  <path d="M504 190 L516 190 L510 199 Z" fill="#F26B2A"/>
+  <ellipse cx="494" cy="114" rx="10" ry="16" fill="#FFFFFF" opacity="0.5"/>
+
+  
+  <rect x="55" y="350" width="115" height="95" rx="8" fill="#1A7F41"/>
+  <rect x="47" y="328" width="131" height="30" rx="6" fill="#3FA463"/>
+  <rect x="102" y="328" width="22" height="117" fill="#F5E625"/>
+  <path d="M113 328 Q85 290 75 315 Q72 332 113 328 Z" fill="#F7A23B"/>
+  <path d="M113 328 Q141 290 151 315 Q154 332 113 328 Z" fill="#F7A23B"/>
+
+  
+  <g>
+    
+    <ellipse cx="240" cy="428" rx="46" ry="30" fill="#D98A3A"/>
+    <ellipse cx="360" cy="428" rx="46" ry="30" fill="#D98A3A"/>
+    <ellipse cx="228" cy="430" rx="22" ry="17" fill="#FFE3BF"/>
+    <ellipse cx="372" cy="430" rx="22" ry="17" fill="#FFE3BF"/>
+    
+    <ellipse cx="300" cy="360" rx="95" ry="88" fill="#E8973F"/>
+    <ellipse cx="300" cy="378" rx="55" ry="52" fill="#FFE3BF"/>
+    
+    <ellipse cx="210" cy="345" rx="30" ry="52" fill="#D98A3A" transform="rotate(28 210 345)"/>
+    <ellipse cx="390" cy="345" rx="30" ry="52" fill="#D98A3A" transform="rotate(-28 390 345)"/>
+    
+    <path d="M300 288 L262 270 L262 306 Z" fill="#1A7F41"/>
+    <path d="M300 288 L338 270 L338 306 Z" fill="#1A7F41"/>
+    <circle cx="300" cy="288" r="10" fill="#135B33"/>
+    
+    <circle cx="232" cy="150" r="33" fill="#E8973F"/>
+    <circle cx="368" cy="150" r="33" fill="#E8973F"/>
+    <circle cx="232" cy="150" r="17" fill="#FFE3BF"/>
+    <circle cx="368" cy="150" r="17" fill="#FFE3BF"/>
+    
+    <circle cx="300" cy="212" r="86" fill="#E8973F"/>
+    <ellipse cx="300" cy="245" rx="40" ry="31" fill="#FFE3BF"/>
+    <ellipse cx="300" cy="231" rx="13" ry="9.5" fill="#1F2A24"/>
+    <path d="M300 240 L300 252 M284 254 Q300 266 316 254" fill="none" stroke="#1F2A24" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="266" cy="200" r="9" fill="#1F2A24"/>
+    <circle cx="334" cy="200" r="9" fill="#1F2A24"/>
+    <circle cx="269" cy="197" r="3" fill="#FFFFFF"/>
+    <circle cx="337" cy="197" r="3" fill="#FFFFFF"/>
+    <circle cx="248" cy="232" r="11" fill="#F26B2A" opacity="0.3"/>
+    <circle cx="352" cy="232" r="11" fill="#F26B2A" opacity="0.3"/>
+  </g>
+
+  
+  <path d="M110 170 c-10 -18 -36 -8 -26 12 l26 24 26 -24 c10 -20 -16 -30 -26 -12z" fill="#F26B2A" opacity="0.85"/>
+  <path d="M175 75 l7 15 16 2 -12 11 3 16 -14 -8 -14 8 3 -16 -12 -11 16 -2z" fill="#F5E625"/>
+  <circle cx="560" cy="300" r="8" fill="#1A7F41"/>
+  <circle cx="70" cy="260" r="7" fill="#F7A23B"/>
+</g>
+</svg>
