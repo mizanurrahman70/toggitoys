@@ -1,0 +1,282 @@
+{%- comment -%}
+  Toggi Toys — Featured products grid
+  Reuses Dawn's `card-product` snippet so sale badges, prices and quick add keep working.
+  Use multiple instances for New Arrivals, Big Deals, Best Sellers, etc.
+{%- endcomment -%}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+
+{%- if section.settings.quick_add == 'standard' -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .tg-section {
+    --tg-bg: {{ section.settings.bg_color }};
+    --tg-heading: {{ section.settings.heading_color }};
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign collection_obj = section.settings.collection
+  assign view_all_url = section.settings.view_all_link | default: collection_obj.url
+  assign swipe = false
+  assign skip_card_product_styles = false
+  if section.settings.mobile_layout == 'swipe'
+    assign swipe = true
+  endif
+-%}
+
+<div class="tg-section tg-featured section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="tg-section__header{% if section.settings.heading_align == 'center' %} tg-section__header--center{% endif %}">
+      <div>
+        {%- if section.settings.heading != blank -%}
+          <h2 class="tg-heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="tg-subheading">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.view_all_label != blank and section.settings.heading_align != 'center' -%}
+        <a class="tg-link" {% if view_all_url != blank %}href="{{ view_all_url }}"{% else %}href="{{ routes.all_products_collection_url }}"{% endif %}>
+          {{- section.settings.view_all_label | escape }} →
+        </a>
+      {%- endif -%}
+    </div>
+
+    <ul
+      class="tg-products{% if swipe %} tg-scroller{% endif %}"
+      style="--tg-cols: {{ section.settings.columns_desktop }}; --tg-cols-mobile: {{ section.settings.columns_mobile }};"
+      role="list"
+    >
+      {%- if collection_obj != blank and collection_obj.products_count > 0 -%}
+        {%- for product in collection_obj.products limit: section.settings.products_to_show -%}
+          <li>
+            {% render 'card-product',
+              card_product: product,
+              media_aspect_ratio: section.settings.image_ratio,
+              show_secondary_image: section.settings.show_secondary_image,
+              show_vendor: false,
+              show_rating: section.settings.show_rating,
+              lazy_load: true,
+              skip_styles: skip_card_product_styles,
+              section_id: section.id,
+              quick_add: section.settings.quick_add,
+              product_view_context: 'collection'
+            %}
+          </li>
+          {%- assign skip_card_product_styles = true -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} Placeholder cards until a collection is chosen {%- endcomment -%}
+        {%- for i in (1..section.settings.products_to_show) -%}
+          {%- liquid
+            assign ridx = forloop.index | modulo: 4 | plus: 1
+            assign placeholder_image = 'product-apparel-' | append: ridx
+          -%}
+          <li>
+            {% render 'card-product',
+              media_aspect_ratio: section.settings.image_ratio,
+              lazy_load: true,
+              placeholder_image: placeholder_image
+            %}
+          </li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+
+    {%- if section.settings.view_all_label != blank and section.settings.heading_align == 'center' -%}
+      <div class="tg-featured__footer">
+        <a class="tg-btn" {% if view_all_url != blank %}href="{{ view_all_url }}"{% else %}href="{{ routes.all_products_collection_url }}"{% endif %}>
+          {{- section.settings.view_all_label | escape -}}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Toggi product grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "New arrivals"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Fresh picks the kids will love"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "left", "label": "Left (link beside heading)" },
+        { "value": "center", "label": "Center (button below grid)" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View all label",
+      "default": "View all"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View all link",
+      "info": "Optional. Uses the collection link if empty."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "swipe", "label": "Swipe row" }
+      ],
+      "default": "swipe"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile (grid layout)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Product card"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "square", "label": "Square" }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "label": "Show second image on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show product rating",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "quick_add",
+      "label": "Quick add",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "standard", "label": "Standard" }
+      ],
+      "default": "standard"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#135B33"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Toggi product grid"
+    }
+  ]
+}
+{% endschema %}

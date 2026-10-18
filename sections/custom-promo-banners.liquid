@@ -1,0 +1,217 @@
+{%- comment -%}
+  Toggi Toys — Promo banners (1–3 rounded tiles)
+  Each tile can be an image or a solid brand color with text + button.
+{%- endcomment -%}
+{%- style -%}
+  #shopify-section-{{ section.id }} .tg-section {
+    --tg-bg: {{ section.settings.bg_color }};
+    --tg-heading: {{ section.settings.heading_color }};
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign cols = section.blocks.size
+  if cols < 1
+    assign cols = 1
+  endif
+-%}
+
+<div class="tg-section section-{{ section.id }}-padding">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="tg-section__header">
+        <h2 class="tg-heading">{{ section.settings.heading | escape }}</h2>
+      </div>
+    {%- endif -%}
+
+    <div class="tg-promos" style="--tg-cols: {{ cols }};">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign tag = 'div'
+          if block.settings.link != blank
+            assign tag = 'a'
+          endif
+        -%}
+        <{{ tag }}
+          class="tg-promo{% if block.settings.image == blank %} tg-promo--no-image{% endif %}"
+          {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %}
+          style="--tg-promo-bg: {{ block.settings.bg_color }}; --tg-promo-text: {{ block.settings.text_color }};"
+          {{ block.shopify_attributes }}
+        >
+          {%- if block.settings.image != blank -%}
+            <div class="tg-promo__media">
+              {{
+                block.settings.image
+                | image_url: width: 1200
+                | image_tag:
+                  widths: '400, 600, 800, 1000, 1200',
+                  sizes: '(min-width: 750px) 50vw, 100vw',
+                  loading: 'lazy',
+                  alt: block.settings.image.alt
+              }}
+            </div>
+          {%- endif -%}
+          <div class="tg-promo__content">
+            {%- if block.settings.eyebrow != blank -%}
+              <span class="tg-promo__eyebrow">{{ block.settings.eyebrow | escape }}</span>
+            {%- endif -%}
+            {%- if block.settings.heading != blank -%}
+              <h3 class="tg-promo__heading">{{ block.settings.heading | escape }}</h3>
+            {%- endif -%}
+            {%- if block.settings.button_label != blank -%}
+              {%- comment -%} Visual button only; the whole tile is the link {%- endcomment -%}
+              <span class="tg-btn tg-promo__cta tg-btn--{{ block.settings.button_style }}">
+                {{- block.settings.button_label | escape -}}
+              </span>
+            {%- endif -%}
+          </div>
+        </{{ tag }}>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Toggi promo banners",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Optional"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#135B33"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Optional. Recommended 1200 x 700 px. Keep the left side clear for text."
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Small label",
+          "default": "Special offer"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Building blocks for little builders"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button color",
+          "options": [
+            { "value": "green", "label": "Green" },
+            { "value": "orange", "label": "Orange" },
+            { "value": "white", "label": "White" }
+          ],
+          "default": "green"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background color",
+          "default": "#FFF3EA"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#1F2A24"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Toggi promo banners",
+      "blocks": [
+        { "type": "banner" },
+        {
+          "type": "banner",
+          "settings": {
+            "eyebrow": "Free shipping over ৳4999",
+            "heading": "Ride-ons & RC cars for speedy fun",
+            "bg_color": "#EFF7F1",
+            "text_color": "#135B33",
+            "button_style": "green"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

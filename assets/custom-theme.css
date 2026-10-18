@@ -1,0 +1,42 @@
+/* ==========================================================================
+   Toggi Toys — light header / footer polish (site-wide, CSS only)
+   Uses the brand palette; no Dawn markup is changed.
+   ========================================================================== */
+
+:root {
+  --tg-green: #1a7f41;
+  --tg-green-dark: #135b33;
+  --tg-orange: #c94f12;
+  --tg-white: #ffffff;
+}
+
+.header__icon .cart-count-bubble {
+  background-color: var(--tg-orange);
+  color: var(--tg-white);
+}
+
+.header__menu-item:hover span,
+.header__active-menu-item {
+  color: var(--tg-green);
+  text-decoration-color: var(--tg-orange);
+}
+
+.search-modal__form .field__input,
+.predictive-search .field__input {
+  border-radius: 999px;
+}
+
+.announcement-bar__message {
+  font-weight: var(--font-body-weight-bold);
+  letter-spacing: 0.04em;
+}
+
+.footer .footer-block__heading {
+  color: var(--tg-green-dark);
+  font-weight: var(--font-heading-weight);
+}
+
+.footer .list-menu__item--link:hover {
+  color: var(--tg-green);
+}
+

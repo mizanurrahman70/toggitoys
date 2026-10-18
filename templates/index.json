@@ -9,76 +9,437 @@
  */
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "hero": {
+      "type": "custom-hero-slider",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "slide_1": {
+          "type": "slide",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "eyebrow": "New arrivals",
+            "heading": "Toys that spark big smiles",
+            "text": "<p>Bangladesh's trusted kids' toy brand. Free shipping on orders over ৳4999.</p>",
+            "button_label": "Shop now",
+            "button_link": "shopify://collections/all",
+            "button_style": "green",
+            "text_position": "left",
+            "overlay": true,
+            "text_color": "#FFFFFF",
+            "bg_color": "#EFF7F1"
           }
         },
-        "button": {
-          "type": "buttons",
+        "slide_2": {
+          "type": "slide",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "eyebrow": "Weekend deals",
+            "heading": "Up to 20% off ride-ons & vehicles",
+            "text": "<p>Bikes, cars and scooters for little speedsters.</p>",
+            "button_label": "Grab the deal",
+            "button_link": "shopify://collections/all",
+            "button_style": "orange",
+            "text_position": "left",
+            "overlay": true,
+            "text_color": "#FFFFFF",
+            "bg_color": "#FFF3EA"
+          }
+        },
+        "slide_3": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "Build & learn",
+            "heading": "Building blocks for big imaginations",
+            "text": "<p>Creative sets that grow with your child.</p>",
+            "button_label": "Explore blocks",
+            "button_link": "shopify://collections/all",
+            "button_style": "green",
+            "text_position": "left",
+            "overlay": true,
+            "text_color": "#FFFFFF",
+            "bg_color": "#FFF8E8"
           }
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "slide_1",
+        "slide_2",
+        "slide_3"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "full_width": false,
+        "height": "medium",
+        "autoplay": true,
+        "speed": 5,
+        "accessibility_label": "Toggi Toys offers",
+        "padding_top": 16,
+        "padding_bottom": 8
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "categories": {
+      "type": "custom-category-grid",
+      "blocks": {
+        "cat_1": {
+          "type": "category",
+          "settings": {
+            "label": "Ride-ons & Vehicles",
+            "bg_color": "#EFF7F1"
+          }
+        },
+        "cat_2": {
+          "type": "category",
+          "settings": {
+            "label": "Building & Construction",
+            "bg_color": "#FFF3EA"
+          }
+        },
+        "cat_3": {
+          "type": "category",
+          "settings": {
+            "label": "Dolls & Accessories",
+            "bg_color": "#FFF8E8"
+          }
+        },
+        "cat_4": {
+          "type": "category",
+          "settings": {
+            "label": "Pretend & Role Play",
+            "bg_color": "#EFF7F1"
+          }
+        },
+        "cat_5": {
+          "type": "category",
+          "settings": {
+            "label": "Baby & Toddler",
+            "bg_color": "#FFF3EA"
+          }
+        },
+        "cat_6": {
+          "type": "category",
+          "settings": {
+            "label": "Remote Control Cars",
+            "bg_color": "#FFF8E8"
+          }
+        },
+        "cat_7": {
+          "type": "category",
+          "settings": {
+            "label": "Animals & Nature",
+            "bg_color": "#EFF7F1"
+          }
+        },
+        "cat_8": {
+          "type": "category",
+          "settings": {
+            "label": "Musical Toys",
+            "bg_color": "#FFF3EA"
+          }
+        },
+        "cat_9": {
+          "type": "category",
+          "settings": {
+            "label": "Sports & Outdoor",
+            "bg_color": "#FFF8E8"
+          }
+        },
+        "cat_10": {
+          "type": "category",
+          "settings": {
+            "label": "Action Figures",
+            "bg_color": "#EFF7F1"
+          }
+        },
+        "cat_11": {
+          "type": "category",
+          "settings": {
+            "label": "Art & DIY",
+            "bg_color": "#FFF3EA"
+          }
+        },
+        "cat_12": {
+          "type": "category",
+          "settings": {
+            "label": "Learning & Educational",
+            "bg_color": "#FFF8E8"
+          }
+        }
+      },
+      "block_order": [
+        "cat_1",
+        "cat_2",
+        "cat_3",
+        "cat_4",
+        "cat_5",
+        "cat_6",
+        "cat_7",
+        "cat_8",
+        "cat_9",
+        "cat_10",
+        "cat_11",
+        "cat_12"
+      ],
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
+        "heading": "Shop by category",
+        "subheading": "Find the perfect toy for every little explorer",
+        "link_label": "View all",
+        "link": "shopify://collections/all",
+        "style": "circle",
+        "columns_desktop": 6,
+        "bg_color": "#FFFFFF",
+        "heading_color": "#135B33",
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    },
+    "new_arrivals": {
+      "type": "custom-featured-products",
+      "settings": {
+        "heading": "New arrivals",
+        "subheading": "Fresh picks the kids will love",
+        "heading_align": "left",
         "collection": "all",
         "products_to_show": 8,
+        "view_all_label": "View all",
         "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
+        "mobile_layout": "swipe",
         "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "image_ratio": "square",
+        "show_secondary_image": true,
+        "show_rating": false,
+        "quick_add": "standard",
+        "bg_color": "#FFFFFF",
+        "heading_color": "#135B33",
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    },
+    "promos": {
+      "type": "custom-promo-banners",
+      "blocks": {
+        "promo_1": {
+          "type": "banner",
+          "settings": {
+            "eyebrow": "Special offer",
+            "heading": "Building blocks for little builders",
+            "button_label": "Shop now",
+            "link": "shopify://collections/all",
+            "button_style": "orange",
+            "bg_color": "#FFF3EA",
+            "text_color": "#1F2A24"
+          }
+        },
+        "promo_2": {
+          "type": "banner",
+          "settings": {
+            "eyebrow": "Free shipping over ৳4999",
+            "heading": "Ride-ons & RC cars for speedy fun",
+            "button_label": "Shop now",
+            "link": "shopify://collections/all",
+            "button_style": "green",
+            "bg_color": "#EFF7F1",
+            "text_color": "#135B33"
+          }
+        }
+      },
+      "block_order": [
+        "promo_1",
+        "promo_2"
+      ],
+      "settings": {
+        "heading": "",
+        "bg_color": "#FFFFFF",
+        "heading_color": "#135B33",
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    },
+    "big_deals": {
+      "type": "custom-featured-products",
+      "settings": {
+        "heading": "Big deals this week",
+        "subheading": "Items on sale this week — grab them before they're gone",
+        "heading_align": "left",
+        "products_to_show": 8,
+        "view_all_label": "See all deals",
+        "columns_desktop": 4,
+        "mobile_layout": "swipe",
+        "columns_mobile": "2",
+        "image_ratio": "square",
+        "show_secondary_image": true,
+        "show_rating": false,
+        "quick_add": "standard",
+        "bg_color": "#FFFFFF",
+        "heading_color": "#135B33",
+        "padding_top": 32,
+        "padding_bottom": 56
+      }
+    },
+    "shop_by_age": {
+      "type": "custom-shop-by-age",
+      "blocks": {
+        "age_1": {
+          "type": "age",
+          "settings": {
+            "label": "0–12 M",
+            "sublabel": "Baby",
+            "icon": "baby",
+            "bg_color": "#EFF7F1",
+            "text_color": "#1A7F41"
+          }
+        },
+        "age_2": {
+          "type": "age",
+          "settings": {
+            "label": "1–3 Y",
+            "sublabel": "Toddler",
+            "icon": "puzzle",
+            "bg_color": "#FFF3EA",
+            "text_color": "#C94F12"
+          }
+        },
+        "age_3": {
+          "type": "age",
+          "settings": {
+            "label": "3–5 Y",
+            "sublabel": "Preschool",
+            "icon": "star",
+            "bg_color": "#FFF8E8",
+            "text_color": "#8A5A00"
+          }
+        },
+        "age_4": {
+          "type": "age",
+          "settings": {
+            "label": "5–8 Y",
+            "sublabel": "Big kids",
+            "icon": "rocket",
+            "bg_color": "#F2F8E6",
+            "text_color": "#4E7A12"
+          }
+        },
+        "age_5": {
+          "type": "age",
+          "settings": {
+            "label": "8+ Y",
+            "sublabel": "Pre-teen",
+            "icon": "gift",
+            "bg_color": "#E6F0EA",
+            "text_color": "#135B33"
+          }
+        }
+      },
+      "block_order": [
+        "age_1",
+        "age_2",
+        "age_3",
+        "age_4",
+        "age_5"
+      ],
+      "settings": {
+        "heading": "Shop by age",
+        "subheading": "The right toy for every stage of growing up",
+        "bg_color": "#FFFAF3",
+        "heading_color": "#135B33",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "best_sellers": {
+      "type": "custom-featured-products",
+      "settings": {
+        "heading": "Best sellers",
+        "subheading": "Our most-loved toys, picked by Bangladeshi parents",
+        "heading_align": "center",
+        "products_to_show": 8,
+        "view_all_label": "Shop best sellers",
+        "columns_desktop": 4,
+        "mobile_layout": "grid",
+        "columns_mobile": "2",
+        "image_ratio": "square",
+        "show_secondary_image": true,
+        "show_rating": false,
+        "quick_add": "standard",
+        "bg_color": "#FFFFFF",
+        "heading_color": "#135B33",
+        "padding_top": 56,
+        "padding_bottom": 32
+      }
+    },
+    "trust": {
+      "type": "custom-trust-badges",
+      "blocks": {
+        "badge_1": {
+          "type": "badge",
+          "settings": {
+            "icon": "cod",
+            "title": "Cash on Delivery",
+            "text": "Pay when your order arrives"
+          }
+        },
+        "badge_2": {
+          "type": "badge",
+          "settings": {
+            "icon": "truck",
+            "title": "Fast Delivery",
+            "text": "Shipping all over Bangladesh"
+          }
+        },
+        "badge_3": {
+          "type": "badge",
+          "settings": {
+            "icon": "return",
+            "title": "Easy Return",
+            "text": "Hassle-free returns & exchange"
+          }
+        },
+        "badge_4": {
+          "type": "badge",
+          "settings": {
+            "icon": "shield",
+            "title": "Genuine Products",
+            "text": "100% authentic, quality-checked toys"
+          }
+        }
+      },
+      "block_order": [
+        "badge_1",
+        "badge_2",
+        "badge_3",
+        "badge_4"
+      ],
+      "settings": {
+        "heading": "Why parents love Toggi",
+        "bg_color": "#EFF7F1",
+        "card_color": "#FFFFFF",
+        "icon_color": "#1A7F41",
+        "icon_bg_color": "#EFF7F1",
+        "heading_color": "#135B33",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "newsletter": {
+      "type": "custom-newsletter",
+      "settings": {
+        "heading": "Join the Toggi Club!",
+        "text": "<p>Be the first to hear about new toys, exclusive deals and special offers for members.</p>",
+        "placeholder": "Enter your email",
+        "button_label": "Subscribe",
+        "success_message": "Thanks for subscribing! Check your inbox for goodies.",
+        "bg_color": "#135B33",
+        "text_color": "#FFFFFF",
+        "section_bg": "#FFFFFF",
+        "padding_top": 56,
+        "padding_bottom": 64
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection"
+    "hero",
+    "categories",
+    "new_arrivals",
+    "promos",
+    "big_deals",
+    "shop_by_age",
+    "best_sellers",
+    "trust",
+    "newsletter"
   ]
 }

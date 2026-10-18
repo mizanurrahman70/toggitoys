@@ -1,0 +1,188 @@
+{%- comment -%}
+  Toggi Toys — Newsletter signup
+  Uses Shopify's native customer form (adds the email to Customers with the "newsletter" tag).
+{%- endcomment -%}
+{%- style -%}
+  #shopify-section-{{ section.id }} .tg-section {
+    --tg-bg: {{ section.settings.section_bg }};
+  }
+  #shopify-section-{{ section.id }} .tg-newsletter {
+    --tg-nl-bg: {{ section.settings.bg_color }};
+    --tg-nl-text: {{ section.settings.text_color }};
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="tg-section section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="tg-newsletter{% if section.settings.image != blank %} tg-newsletter--has-image{% endif %}">
+      <div>
+        {%- if section.settings.heading != blank -%}
+          <h2 class="tg-newsletter__heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="tg-newsletter__text">{{ section.settings.text }}</div>
+        {%- endif -%}
+      </div>
+
+      {%- assign form_id = 'TgNewsletter-' | append: section.id -%}
+      {% form 'customer', class: 'tg-newsletter__form', id: form_id %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="tg-newsletter__field">
+          <label class="visually-hidden" for="TgNewsletterEmail-{{ section.id }}">
+            {{- 'newsletter.label' | t -}}
+          </label>
+          <input
+            id="TgNewsletterEmail-{{ section.id }}"
+            class="tg-newsletter__input"
+            type="email"
+            name="contact[email]"
+            value="{{ form.email }}"
+            autocomplete="email"
+            autocapitalize="off"
+            autocorrect="off"
+            placeholder="{{ section.settings.placeholder | escape }}"
+            required
+            aria-required="true"
+            {% if form.errors %}
+              aria-invalid="true"
+              aria-describedby="TgNewsletterMsg-{{ section.id }}"
+            {% elsif form.posted_successfully? %}
+              aria-describedby="TgNewsletterMsg-{{ section.id }}"
+            {% endif %}
+          >
+          <button type="submit" class="tg-btn tg-btn--orange tg-newsletter__btn" name="commit">
+            {{- section.settings.button_label | escape -}}
+          </button>
+        </div>
+
+        {%- if form.errors -%}
+          <p class="tg-newsletter__msg" id="TgNewsletterMsg-{{ section.id }}" role="alert">
+            {{ form.errors.translated_fields.email | capitalize }}
+            {{ form.errors.messages.email }}
+          </p>
+        {%- elsif form.posted_successfully? -%}
+          <p class="tg-newsletter__msg" id="TgNewsletterMsg-{{ section.id }}" role="status" tabindex="-1" autofocus>
+            {{ section.settings.success_message | escape }}
+          </p>
+        {%- endif -%}
+      {% endform %}
+
+      {%- if section.settings.image != blank -%}
+        <div class="tg-newsletter__media">
+          {{
+            section.settings.image
+            | image_url: width: 360
+            | image_tag: widths: '180, 360', sizes: '180px', loading: 'lazy', alt: section.settings.image.alt
+          }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Toggi newsletter",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join the Toggi Club!"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Be the first to hear about new toys, exclusive deals and special offers for members.</p>"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Email placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thanks for subscribing! Check your inbox for goodies."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Decorative image",
+      "info": "Optional. A transparent PNG of a toy or mascot works best (desktop only)."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Box background",
+      "default": "#135B33"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Box text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Section background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 64
+    }
+  ],
+  "presets": [
+    {
+      "name": "Toggi newsletter"
+    }
+  ]
+}
+{% endschema %}

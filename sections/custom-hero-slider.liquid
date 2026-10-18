@@ -1,0 +1,346 @@
+{%- comment -%}
+  Toggi Toys — Hero slider
+  Separate desktop / mobile images per slide; CSS scroll-snap + tiny <tg-slider> JS.
+{%- endcomment -%}
+<script src="{{ 'custom-home.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  case section.settings.height
+    when 'small'
+      assign h_mobile = '32rem'
+      assign h_desktop = '38rem'
+    when 'large'
+      assign h_mobile = '48rem'
+      assign h_desktop = '58rem'
+    else
+      assign h_mobile = '40rem'
+      assign h_desktop = '48rem'
+  endcase
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .tg-hero {
+    --tg-hero-h-mobile: {{ h_mobile }};
+    --tg-hero-h-desktop: {{ h_desktop }};
+    --tg-hero-radius: {% if section.settings.full_width %}0{% else %}var(--tg-radius-lg){% endif %};
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="tg-section section-{{ section.id }}-padding">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <tg-slider
+      class="tg-hero"
+      data-autoplay="{{ section.settings.autoplay }}"
+      data-speed="{{ section.settings.speed }}"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="{{ section.settings.accessibility_label | escape }}"
+    >
+      <ul class="tg-hero__track" data-track>
+        {%- for block in section.blocks -%}
+          {%- liquid
+            if forloop.first
+              assign loading = 'eager'
+              assign priority = 'high'
+            else
+              assign loading = 'lazy'
+              assign priority = 'auto'
+            endif
+            assign has_desktop = false
+            if block.settings.image != blank
+              assign has_desktop = true
+            endif
+            assign mobile_image = block.settings.image_mobile | default: block.settings.image
+            assign has_image = false
+            if mobile_image != blank
+              assign has_image = true
+            endif
+          -%}
+          <li
+            class="tg-hero__slide{% if has_image %}{% if block.settings.overlay %} tg-hero__slide--overlay{% endif %}{% else %} tg-hero__slide--no-image{% endif %}"
+            id="Slide-{{ section.id }}-{{ forloop.index }}"
+            data-slide
+            data-block-id="{{ block.id }}"
+            role="group"
+            aria-roledescription="slide"
+            aria-label="{{ forloop.index }} / {{ forloop.length }}"
+            style="--tg-slide-bg: {{ block.settings.bg_color }};{% if has_image %} --tg-slide-text: {{ block.settings.text_color }};{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            {%- if has_desktop -%}
+              <div class="tg-hero__media tg-hero__media--desktop">
+                {{
+                  block.settings.image
+                  | image_url: width: 2400
+                  | image_tag:
+                    widths: '750, 1100, 1500, 1800, 2400',
+                    sizes: '100vw',
+                    loading: loading,
+                    fetchpriority: priority,
+                    alt: block.settings.image.alt
+                }}
+              </div>
+            {%- endif -%}
+            <div class="tg-hero__media tg-hero__media--mobile{% if has_desktop %} tg-hero__media--has-desktop{% endif %}">
+              {%- if mobile_image != blank -%}
+                {{
+                  mobile_image
+                  | image_url: width: 1100
+                  | image_tag:
+                    widths: '375, 550, 750, 1100',
+                    sizes: '100vw',
+                    loading: loading,
+                    fetchpriority: priority,
+                    alt: mobile_image.alt
+                }}
+              {%- else -%}
+                {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+
+            <div class="tg-hero__content tg-hero__content--{{ block.settings.text_position }}">
+              {%- if block.settings.eyebrow != blank -%}
+                <span class="tg-hero__eyebrow">{{ block.settings.eyebrow | escape }}</span>
+              {%- endif -%}
+              {%- if block.settings.heading != blank -%}
+                <h2 class="tg-hero__heading">{{ block.settings.heading | escape }}</h2>
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <div class="tg-hero__text">{{ block.settings.text }}</div>
+              {%- endif -%}
+              {%- if block.settings.button_label != blank -%}
+                <a
+                  class="tg-btn tg-btn--{{ block.settings.button_style }}"
+                  {% if block.settings.button_link != blank %}
+                    href="{{ block.settings.button_link }}"
+                  {% else %}
+                    role="link" aria-disabled="true"
+                  {% endif %}
+                  {% unless forloop.first %}tabindex="-1"{% endunless %}
+                >
+                  {{- block.settings.button_label | escape -}}
+                  {% render 'tg-icon', icon: 'arrow' %}
+                </a>
+              {%- endif -%}
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {%- if section.blocks.size > 1 -%}
+        <div class="tg-hero__controls">
+          <button type="button" class="tg-hero__arrow tg-hero__arrow--prev" data-prev aria-label="{{ 'sections.slideshow.previous_slideshow' | t }}">
+            {% render 'tg-icon', icon: 'arrow' %}
+          </button>
+          <div class="tg-hero__dots">
+            {%- for block in section.blocks -%}
+              <button
+                type="button"
+                class="tg-hero__dot"
+                data-dot
+                aria-controls="Slide-{{ section.id }}-{{ forloop.index }}"
+                aria-label="{{ 'sections.slideshow.load_slide' | t }} {{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
+                aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+              ></button>
+            {%- endfor -%}
+          </div>
+          <button type="button" class="tg-hero__arrow tg-hero__arrow--next" data-next aria-label="{{ 'sections.slideshow.next_slideshow' | t }}">
+            {% render 'tg-icon', icon: 'arrow' %}
+          </button>
+        </div>
+      {%- endif -%}
+    </tg-slider>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Toggi hero slider",
+  "tag": "section",
+  "class": "section tg-hero-section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Slide height",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto-rotate slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Change slides every",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "accessibility_label",
+      "label": "Slider description (for screen readers)",
+      "default": "Toggi Toys offers"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Desktop image",
+          "info": "Recommended 2400 x 1000 px"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile image",
+          "info": "Recommended 1100 x 1300 px. Falls back to the desktop image."
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Small label",
+          "default": "New arrivals"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Toys that spark big smiles"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Bangladesh's trusted kids' toy brand. Free shipping on orders over ৳4999.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button color",
+          "options": [
+            { "value": "green", "label": "Green" },
+            { "value": "orange", "label": "Orange" },
+            { "value": "white", "label": "White" }
+          ],
+          "default": "green"
+        },
+        {
+          "type": "select",
+          "id": "text_position",
+          "label": "Text position (desktop)",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "checkbox",
+          "id": "overlay",
+          "label": "Darken image behind text",
+          "info": "Only applies when an image is set.",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color (on image)",
+          "info": "Slides without an image use dark green text.",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background color",
+          "info": "Shown when there is no image, or while it loads.",
+          "default": "#EFF7F1"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Toggi hero slider",
+      "blocks": [
+        { "type": "slide" },
+        {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "Weekend deals",
+            "heading": "Up to 20% off ride-ons",
+            "bg_color": "#FFF3EA"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,1136 @@
+/* ==========================================================================
+   Toggi Toys — custom homepage styles
+   Palette comes from the logo, used calmly: soft tints for large surfaces,
+   full brand colours only for buttons, badges and small accents.
+   Mobile-first; breakpoints match Dawn (750px / 990px).
+   ========================================================================== */
+
+:root {
+  /* Brand (logo) — deepened slightly so white text passes WCAG AA */
+  --tg-green: #1a7f41;
+  --tg-green-dark: #135b33;
+  --tg-lime: #8dc63f;
+  --tg-orange: #c94f12; /* accessible orange for buttons / badges */
+  --tg-orange-logo: #f26b2a; /* decorative only (underlines, dots) */
+  --tg-yellow: #f5e625; /* focus rings only */
+
+  /* Soft tints for surfaces */
+  --tg-green-50: #eff7f1;
+  --tg-orange-50: #fff3ea;
+  --tg-amber-50: #fff8e8;
+  --tg-cream: #fffaf3;
+
+  /* Neutrals */
+  --tg-ink: #1f2a24;
+  --tg-muted: #5e6b63;
+  --tg-line: #e6ebe7;
+  --tg-white: #ffffff;
+
+  /* Shape */
+  --tg-radius: 1.6rem;
+  --tg-radius-lg: 2.4rem;
+  --tg-shadow: 0 4px 16px rgba(20, 40, 28, 0.08);
+  --tg-shadow-hover: 0 10px 28px rgba(20, 40, 28, 0.12);
+  --tg-gap: 1.2rem;
+}
+
+@media screen and (min-width: 750px) {
+  :root {
+    --tg-gap: 2rem;
+  }
+}
+
+/* ---------- Section shell ---------- */
+.tg-section {
+  background: var(--tg-bg, transparent);
+  color: var(--tg-ink);
+}
+
+.tg-section__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.tg-section__header--center {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.tg-heading {
+  margin: 0;
+  color: var(--tg-heading, var(--tg-green-dark));
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: calc(var(--font-heading-scale) * 2.2rem);
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+/* Small playful wave under section headings */
+.tg-heading::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 6px;
+  margin-top: 0.8rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='6' viewBox='0 0 48 6'%3E%3Cpath d='M1 3 Q7 0 13 3 T25 3 T37 3 T47 3' fill='none' stroke='%23F26B2A' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E")
+    no-repeat left center / contain;
+}
+
+.tg-section__header--center .tg-heading::after {
+  margin-inline: auto;
+}
+
+.tg-subheading {
+  margin: 0.8rem 0 0;
+  color: var(--tg-muted);
+  font-size: 1.4rem;
+  line-height: 1.5;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-section__header {
+    margin-bottom: 2.8rem;
+  }
+
+  .tg-heading {
+    font-size: calc(var(--font-heading-scale) * 3rem);
+  }
+
+  .tg-subheading {
+    font-size: 1.6rem;
+  }
+}
+
+/* ---------- Buttons ---------- */
+.tg-btn {
+  --tg-btn-bg: var(--tg-green);
+  --tg-btn-text: var(--tg-white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  min-height: 4.4rem;
+  padding: 0 2.4rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--tg-btn-bg);
+  color: var(--tg-btn-text);
+  font-family: var(--font-body-family);
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.5rem;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.tg-btn svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.tg-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(20, 40, 28, 0.18);
+}
+
+.tg-btn:focus-visible {
+  outline: 3px solid var(--tg-yellow);
+  outline-offset: 3px;
+}
+
+.tg-btn--green:hover {
+  --tg-btn-bg: var(--tg-green-dark);
+}
+
+.tg-btn--orange {
+  --tg-btn-bg: var(--tg-orange);
+}
+
+.tg-btn--white {
+  --tg-btn-bg: var(--tg-white);
+  --tg-btn-text: var(--tg-green-dark);
+}
+
+.tg-link {
+  flex: 0 0 auto;
+  color: var(--tg-green);
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.4rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.tg-link:hover {
+  color: var(--tg-green-dark);
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+/* ---------- Horizontal swipe rows (mobile only) ---------- */
+.tg-scroller {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: var(--tg-item-width, 42%);
+  gap: var(--tg-gap);
+  margin: 0 -1.5rem;
+  padding: 0.4rem 1.5rem 1.6rem;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.5rem;
+  scrollbar-width: none;
+}
+
+.tg-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.tg-scroller > * {
+  scroll-snap-align: start;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-scroller {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(var(--tg-cols, 4), minmax(0, 1fr));
+    margin: 0;
+    padding: 0.4rem 0 0;
+    overflow: visible;
+  }
+}
+
+/* ==========================================================================
+   1. Hero slider
+   ========================================================================== */
+.tg-hero {
+  position: relative;
+  display: block;
+}
+
+.tg-hero__track {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  border-radius: var(--tg-hero-radius, var(--tg-radius-lg));
+}
+
+.tg-hero__track::-webkit-scrollbar {
+  display: none;
+}
+
+.tg-hero__slide {
+  position: relative;
+  display: flex;
+  flex: 0 0 100%;
+  min-height: var(--tg-hero-h-mobile, 40rem);
+  overflow: hidden;
+  scroll-snap-align: start;
+  background: var(--tg-slide-bg, var(--tg-green-50));
+  color: var(--tg-slide-text, var(--tg-green-dark));
+}
+
+.tg-hero__media {
+  position: absolute;
+  inset: 0;
+}
+
+.tg-hero__media img,
+.tg-hero__media .placeholder-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tg-hero__media--desktop {
+  display: none;
+}
+
+/* Slides without an image: soft tint, faded placeholder, dark text */
+.tg-hero__slide--no-image .placeholder-svg {
+  opacity: 0.12;
+}
+
+.tg-hero__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 1.2rem;
+  width: 100%;
+  padding: 3.2rem 2.4rem;
+}
+
+.tg-hero__slide--overlay .tg-hero__content {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 70%);
+}
+
+.tg-hero__eyebrow {
+  display: inline-block;
+  padding: 0.5rem 1.2rem;
+  border-radius: 999px;
+  background: var(--tg-white);
+  color: var(--tg-orange);
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.2rem;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.tg-hero__slide--no-image .tg-hero__eyebrow {
+  box-shadow: var(--tg-shadow);
+}
+
+.tg-hero__heading {
+  max-width: 16ch;
+  margin: 0;
+  color: inherit;
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: calc(var(--font-heading-scale) * 2.8rem);
+  line-height: 1.15;
+}
+
+.tg-hero__text {
+  max-width: 38ch;
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  opacity: 0.92;
+}
+
+.tg-hero__text p {
+  margin: 0;
+}
+
+.tg-hero__content .tg-btn {
+  margin-top: 0.4rem;
+}
+
+/* Dots sit below the slider so they are visible on any image */
+.tg-hero__controls {
+  display: flex;
+  justify-content: center;
+  padding-top: 1.4rem;
+}
+
+.tg-hero__dots {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.tg-hero__dot {
+  width: 0.9rem;
+  height: 0.9rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #cfd8d2;
+  cursor: pointer;
+  transition: width 0.2s ease, background-color 0.2s ease;
+}
+
+.tg-hero__dot[aria-current='true'] {
+  width: 2.6rem;
+  background: var(--tg-green);
+}
+
+.tg-hero__arrow {
+  display: none;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-hero__slide {
+    min-height: var(--tg-hero-h-desktop, 48rem);
+  }
+
+  .tg-hero__media--desktop {
+    display: block;
+  }
+
+  .tg-hero__media--mobile.tg-hero__media--has-desktop {
+    display: none;
+  }
+
+  /* Placeholder art sits on the right so text stays clean */
+  .tg-hero__slide--no-image .tg-hero__media {
+    left: 45%;
+  }
+
+  .tg-hero__slide--no-image .placeholder-svg {
+    opacity: 0.2;
+  }
+
+  .tg-hero__content {
+    justify-content: center;
+    padding: 5rem 7rem;
+  }
+
+  .tg-hero__slide--overlay .tg-hero__content {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 65%);
+  }
+
+  .tg-hero__content--center {
+    align-items: center;
+    text-align: center;
+  }
+
+  .tg-hero__slide--overlay .tg-hero__content--center {
+    background: rgba(0, 0, 0, 0.35);
+  }
+
+  .tg-hero__content--right {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .tg-hero__slide--overlay .tg-hero__content--right {
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 65%);
+  }
+
+  .tg-hero__heading {
+    font-size: calc(var(--font-heading-scale) * 4.4rem);
+  }
+
+  .tg-hero__text {
+    font-size: 1.7rem;
+  }
+
+  .tg-hero__arrow {
+    position: absolute;
+    top: calc(var(--tg-hero-h-desktop, 48rem) / 2);
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.4rem;
+    height: 4.4rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--tg-white);
+    color: var(--tg-green-dark);
+    box-shadow: var(--tg-shadow);
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: box-shadow 0.15s ease;
+  }
+
+  .tg-hero__arrow:hover {
+    box-shadow: var(--tg-shadow-hover);
+  }
+
+  .tg-hero__arrow svg {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  .tg-hero__arrow--prev {
+    left: 1.6rem;
+  }
+
+  .tg-hero__arrow--prev svg {
+    transform: rotate(180deg);
+  }
+
+  .tg-hero__arrow--next {
+    right: 1.6rem;
+  }
+}
+
+/* ==========================================================================
+   2. Shop by category
+   ========================================================================== */
+.tg-categories {
+  --tg-item-width: 27%;
+  row-gap: 2rem;
+}
+
+.tg-category {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: var(--tg-ink);
+  text-align: center;
+  text-decoration: none;
+}
+
+.tg-category__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--tg-cat-bg, var(--tg-green-50));
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tg-categories--card .tg-category__media {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--tg-radius);
+}
+
+.tg-category__media img,
+.tg-category__media .placeholder-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tg-category__media .placeholder-svg {
+  opacity: 0.5;
+}
+
+.tg-category:hover .tg-category__media {
+  transform: translateY(-3px);
+  box-shadow: var(--tg-shadow-hover);
+}
+
+.tg-category__label {
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.3rem;
+  line-height: 1.3;
+}
+
+.tg-category:hover .tg-category__label {
+  color: var(--tg-green);
+}
+
+@media screen and (min-width: 750px) {
+  .tg-categories {
+    gap: 2.8rem 2.4rem;
+  }
+
+  .tg-category__label {
+    font-size: 1.5rem;
+  }
+}
+
+/* ==========================================================================
+   3. Product grid (wraps Dawn card-product)
+   ========================================================================== */
+.tg-products {
+  display: grid;
+  grid-template-columns: repeat(var(--tg-cols-mobile, 2), minmax(0, 1fr));
+  gap: var(--tg-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tg-products.tg-scroller {
+  --tg-item-width: 43%;
+  grid-template-columns: none;
+  padding-top: 0.4rem;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-products,
+  .tg-products.tg-scroller {
+    grid-template-columns: repeat(var(--tg-cols, 4), minmax(0, 1fr));
+  }
+}
+
+.tg-products > li {
+  min-width: 0;
+}
+
+/* Card shell: white, hairline border, rounded; shadow only on hover */
+.tg-featured .card-wrapper {
+  height: 100%;
+}
+
+.tg-featured .card {
+  --border-radius: 0;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--tg-line);
+  border-radius: var(--tg-radius);
+  background: var(--tg-white);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.tg-featured .card-wrapper:hover .card {
+  border-color: transparent;
+  box-shadow: var(--tg-shadow-hover);
+  transform: translateY(-2px);
+}
+
+.tg-featured .card__inner {
+  border: 0;
+  border-radius: 0;
+  background: #f6f7f5;
+}
+
+.tg-featured .card__inner::after {
+  display: none;
+}
+
+.tg-featured .card > .card__content {
+  padding: 1.2rem 1.2rem 1.4rem;
+}
+
+.tg-featured .card__information {
+  padding: 0;
+}
+
+/* Two-line titles keep every card the same height */
+.tg-featured .card__heading {
+  display: -webkit-box;
+  margin: 0 0 0.6rem;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  min-height: calc(1.35em * 2);
+  color: var(--tg-ink);
+  font-family: var(--font-body-family);
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.4rem;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+.tg-featured .card__heading a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.tg-featured .card-wrapper:hover .card__heading a {
+  color: var(--tg-green);
+  text-decoration: none;
+}
+
+.tg-featured .price {
+  color: var(--tg-ink);
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.5rem;
+  letter-spacing: 0;
+}
+
+.tg-featured .price--on-sale .price-item--sale {
+  color: var(--tg-orange);
+}
+
+.tg-featured .price--on-sale .price-item--regular {
+  color: var(--tg-muted);
+  font-weight: var(--font-body-weight);
+  font-size: 1.3rem;
+}
+
+.tg-featured .card__badge .badge {
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+}
+
+/* Quick add: outlined pill that fills on hover */
+.tg-featured .quick-add {
+  margin: 1.2rem 0 0;
+}
+
+.tg-featured .quick-add__submit {
+  min-height: 4rem;
+  padding: 0 1.2rem;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--tg-green);
+  box-shadow: inset 0 0 0 1.5px var(--tg-green);
+  font-family: var(--font-body-family);
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.3rem;
+  letter-spacing: 0;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.tg-featured .quick-add__submit::before,
+.tg-featured .quick-add__submit::after {
+  display: none;
+}
+
+.tg-featured .quick-add__submit:not([disabled]):hover {
+  background: var(--tg-green);
+  color: var(--tg-white);
+}
+
+.tg-featured .quick-add__submit[disabled] {
+  color: var(--tg-muted);
+  box-shadow: inset 0 0 0 1.5px var(--tg-line);
+}
+
+.tg-featured__footer {
+  margin-top: 2.8rem;
+  text-align: center;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-featured .card > .card__content {
+    padding: 1.4rem 1.6rem 1.8rem;
+  }
+
+  .tg-featured .card__heading {
+    font-size: 1.5rem;
+  }
+
+  .tg-featured .price {
+    font-size: 1.7rem;
+  }
+}
+
+/* ==========================================================================
+   4. Promo banners
+   ========================================================================== */
+.tg-promos {
+  display: grid;
+  gap: var(--tg-gap);
+}
+
+.tg-promo {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: 18rem;
+  overflow: hidden;
+  border-radius: var(--tg-radius-lg);
+  background: var(--tg-promo-bg, var(--tg-orange-50));
+  color: var(--tg-promo-text, var(--tg-ink));
+  text-decoration: none;
+}
+
+.tg-promo__media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.tg-promo__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+a.tg-promo:hover .tg-promo__media img {
+  transform: scale(1.03);
+}
+
+/* Soft decorative circles on tiles without an image */
+.tg-promo--no-image::before,
+.tg-promo--no-image::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.06;
+}
+
+.tg-promo--no-image::before {
+  right: -5rem;
+  bottom: -7rem;
+  width: 22rem;
+  height: 22rem;
+}
+
+.tg-promo--no-image::after {
+  right: 9rem;
+  top: -3rem;
+  width: 8rem;
+  height: 8rem;
+}
+
+.tg-promo__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
+  max-width: 34rem;
+  padding: 2.8rem 2.4rem;
+}
+
+.tg-promo__eyebrow {
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.tg-promo__heading {
+  margin: 0;
+  color: inherit;
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: calc(var(--font-heading-scale) * 2.2rem);
+  line-height: 1.2;
+}
+
+.tg-promo__cta {
+  margin-top: 0.8rem;
+  min-height: 4rem;
+  padding: 0 2rem;
+  font-size: 1.4rem;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-promos {
+    grid-template-columns: repeat(var(--tg-cols, 2), minmax(0, 1fr));
+  }
+
+  .tg-promo {
+    min-height: 24rem;
+  }
+
+  .tg-promo__content {
+    padding: 3.6rem 4rem;
+  }
+
+  .tg-promo__heading {
+    font-size: calc(var(--font-heading-scale) * 2.6rem);
+  }
+}
+
+/* ==========================================================================
+   5. Shop by age
+   ========================================================================== */
+.tg-ages {
+  --tg-item-width: 36%;
+}
+
+.tg-age {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  height: 100%;
+  padding: 2rem 1.2rem;
+  border: 1px solid var(--tg-line);
+  border-radius: var(--tg-radius);
+  background: var(--tg-white);
+  color: var(--tg-ink);
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.tg-age:hover {
+  border-color: transparent;
+  box-shadow: var(--tg-shadow-hover);
+  transform: translateY(-3px);
+}
+
+.tg-age__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.2rem;
+  height: 5.2rem;
+  margin-bottom: 0.4rem;
+  border-radius: 50%;
+  background: var(--tg-age-bg, var(--tg-green-50));
+  color: var(--tg-age-text, var(--tg-green));
+}
+
+.tg-age__icon svg {
+  width: 2.6rem;
+  height: 2.6rem;
+}
+
+.tg-age__label {
+  color: var(--tg-age-text, var(--tg-green));
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.tg-age__sub {
+  color: var(--tg-muted);
+  font-size: 1.3rem;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-age {
+    padding: 2.8rem 1.6rem;
+  }
+
+  .tg-age__label {
+    font-size: 2.4rem;
+  }
+}
+
+/* ==========================================================================
+   6. Trust badges
+   ========================================================================== */
+.tg-trust {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--tg-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tg-trust__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem 1.2rem;
+  border-radius: var(--tg-radius);
+  background: var(--tg-card-bg, var(--tg-white));
+  text-align: center;
+}
+
+.tg-trust__icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 5.2rem;
+  height: 5.2rem;
+  border-radius: 50%;
+  background: var(--tg-icon-bg, var(--tg-green-50));
+  color: var(--tg-icon, var(--tg-green));
+}
+
+.tg-trust__icon svg {
+  width: 2.6rem;
+  height: 2.6rem;
+}
+
+.tg-trust__icon img {
+  width: 3rem;
+  height: 3rem;
+  object-fit: contain;
+}
+
+.tg-trust__title {
+  margin: 0;
+  color: var(--tg-ink);
+  font-family: var(--font-body-family);
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.4rem;
+  line-height: 1.3;
+}
+
+.tg-trust__text {
+  margin: 0.3rem 0 0;
+  color: var(--tg-muted);
+  font-size: 1.25rem;
+  line-height: 1.45;
+}
+
+@media screen and (min-width: 990px) {
+  .tg-trust {
+    grid-template-columns: repeat(var(--tg-cols, 4), minmax(0, 1fr));
+  }
+
+  .tg-trust__item {
+    flex-direction: row;
+    gap: 1.4rem;
+    padding: 2.2rem 2rem;
+    text-align: left;
+  }
+
+  .tg-trust__title {
+    font-size: 1.6rem;
+  }
+
+  .tg-trust__text {
+    font-size: 1.4rem;
+  }
+}
+
+/* ==========================================================================
+   7. Newsletter
+   ========================================================================== */
+.tg-newsletter {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+  overflow: hidden;
+  padding: 3.2rem 2.4rem;
+  border-radius: var(--tg-radius-lg);
+  background: var(--tg-nl-bg, var(--tg-green-dark));
+  color: var(--tg-nl-text, var(--tg-white));
+}
+
+/* Subtle decorative circles */
+.tg-newsletter::before,
+.tg-newsletter::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+}
+
+.tg-newsletter::before {
+  top: -10rem;
+  right: -6rem;
+  width: 24rem;
+  height: 24rem;
+  background: rgba(141, 198, 63, 0.14);
+}
+
+.tg-newsletter::after {
+  bottom: -6rem;
+  left: -4rem;
+  width: 14rem;
+  height: 14rem;
+  background: rgba(242, 107, 42, 0.18);
+}
+
+.tg-newsletter__heading {
+  margin: 0;
+  color: inherit;
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: calc(var(--font-heading-scale) * 2.4rem);
+  line-height: 1.2;
+}
+
+.tg-newsletter__text {
+  margin: 0.8rem 0 0;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  opacity: 0.88;
+}
+
+.tg-newsletter__text p {
+  margin: 0;
+}
+
+.tg-newsletter__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tg-newsletter__field {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tg-newsletter__input {
+  width: 100%;
+  min-height: 4.8rem;
+  padding: 0 2rem;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: var(--tg-white);
+  color: var(--tg-ink);
+  font-family: var(--font-body-family);
+  font-size: 1.6rem;
+}
+
+.tg-newsletter__input::placeholder {
+  color: var(--tg-muted);
+}
+
+.tg-newsletter__input:focus-visible {
+  outline: none;
+  border-color: var(--tg-yellow);
+}
+
+.tg-newsletter__btn {
+  min-height: 4.8rem;
+}
+
+.tg-newsletter__msg {
+  margin: 0;
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.4rem;
+}
+
+.tg-newsletter__media {
+  display: none;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-newsletter {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    padding: 4.8rem 5.6rem;
+  }
+
+  .tg-newsletter--has-image {
+    grid-template-columns: 1fr 1.2fr auto;
+  }
+
+  .tg-newsletter__heading {
+    font-size: calc(var(--font-heading-scale) * 3rem);
+  }
+
+  .tg-newsletter__field {
+    flex-direction: row;
+    gap: 0;
+    padding: 0.5rem;
+    border-radius: 999px;
+    background: var(--tg-white);
+  }
+
+  .tg-newsletter__field:focus-within {
+    box-shadow: 0 0 0 3px var(--tg-yellow);
+  }
+
+  .tg-newsletter__input {
+    min-height: 4.4rem;
+    border: 0;
+  }
+
+  .tg-newsletter__input:focus-visible {
+    outline: none;
+  }
+
+  .tg-newsletter__btn {
+    flex: 0 0 auto;
+    min-height: 4.4rem;
+  }
+
+  .tg-newsletter__media {
+    display: block;
+    width: 18rem;
+  }
+
+  .tg-newsletter__media img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .tg-hero__track {
+    scroll-behavior: auto;
+  }
+
+  .tg-btn,
+  .tg-category__media,
+  .tg-age,
+  .tg-featured .card,
+  .tg-promo__media img {
+    transition: none;
+  }
+}
