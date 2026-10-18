@@ -45,10 +45,19 @@
             assign art = default_arts[art_index]
           endif
           assign aria = number | append: ' ' | append: block.settings.unit | append: ' ' | append: block.settings.sublabel | strip
+          # Built-in photo: "auto" (or no saved value) = photo matching the card's position (1–5)
+          assign photo_choice = block.settings.default_photo | default: 'auto'
+          if photo_choice == 'auto'
+            assign photo_choice = forloop.index0 | modulo: 5 | plus: 1 | append: ''
+          endif
+          assign use_photo = false
+          if block.settings.image == blank and photo_choice != 'none'
+            assign use_photo = true
+          endif
         -%}
         <li {{ block.shopify_attributes }}>
           <a
-            class="tg-age-card"
+            class="tg-age-card{% if use_photo %} tg-age-card--photo{% endif %}"
             {% if url != blank %}href="{{ url }}"{% else %}role="link" aria-disabled="true"{% endif %}
             aria-label="{{ aria | escape }}"
             style="--tg-age-bg: {{ block.settings.bg_color }}; --tg-age-text: {{ block.settings.text_color }};"
@@ -68,6 +77,24 @@
               {%- endif -%}
             </span>
 
+            {%- if use_photo -%}
+              {%- liquid
+                assign photo_base = 'tg-age-photo-' | append: photo_choice
+                assign photo_420 = photo_base | append: '-tall-420.webp' | asset_url
+                assign photo_720 = photo_base | append: '-tall-720.webp' | asset_url
+              -%}
+              <span class="tg-age-card__photo">
+                <img
+                  src="{{ photo_420 }}"
+                  srcset="{{ photo_420 }} 420w, {{ photo_720 }} 720w"
+                  sizes="(min-width: 990px) 20vw, (min-width: 750px) 30vw, 46vw"
+                  alt=""
+                  width="720"
+                  height="960"
+                  loading="lazy"
+                >
+              </span>
+            {%- else -%}
             <span class="tg-age-card__art">
               {%- if block.settings.image != blank -%}
                 {{
@@ -89,6 +116,7 @@
                 >
               {%- endif -%}
             </span>
+            {%- endif -%}
 
             <span class="tg-age-card__go" aria-hidden="true">{% render 'tg-icon', icon: 'arrow' %}</span>
           </a>
@@ -205,6 +233,22 @@
           "id": "image",
           "label": "Image",
           "info": "Optional. A transparent PNG of a toy or child works best (about 600 x 500 px)."
+        },
+        {
+          "type": "select",
+          "id": "default_photo",
+          "label": "Built-in photo",
+          "info": "Free Unsplash photos bundled with the theme. Uploading an image above replaces it.",
+          "options": [
+            { "value": "auto", "label": "Automatic (photo matching this position)" },
+            { "value": "none", "label": "None (use artwork below)" },
+            { "value": "1", "label": "Baby crib mobile" },
+            { "value": "2", "label": "Stacking animal blocks" },
+            { "value": "3", "label": "Alphabet puzzle" },
+            { "value": "4", "label": "Kid on a bike" },
+            { "value": "5", "label": "Board game" }
+          ],
+          "default": "auto"
         },
         {
           "type": "select",

@@ -16,57 +16,57 @@
           "type": "slide",
           "settings": {
             "default_art": "blocks",
-            "eyebrow": "New this season",
-            "heading": "Little hands, big adventures",
+            "eyebrow": "Big deals this week",
+            "heading": "Up to 30% off",
             "text": "<p>Fresh toys for every age, delivered all over Bangladesh. Free shipping on orders over ৳4999.</p>",
             "button_label": "Shop new arrivals",
-            "button_link": "shopify://collections/all",
+            "button_link": "shopify://collections/big-deals",
             "button_style": "orange",
             "text_position": "left",
             "overlay": true,
             "text_color": "#FFFFFF",
             "bg_color": "#eff7f1",
-            "default_photo": "auto"
+            "default_photo": "1"
           }
         },
         "slide_2": {
           "type": "slide",
           "settings": {
             "default_art": "vehicles",
-            "eyebrow": "This week only",
-            "heading": "Up to 20% off toy cars & ride‑ons",
+            "eyebrow": "Race into fun",
+            "heading": "Ride-ons & RC cars",
             "text": "<p>Racers, trucks and ride‑ons for little speedsters, while stock lasts.</p>",
             "button_label": "Shop the deals",
-            "button_link": "shopify://collections/all",
+            "button_link": "shopify://collections/ride-ons-vehicles",
             "button_style": "orange",
             "text_position": "left",
             "overlay": true,
             "text_color": "#FFFFFF",
             "bg_color": "#fff3ea",
-            "default_photo": "auto"
+            "default_photo": "2"
           }
         },
         "slide_3": {
           "type": "slide",
           "settings": {
             "default_art": "plush",
-            "eyebrow": "Learn through play",
-            "heading": "Build, stack, imagine",
+            "eyebrow": "Build, stack & imagine",
+            "heading": "Building blocks",
             "text": "<p>Wooden blocks and building sets that grow with your child.</p>",
             "button_label": "Explore building toys",
-            "button_link": "shopify://collections/all",
+            "button_link": "shopify://collections/building-construction-toys",
             "button_style": "orange",
             "text_position": "left",
             "overlay": true,
             "text_color": "#FFFFFF",
             "bg_color": "#fff8e8",
-            "default_photo": "auto"
+            "default_photo": "3"
           }
         }
       },
       "block_order": [
-        "slide_1",
         "slide_2",
+        "slide_1",
         "slide_3"
       ],
       "settings": {
@@ -76,7 +76,8 @@
         "speed": 5,
         "accessibility_label": "Toggi Toys offers",
         "padding_top": 0,
-        "padding_bottom": 8
+        "padding_bottom": 8,
+        "slide_style": "banner"
       }
     },
     "categories": {
@@ -375,7 +376,8 @@
           "settings": {
             "brand_name": "",
             "collection": "",
-            "link": ""
+            "link": "",
+            "default_photo": "auto"
           }
         },
         "brand_2": {
@@ -383,7 +385,8 @@
           "settings": {
             "brand_name": "",
             "collection": "",
-            "link": ""
+            "link": "",
+            "default_photo": "auto"
           }
         },
         "brand_3": {
@@ -391,7 +394,8 @@
           "settings": {
             "brand_name": "",
             "collection": "",
-            "link": ""
+            "link": "",
+            "default_photo": "auto"
           }
         },
         "brand_4": {
@@ -399,7 +403,8 @@
           "settings": {
             "brand_name": "",
             "collection": "",
-            "link": ""
+            "link": "",
+            "default_photo": "auto"
           }
         },
         "brand_5": {
@@ -407,7 +412,8 @@
           "settings": {
             "brand_name": "",
             "collection": "",
-            "link": ""
+            "link": "",
+            "default_photo": "auto"
           }
         },
         "brand_6": {
@@ -415,7 +421,8 @@
           "settings": {
             "brand_name": "",
             "collection": "",
-            "link": ""
+            "link": "",
+            "default_photo": "auto"
           }
         }
       },
@@ -589,7 +596,8 @@
             "default_art": "plush",
             "icon": "baby",
             "bg_color": "#ddf0e3",
-            "text_color": "#1a7f41"
+            "text_color": "#1a7f41",
+            "default_photo": "auto"
           }
         },
         "age_2": {
@@ -604,7 +612,8 @@
             "default_art": "blocks",
             "icon": "puzzle",
             "bg_color": "#ffe4d3",
-            "text_color": "#c94f12"
+            "text_color": "#c94f12",
+            "default_photo": "auto"
           }
         },
         "age_3": {
@@ -619,7 +628,8 @@
             "default_art": "plush",
             "icon": "star",
             "bg_color": "#fff0c9",
-            "text_color": "#8a5a00"
+            "text_color": "#8a5a00",
+            "default_photo": "auto"
           }
         },
         "age_4": {
@@ -634,7 +644,8 @@
             "default_art": "vehicles",
             "icon": "rocket",
             "bg_color": "#e6f2d2",
-            "text_color": "#4e7a12"
+            "text_color": "#4e7a12",
+            "default_photo": "auto"
           }
         },
         "age_5": {
@@ -649,7 +660,8 @@
             "default_art": "blocks",
             "icon": "gift",
             "bg_color": "#d7eadf",
-            "text_color": "#135b33"
+            "text_color": "#135b33",
+            "default_photo": "auto"
           }
         }
       },

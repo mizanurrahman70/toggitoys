@@ -3518,3 +3518,388 @@ html.tg-qv-open {
       linear-gradient(to top, rgba(4, 20, 11, 0.35) 0%, rgba(4, 20, 11, 0) 40%) !important;
   }
 }
+
+/* ==========================================================================
+   16. Our brands — photo tiles with a headline
+   ========================================================================== */
+.tg-brand--photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(6, 22, 13, 0.85) 0%, rgba(6, 22, 13, 0.4) 34%, rgba(6, 22, 13, 0) 60%);
+  pointer-events: none;
+}
+
+.tg-brand__headline {
+  position: absolute;
+  left: 2rem;
+  right: 2rem;
+  bottom: 1.8rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
+  color: #ffffff;
+}
+
+.tg-brand__headline-text {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: calc(var(--font-heading-scale) * 2.6rem);
+  line-height: 1.05;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.3);
+  text-wrap: balance;
+}
+
+.tg-brand__cta {
+  padding-bottom: 0.2rem;
+  border-bottom: 2px solid #f5e625;
+  color: #ffffff;
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+
+.tg-brand--photo:hover .tg-brand__cta {
+  color: #f5e625;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-brand__headline {
+    left: 2.8rem;
+    right: 2.8rem;
+    bottom: 2.6rem;
+    gap: 1rem;
+  }
+
+  .tg-brand__headline-text {
+    font-size: calc(var(--font-heading-scale) * clamp(2.6rem, 2.3vw, 4rem));
+  }
+
+  .tg-brand__cta {
+    font-size: 1.5rem;
+  }
+}
+
+/* ==========================================================================
+   17. Shop by age — photo inset under the age number
+   ========================================================================== */
+.tg-age-card__photo {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 0;
+  aspect-ratio: 5 / 3;
+  overflow: hidden;
+  border-radius: 1.6rem;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 20px -10px rgba(20, 40, 28, 0.35);
+}
+
+.tg-age-card__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.tg-age-card:hover .tg-age-card__photo img {
+  transform: scale(1.05);
+}
+
+/* Arrow sits on the photo's corner */
+.tg-age-card--photo .tg-age-card__go {
+  right: 1.8rem;
+  bottom: 1.8rem;
+}
+
+@media screen and (max-width: 749px) {
+  /* Narrow cards: a wider, shorter photo leaves room for the age number */
+  .tg-age-card__photo {
+    left: 0.8rem;
+    right: 0.8rem;
+    bottom: 0.8rem;
+    aspect-ratio: 16 / 9;
+    border-radius: 1.2rem;
+  }
+
+  .tg-age-card--photo .tg-age-card__go {
+    right: 1.4rem;
+    bottom: 1.4rem;
+    width: 3.4rem;
+    height: 3.4rem;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .tg-age-card__photo {
+    left: 1.2rem;
+    right: 1.2rem;
+    bottom: 1.2rem;
+  }
+
+  .tg-age-card--photo .tg-age-card__go {
+    right: 2.2rem;
+    bottom: 2.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tg-age-card__photo img {
+    transition: none;
+  }
+}
+
+/* ---------- Shop by age v2: photo-led cards (only cards showing a photo) ----------
+   Photo on top with the tag on it; the age number + arrow sit on the colour band below.
+   Height follows the content, so there are no empty gaps at any width. */
+.tg-age-card.tg-age-card--photo {
+  aspect-ratio: auto;
+  height: 100%;
+  padding: 0.8rem;
+}
+
+.tg-age-card--photo .tg-age-card__photo {
+  position: relative;
+  inset: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  order: -1;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 1.8rem;
+  box-shadow: none;
+}
+
+.tg-age-card--photo .tg-age-card__top {
+  position: static;
+  padding: 1.6rem 6rem 1.2rem 1.2rem;
+}
+
+/* Tag sits on the photo's top-left corner */
+.tg-age-card--photo .tg-age-card__tag {
+  position: absolute;
+  top: 1.8rem;
+  left: 1.8rem;
+  z-index: 2;
+  margin: 0;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(20, 40, 28, 0.12);
+}
+
+.tg-age-card--photo .tg-age-card__num {
+  font-size: calc(var(--font-heading-scale) * 3.6rem);
+}
+
+/* Arrow on the colour band, level with the number */
+.tg-age-card.tg-age-card--photo .tg-age-card__go {
+  right: 1.8rem;
+  bottom: 2.2rem;
+  width: 4rem;
+  height: 4rem;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-age-card.tg-age-card--photo {
+    padding: 1rem;
+  }
+
+  .tg-age-card--photo .tg-age-card__photo {
+    border-radius: 2rem;
+  }
+
+  .tg-age-card--photo .tg-age-card__top {
+    padding: 2rem 7rem 1.6rem 1.4rem;
+  }
+
+  .tg-age-card--photo .tg-age-card__tag {
+    top: 2.2rem;
+    left: 2.2rem;
+  }
+
+  .tg-age-card--photo .tg-age-card__num {
+    font-size: calc(var(--font-heading-scale) * clamp(4rem, 3.2vw, 5.6rem));
+  }
+
+  .tg-age-card.tg-age-card--photo .tg-age-card__go {
+    right: 2.2rem;
+    bottom: 2.8rem;
+    width: 4.6rem;
+    height: 4.6rem;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  /* Narrow cards: the whole card is the link, so drop the arrow and give the number the full width */
+  .tg-age-card.tg-age-card--photo .tg-age-card__go {
+    display: none;
+  }
+
+  .tg-age-card--photo .tg-age-card__top {
+    padding: 1.4rem 1rem 1rem;
+  }
+
+  .tg-age-card--photo .tg-age-card__num {
+    font-size: calc(var(--font-heading-scale) * 3.4rem);
+    white-space: nowrap;
+  }
+}
+
+/* ---------- Shop by age v3: full-photo cards ----------
+   The photo fills the card; a soft shade in the card's own accent colour rises from the bottom,
+   carrying the white age number. Overrides the v2 (photo-on-top) rules above. */
+.tg-age-card.tg-age-card--photo {
+  aspect-ratio: 3 / 4;
+  height: auto;
+  padding: 0;
+  justify-content: flex-end;
+  background: var(--tg-age-text);
+}
+
+.tg-age-card--photo::before {
+  display: none;
+}
+
+.tg-age-card--photo .tg-age-card__photo {
+  position: absolute;
+  inset: 0;
+  order: 0;
+  width: auto;
+  aspect-ratio: auto;
+  margin: 0;
+  border-radius: 0;
+  background: none;
+}
+
+/* Colour shade: the age's accent colour, deepened, fading upward */
+.tg-age-card--photo .tg-age-card__photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(10, 20, 14, 0.75) 0%,
+    rgba(10, 20, 14, 0.35) 30%,
+    rgba(10, 20, 14, 0) 55%
+  );
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--tg-age-text) 70%, #000 30%) 0%,
+    color-mix(in srgb, var(--tg-age-text) 55%, transparent) 30%,
+    transparent 58%
+  );
+}
+
+.tg-age-card--photo .tg-age-card__top {
+  position: relative;
+  z-index: 2;
+  padding: 0 6.4rem 2rem 2rem;
+}
+
+.tg-age-card--photo .tg-age-card__num {
+  color: #ffffff;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.25);
+}
+
+.tg-age-card--photo .tg-age-card__unit {
+  color: #ffffff;
+  opacity: 0.9;
+}
+
+.tg-age-card--photo .tg-age-card__tag {
+  top: 1.4rem;
+  left: 1.4rem;
+  z-index: 3;
+}
+
+.tg-age-card.tg-age-card--photo .tg-age-card__go {
+  z-index: 3;
+  right: 1.8rem;
+  bottom: 2.2rem;
+}
+
+.tg-age-card--photo:hover .tg-age-card__photo img {
+  transform: scale(1.06);
+}
+
+@media screen and (min-width: 750px) {
+  .tg-age-card.tg-age-card--photo {
+    padding: 0;
+  }
+
+  .tg-age-card--photo .tg-age-card__top {
+    padding: 0 7.4rem 2.6rem 2.4rem;
+  }
+
+  .tg-age-card--photo .tg-age-card__tag {
+    top: 1.8rem;
+    left: 1.8rem;
+  }
+
+  .tg-age-card.tg-age-card--photo .tg-age-card__go {
+    right: 2.2rem;
+    bottom: 2.8rem;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .tg-age-card--photo .tg-age-card__top {
+    padding: 0 1.4rem 1.6rem;
+  }
+}
+
+/* v3 fix: keep the text block static so the tag anchors to the card's top-left corner;
+   lift the number and unit above the photo individually instead. */
+.tg-age-card--photo .tg-age-card__top {
+  position: static;
+}
+
+.tg-age-card--photo .tg-age-card__num,
+.tg-age-card--photo .tg-age-card__unit {
+  position: relative;
+  z-index: 2;
+}
+
+/* ==========================================================================
+   18. Hero — image banners (text inside the artwork, whole banner clickable)
+   ========================================================================== */
+.tg-hero__slide.tg-hero__slide--banner {
+  min-height: 0;
+  aspect-ratio: 1100 / 1300;
+  background: #f3f6f2;
+}
+
+.tg-hero__banner {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.tg-hero__banner picture,
+.tg-hero__banner img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tg-hero__banner:focus-visible {
+  outline: 4px solid #f5e625;
+  outline-offset: -4px;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-hero__slide.tg-hero__slide--banner {
+    min-height: 0;
+    aspect-ratio: 2400 / 1000;
+  }
+
+  /* Arrows centred on the banner (dots sit below it) */
+  .tg-hero--banners .tg-hero__arrow {
+    top: calc((100% - 4.2rem) / 2);
+  }
+}

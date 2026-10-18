@@ -39,7 +39,7 @@
 <div class="tg-section section-{{ section.id }}-padding">
   <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
     <tg-slider
-      class="tg-hero{% if section.settings.full_width %} tg-hero--full{% endif %}"
+      class="tg-hero{% if section.settings.full_width %} tg-hero--full{% endif %}{% if section.settings.slide_style == 'banner' %} tg-hero--banners{% endif %}"
       data-autoplay="{{ section.settings.autoplay }}"
       data-speed="{{ section.settings.speed }}"
       role="region"
@@ -83,8 +83,14 @@
             assign desktop_focus = 'object-position: ' | append: block.settings.image.presentation.focal_point
             assign mobile_focus = 'object-position: ' | append: mobile_image.presentation.focal_point
           -%}
+          {%- liquid
+            assign banner_mode = false
+            if section.settings.slide_style == 'banner'
+              assign banner_mode = true
+            endif
+          -%}
           <li
-            class="tg-hero__slide{% if photo_slide %}{% if block.settings.overlay %} tg-hero__slide--overlay{% endif %}{% else %} tg-hero__slide--no-image{% endif %}"
+            class="tg-hero__slide{% if banner_mode %} tg-hero__slide--banner{% elsif photo_slide %}{% if block.settings.overlay %} tg-hero__slide--overlay{% endif %}{% else %} tg-hero__slide--no-image{% endif %}"
             id="Slide-{{ section.id }}-{{ forloop.index }}"
             data-slide
             data-block-id="{{ block.id }}"
@@ -94,6 +100,57 @@
             style="--tg-slide-bg: {{ block.settings.bg_color }};{% if photo_slide %} --tg-slide-text: {{ block.settings.text_color }};{% endif %}"
             {{ block.shopify_attributes }}
           >
+            {%- if banner_mode -%}
+              {%- comment -%}
+                Image banner: the artwork carries the text, the whole banner links to its collection.
+                Uploaded images win; otherwise the built-in banner for this position (assets/tg-hero-banner-N-*).
+              {%- endcomment -%}
+              {%- liquid
+                assign banner_alt = block.settings.heading | append: '. ' | append: block.settings.eyebrow | strip_html | strip
+                assign banner_base = 'tg-hero-banner-' | append: photo_choice
+                if photo_choice == 'none'
+                  assign banner_base = 'tg-hero-banner-1'
+                endif
+              -%}
+              <a
+                class="tg-hero__banner"
+                {% if block.settings.button_link != blank %}href="{{ block.settings.button_link }}"{% else %}role="link" aria-disabled="true"{% endif %}
+                {% unless forloop.first %}tabindex="-1"{% endunless %}
+              >
+                <picture>
+                  {%- if block.settings.image_mobile != blank -%}
+                    <source media="(max-width: 749px)" srcset="{{ block.settings.image_mobile | image_url: width: 750 }} 750w, {{ block.settings.image_mobile | image_url: width: 1100 }} 1100w" sizes="100vw">
+                  {%- elsif block.settings.image == blank -%}
+                    <source media="(max-width: 749px)" srcset="{{ banner_base | append: '-m.webp' | asset_url }}" width="1100" height="1300">
+                  {%- endif -%}
+                  {%- if block.settings.image != blank -%}
+                    {{
+                      block.settings.image
+                      | image_url: width: 2400
+                      | image_tag:
+                        widths: '750, 1100, 1500, 1800, 2400',
+                        sizes: '100vw',
+                        loading: loading,
+                        fetchpriority: priority,
+                        alt: banner_alt
+                    }}
+                  {%- else -%}
+                    {%- assign b1500 = banner_base | append: '-1500.webp' | asset_url -%}
+                    {%- assign b2400 = banner_base | append: '-2400.webp' | asset_url -%}
+                    <img
+                      src="{{ b1500 }}"
+                      srcset="{{ b1500 }} 1500w, {{ b2400 }} 2400w"
+                      sizes="100vw"
+                      width="2400"
+                      height="1000"
+                      alt="{{ banner_alt | escape }}"
+                      loading="{{ loading }}"
+                      fetchpriority="{{ priority }}"
+                    >
+                  {%- endif -%}
+                </picture>
+              </a>
+            {%- else -%}
             {%- if has_image and has_desktop -%}
               <div class="tg-hero__media tg-hero__media--desktop">
                 {{
@@ -204,6 +261,7 @@
                 >
               </div>
             {%- endunless -%}
+            {%- endif -%}
           </li>
         {%- endfor -%}
       </ul>
@@ -241,6 +299,17 @@
   "class": "section tg-hero-section",
   "max_blocks": 6,
   "settings": [
+    {
+      "type": "select",
+      "id": "slide_style",
+      "label": "Slide style",
+      "info": "Image banners: the text is part of the image and the whole banner links to the slide's button link.",
+      "options": [
+        { "value": "banner", "label": "Image banners (text in the image)" },
+        { "value": "overlay", "label": "Photo with text on top" }
+      ],
+      "default": "banner"
+    },
     {
       "type": "checkbox",
       "id": "full_width",

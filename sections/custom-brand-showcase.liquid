@@ -1,7 +1,8 @@
 {%- comment -%}
   Toggi Toys — Our brands (image tiles)
   Each "Brand" block = one banner image linking to a brand collection.
-  Until an image is uploaded, a built-in colourful banner (assets/tg-brand-1..6.svg) is shown.
+  Until an image is uploaded, a built-in photo with a headline is shown (assets/tg-brand-photo-N-*.webp),
+  or the colourful artwork (assets/tg-brand-1..6.svg) when the photo is set to None.
 {%- endcomment -%}
 {%- style -%}
   #shopify-section-{{ section.id }} .tg-section {
@@ -53,10 +54,22 @@
         {%- liquid
           assign url = block.settings.link | default: block.settings.collection.url
           assign name = block.settings.brand_name | default: block.settings.collection.title
+          assign default_headlines = 'Exciting Deals!|Race Into Fun!|Cuddle Time!|Learn Through Play|Ride-Ons & More|Perfect Gifts' | split: '|'
+          assign position = forloop.index0 | modulo: 6
+          assign headline = block.settings.headline | default: default_headlines[position]
+          # "auto" (or no saved value) = photo matching the tile's position (1–6)
+          assign photo_choice = block.settings.default_photo | default: 'auto'
+          if photo_choice == 'auto'
+            assign photo_choice = position | plus: 1 | append: ''
+          endif
+          assign use_photo = false
+          if block.settings.image == blank and photo_choice != 'none'
+            assign use_photo = true
+          endif
         -%}
         <li {{ block.shopify_attributes }}>
           <a
-            class="tg-brand"
+            class="tg-brand{% if use_photo %} tg-brand--photo{% endif %}"
             {% if url != blank %}href="{{ url }}"{% else %}role="link" aria-disabled="true"{% endif %}
           >
             {%- if block.settings.image != blank -%}
@@ -71,6 +84,26 @@
                   class: 'tg-brand__img',
                   alt: alt
               }}
+            {%- elsif use_photo -%}
+              {%- liquid
+                assign photo_base = 'tg-brand-photo-' | append: photo_choice
+                assign photo_600 = photo_base | append: '-600.webp' | asset_url
+                assign photo_1000 = photo_base | append: '-1000.webp' | asset_url
+              -%}
+              <img
+                class="tg-brand__img"
+                src="{{ photo_600 }}"
+                srcset="{{ photo_600 }} 600w, {{ photo_1000 }} 1000w"
+                sizes="(min-width: 990px) calc(100vw / 3), (min-width: 750px) 50vw, 82vw"
+                alt=""
+                width="1000"
+                height="1000"
+                loading="lazy"
+              >
+              <span class="tg-brand__headline">
+                <span class="tg-brand__headline-text">{{ headline | escape }}</span>
+                <span class="tg-brand__cta">Shop now</span>
+              </span>
             {%- else -%}
               {%- assign default_art = forloop.index0 | modulo: 6 | plus: 1 -%}
               <img
@@ -219,6 +252,29 @@
           "id": "image",
           "label": "Brand banner",
           "info": "Square 1200 x 1200 px works best. Include the brand logo in the artwork. A colourful default banner shows until you upload one."
+        },
+        {
+          "type": "select",
+          "id": "default_photo",
+          "label": "Built-in photo (no banner uploaded)",
+          "info": "Free Unsplash photos bundled with the theme, shown with the headline below.",
+          "options": [
+            { "value": "auto", "label": "Automatic (photo matching this position)" },
+            { "value": "none", "label": "None (colourful artwork)" },
+            { "value": "1", "label": "Table of colourful toys" },
+            { "value": "2", "label": "Wooden race cars" },
+            { "value": "3", "label": "Teddy bear" },
+            { "value": "4", "label": "Wooden train set" },
+            { "value": "5", "label": "Girl on a red tricycle" },
+            { "value": "6", "label": "Gift boxes with gold bows" }
+          ],
+          "default": "auto"
+        },
+        {
+          "type": "text",
+          "id": "headline",
+          "label": "Headline on the photo",
+          "info": "Leave empty for the default: Exciting Deals!, Race Into Fun!, Cuddle Time!, Learn Through Play, Ride-Ons & More, Perfect Gifts."
         },
         {
           "type": "text",
