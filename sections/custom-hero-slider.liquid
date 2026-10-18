@@ -39,7 +39,7 @@
 <div class="tg-section section-{{ section.id }}-padding">
   <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
     <tg-slider
-      class="tg-hero"
+      class="tg-hero{% if section.settings.full_width %} tg-hero--full{% endif %}"
       data-autoplay="{{ section.settings.autoplay }}"
       data-speed="{{ section.settings.speed }}"
       role="region"
@@ -77,7 +77,7 @@
             style="--tg-slide-bg: {{ block.settings.bg_color }};{% if has_image %} --tg-slide-text: {{ block.settings.text_color }};{% endif %}"
             {{ block.shopify_attributes }}
           >
-            {%- if has_desktop -%}
+            {%- if has_image and has_desktop -%}
               <div class="tg-hero__media tg-hero__media--desktop">
                 {{
                   block.settings.image
@@ -91,8 +91,8 @@
                 }}
               </div>
             {%- endif -%}
-            <div class="tg-hero__media tg-hero__media--mobile{% if has_desktop %} tg-hero__media--has-desktop{% endif %}">
-              {%- if mobile_image != blank -%}
+            {%- if has_image -%}
+              <div class="tg-hero__media tg-hero__media--mobile{% if has_desktop %} tg-hero__media--has-desktop{% endif %}">
                 {{
                   mobile_image
                   | image_url: width: 1100
@@ -103,10 +103,12 @@
                     fetchpriority: priority,
                     alt: mobile_image.alt
                 }}
-              {%- else -%}
+              </div>
+            {%- elsif block.settings.default_art == 'none' -%}
+              <div class="tg-hero__media">
                 {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-              {%- endif -%}
-            </div>
+              </div>
+            {%- endif -%}
 
             <div class="tg-hero__content tg-hero__content--{{ block.settings.text_position }}">
               {%- if block.settings.eyebrow != blank -%}
@@ -133,6 +135,21 @@
                 </a>
               {%- endif -%}
             </div>
+
+            {%- comment -%} Built-in illustration shown until a photo is uploaded {%- endcomment -%}
+            {%- unless has_image or block.settings.default_art == 'none' -%}
+              <div class="tg-hero__art-wrap">
+                <img
+                  class="tg-hero__art"
+                  src="{{ 'tg-hero-' | append: block.settings.default_art | append: '.svg' | asset_url }}"
+                  alt=""
+                  width="600"
+                  height="500"
+                  loading="{{ loading }}"
+                  fetchpriority="{{ priority }}"
+                >
+              </div>
+            {%- endunless -%}
           </li>
         {%- endfor -%}
       </ul>
@@ -174,7 +191,7 @@
       "type": "checkbox",
       "id": "full_width",
       "label": "Full width",
-      "default": false
+      "default": true
     },
     {
       "type": "select",
@@ -221,7 +238,7 @@
       "step": 4,
       "unit": "px",
       "label": "Top padding",
-      "default": 16
+      "default": 0
     },
     {
       "type": "range",
@@ -250,6 +267,19 @@
           "id": "image_mobile",
           "label": "Mobile image",
           "info": "Recommended 1100 x 1300 px. Falls back to the desktop image."
+        },
+        {
+          "type": "select",
+          "id": "default_art",
+          "label": "Default illustration",
+          "info": "Shown until you upload an image.",
+          "options": [
+            { "value": "blocks", "label": "Building blocks" },
+            { "value": "vehicles", "label": "Toy car" },
+            { "value": "plush", "label": "Teddy bear" },
+            { "value": "none", "label": "None (placeholder)" }
+          ],
+          "default": "blocks"
         },
         {
           "type": "text",
@@ -336,6 +366,7 @@
           "settings": {
             "eyebrow": "Weekend deals",
             "heading": "Up to 20% off ride-ons",
+            "default_art": "vehicles",
             "bg_color": "#FFF3EA"
           }
         }

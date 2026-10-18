@@ -452,6 +452,79 @@
   }
 }
 
+/* ---------- Hero: built-in illustration slides (no photo uploaded) ---------- */
+.tg-hero__slide--no-image {
+  flex-direction: column;
+}
+
+.tg-hero__slide--no-image .tg-hero__content {
+  flex: 0 0 auto;
+  justify-content: flex-start;
+  padding-bottom: 0;
+}
+
+.tg-hero__art-wrap {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 1.6rem 2rem 2rem;
+}
+
+.tg-hero__art {
+  display: block;
+  width: 100%;
+  max-width: 30rem;
+  height: auto;
+}
+
+/* Full-width hero: no rounded corners, text lines up with the page grid */
+.tg-hero--full .tg-hero__track {
+  border-radius: 0;
+}
+
+.tg-hero--full .tg-hero__content {
+  padding-inline: 2rem;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-hero__slide--no-image {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .tg-hero__slide--no-image .tg-hero__content {
+    flex: 1 1 50%;
+    justify-content: center;
+    padding-bottom: 5rem;
+  }
+
+  .tg-hero__art-wrap {
+    flex: 0 0 48%;
+    align-items: center;
+    padding: 3rem 7rem 3rem 0;
+  }
+
+  .tg-hero__art {
+    max-width: 54rem;
+    max-height: calc(var(--tg-hero-h-desktop, 48rem) - 6rem);
+    width: auto;
+    margin-inline: auto;
+  }
+
+  .tg-hero--full .tg-hero__content {
+    padding-inline: max(8rem, calc((100vw - var(--page-width)) / 2 + 5rem));
+  }
+
+  .tg-hero--full .tg-hero__slide--no-image .tg-hero__content {
+    padding-right: 2rem;
+  }
+
+  .tg-hero--full .tg-hero__art-wrap {
+    padding-right: max(8rem, calc((100vw - var(--page-width)) / 2 + 5rem));
+  }
+}
+
 /* ==========================================================================
    2. Shop by category
    ========================================================================== */
