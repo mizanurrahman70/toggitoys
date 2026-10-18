@@ -224,7 +224,7 @@
           "type": "tab",
           "settings": {
             "label": "New arrivals",
-            "collection": "all",
+            "collection": "",
             "view_all_link": ""
           }
         },
