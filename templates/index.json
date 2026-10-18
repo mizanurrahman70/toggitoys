@@ -15,6 +15,7 @@
         "slide_1": {
           "type": "slide",
           "settings": {
+            "default_art": "blocks",
             "eyebrow": "New arrivals",
             "heading": "Toys that spark big smiles",
             "text": "<p>Bangladesh's trusted kids' toy brand. Free shipping on orders over ৳4999.</p>",
@@ -23,14 +24,14 @@
             "button_style": "green",
             "text_position": "left",
             "overlay": true,
-            "text_color": "#FFFFFF",
-            "bg_color": "#EFF7F1",
-            "default_art": "blocks"
+            "text_color": "#ffffff",
+            "bg_color": "#eff7f1"
           }
         },
         "slide_2": {
           "type": "slide",
           "settings": {
+            "default_art": "vehicles",
             "eyebrow": "Weekend deals",
             "heading": "Up to 20% off ride-ons & vehicles",
             "text": "<p>Bikes, cars and scooters for little speedsters.</p>",
@@ -39,14 +40,14 @@
             "button_style": "orange",
             "text_position": "left",
             "overlay": true,
-            "text_color": "#FFFFFF",
-            "bg_color": "#FFF3EA",
-            "default_art": "vehicles"
+            "text_color": "#ffffff",
+            "bg_color": "#fff3ea"
           }
         },
         "slide_3": {
           "type": "slide",
           "settings": {
+            "default_art": "plush",
             "eyebrow": "Build & learn",
             "heading": "Building blocks for big imaginations",
             "text": "<p>Creative sets that grow with your child.</p>",
@@ -55,9 +56,8 @@
             "button_style": "green",
             "text_position": "left",
             "overlay": true,
-            "text_color": "#FFFFFF",
-            "bg_color": "#FFF8E8",
-            "default_art": "plush"
+            "text_color": "#ffffff",
+            "bg_color": "#fff8e8"
           }
         }
       },
@@ -82,85 +82,109 @@
         "cat_1": {
           "type": "category",
           "settings": {
+            "collection": "",
             "label": "Ride-ons & Vehicles",
-            "bg_color": "#EFF7F1"
+            "link": "",
+            "bg_color": "#eff7f1"
           }
         },
         "cat_2": {
           "type": "category",
           "settings": {
+            "collection": "",
             "label": "Building & Construction",
-            "bg_color": "#FFF3EA"
+            "link": "",
+            "bg_color": "#fff3ea"
           }
         },
         "cat_3": {
           "type": "category",
           "settings": {
+            "collection": "",
             "label": "Dolls & Accessories",
-            "bg_color": "#FFF8E8"
+            "link": "",
+            "bg_color": "#fff8e8"
           }
         },
         "cat_4": {
           "type": "category",
           "settings": {
+            "collection": "",
             "label": "Pretend & Role Play",
-            "bg_color": "#EFF7F1"
+            "link": "",
+            "bg_color": "#eff7f1"
           }
         },
         "cat_5": {
           "type": "category",
           "settings": {
+            "collection": "",
             "label": "Baby & Toddler",
-            "bg_color": "#FFF3EA"
+            "link": "",
+            "bg_color": "#fff3ea"
           }
         },
         "cat_6": {
           "type": "category",
           "settings": {
+            "collection": "",
             "label": "Remote Control Cars",
-            "bg_color": "#FFF8E8"
+            "link": "",
+            "bg_color": "#fff8e8"
           }
         },
         "cat_7": {
           "type": "category",
           "settings": {
+            "collection": "",
             "label": "Animals & Nature",
-            "bg_color": "#EFF7F1"
+            "link": "",
+            "bg_color": "#eff7f1"
           }
         },
         "cat_8": {
           "type": "category",
           "settings": {
+            "collection": "",
             "label": "Musical Toys",
-            "bg_color": "#FFF3EA"
+            "link": "",
+            "bg_color": "#fff3ea"
           }
         },
         "cat_9": {
           "type": "category",
           "settings": {
+            "collection": "",
             "label": "Sports & Outdoor",
-            "bg_color": "#FFF8E8"
+            "link": "",
+            "bg_color": "#fff8e8"
           }
         },
         "cat_10": {
           "type": "category",
           "settings": {
+            "collection": "",
             "label": "Action Figures",
-            "bg_color": "#EFF7F1"
+            "link": "",
+            "bg_color": "#eff7f1"
           }
         },
         "cat_11": {
           "type": "category",
           "settings": {
+            "collection": "",
             "label": "Art & DIY",
-            "bg_color": "#FFF3EA"
+            "link": "",
+            "bg_color": "#fff3ea"
           }
         },
         "cat_12": {
           "type": "category",
           "settings": {
+            "collection": "",
             "label": "Learning & Educational",
-            "bg_color": "#FFF8E8"
+            "link": "",
+            "bg_color": "#fff8e8"
           }
         }
       },
@@ -185,12 +209,78 @@
         "link": "shopify://collections/all",
         "style": "carousel",
         "columns_desktop": 5,
-        "bg_color": "#FFFFFF",
-        "heading_color": "#135B33",
-        "padding_top": 48,
-        "padding_bottom": 40,
         "autoplay": true,
-        "autoplay_speed": 3
+        "autoplay_speed": 3,
+        "bg_color": "#ffffff",
+        "heading_color": "#135b33",
+        "padding_top": 48,
+        "padding_bottom": 40
+      }
+    },
+    "trending": {
+      "type": "custom-product-tabs",
+      "blocks": {
+        "tab_1": {
+          "type": "tab",
+          "settings": {
+            "label": "New arrivals",
+            "collection": "all",
+            "view_all_link": ""
+          }
+        },
+        "tab_2": {
+          "type": "tab",
+          "settings": {
+            "label": "Best sellers",
+            "collection": "",
+            "view_all_link": ""
+          }
+        },
+        "tab_3": {
+          "type": "tab",
+          "settings": {
+            "label": "Big deals – up to 20% off",
+            "collection": "",
+            "view_all_link": ""
+          }
+        },
+        "tab_4": {
+          "type": "tab",
+          "settings": {
+            "label": "🔥 Ride-ons & RC cars",
+            "collection": "",
+            "view_all_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_1",
+        "tab_2",
+        "tab_3",
+        "tab_4"
+      ],
+      "settings": {
+        "heading": "Trending products",
+        "subheading": "",
+        "layout": "grid",
+        "tab_style": "centered",
+        "products_to_show": 10,
+        "columns_desktop": 5,
+        "show_secondary_image": true,
+        "show_rating": true,
+        "show_empty_rating": true,
+        "show_description": true,
+        "show_quick_view": true,
+        "show_add_to_cart": true,
+        "show_buy_now": true,
+        "buy_now_label": "Buy now",
+        "show_swatches": false,
+        "view_all_label": "View all",
+        "bg_color": "#f6f7f5",
+        "heading_color": "#1f2a24",
+        "accent_color": "#1a7f41",
+        "padding_top": 56,
+        "padding_bottom": 56
       }
     },
     "promos": {
@@ -207,8 +297,8 @@
             "button_label": "Shop now",
             "link": "shopify://collections/all",
             "button_style": "green",
-            "bg_color": "#FFF3EA",
-            "text_color": "#1F2A24"
+            "bg_color": "#fff3ea",
+            "text_color": "#1f2a24"
           }
         },
         "promo_2": {
@@ -222,8 +312,8 @@
             "button_label": "Shop the deal",
             "link": "shopify://collections/all",
             "button_style": "green",
-            "bg_color": "#EFF7F1",
-            "text_color": "#135B33"
+            "bg_color": "#eff7f1",
+            "text_color": "#135b33"
           }
         },
         "promo_3": {
@@ -237,8 +327,8 @@
             "button_label": "Start shopping",
             "link": "shopify://collections/all",
             "button_style": "green",
-            "bg_color": "#FFF8E8",
-            "text_color": "#1F2A24"
+            "bg_color": "#fff8e8",
+            "text_color": "#1f2a24"
           }
         }
       },
@@ -257,10 +347,187 @@
         "subheading": "Exclusive deals for Toggi families — grab them before they're gone",
         "end_date": "",
         "countdown_label": "Offer ends in",
-        "bg_color": "#FFFFFF",
-        "heading_color": "#135B33",
+        "bg_color": "#ffffff",
+        "heading_color": "#135b33",
         "padding_top": 72,
         "padding_bottom": 72
+      }
+    },
+    "brands": {
+      "type": "custom-brand-showcase",
+      "blocks": {
+        "brand_1": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "",
+            "collection": "",
+            "link": ""
+          }
+        },
+        "brand_2": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "",
+            "collection": "",
+            "link": ""
+          }
+        },
+        "brand_3": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "",
+            "collection": "",
+            "link": ""
+          }
+        },
+        "brand_4": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "",
+            "collection": "",
+            "link": ""
+          }
+        },
+        "brand_5": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "",
+            "collection": "",
+            "link": ""
+          }
+        },
+        "brand_6": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "",
+            "collection": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_1",
+        "brand_2",
+        "brand_3",
+        "brand_4",
+        "brand_5",
+        "brand_6"
+      ],
+      "settings": {
+        "heading": "Our brands",
+        "subheading": "Shop toys from the brands kids love — 100% genuine, quality-checked products.",
+        "columns_desktop": 3,
+        "mobile_layout": "swipe",
+        "columns_mobile": "2",
+        "image_ratio": "square",
+        "full_width": true,
+        "show_names": false,
+        "bg_color": "#f7f8fa",
+        "heading_color": "#1f2a24",
+        "padding_top": 56,
+        "padding_bottom": 32
+      }
+    },
+    "brand_products": {
+      "type": "custom-product-tabs",
+      "blocks": {
+        "brand_tab_1": {
+          "type": "tab",
+          "settings": {
+            "label": "Brand 1",
+            "collection": "",
+            "view_all_link": ""
+          }
+        },
+        "brand_tab_2": {
+          "type": "tab",
+          "settings": {
+            "label": "Brand 2",
+            "collection": "",
+            "view_all_link": ""
+          }
+        },
+        "brand_tab_3": {
+          "type": "tab",
+          "settings": {
+            "label": "Brand 3",
+            "collection": "",
+            "view_all_link": ""
+          }
+        },
+        "brand_tab_4": {
+          "type": "tab",
+          "settings": {
+            "label": "Brand 4",
+            "collection": "",
+            "view_all_link": ""
+          }
+        },
+        "brand_tab_5": {
+          "type": "tab",
+          "settings": {
+            "label": "Brand 5",
+            "collection": "",
+            "view_all_link": ""
+          }
+        },
+        "brand_tab_6": {
+          "type": "tab",
+          "settings": {
+            "label": "Brand 6",
+            "collection": "",
+            "view_all_link": ""
+          }
+        },
+        "brand_tab_7": {
+          "type": "tab",
+          "settings": {
+            "label": "Brand 7",
+            "collection": "",
+            "view_all_link": ""
+          }
+        },
+        "brand_tab_8": {
+          "type": "tab",
+          "settings": {
+            "label": "Brand 8",
+            "collection": "",
+            "view_all_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_tab_1",
+        "brand_tab_2",
+        "brand_tab_3",
+        "brand_tab_4",
+        "brand_tab_5",
+        "brand_tab_6",
+        "brand_tab_7",
+        "brand_tab_8"
+      ],
+      "settings": {
+        "heading": "Browse our brands",
+        "subheading": "",
+        "layout": "carousel",
+        "tab_style": "scroll",
+        "products_to_show": 10,
+        "columns_desktop": 5,
+        "show_secondary_image": true,
+        "show_rating": true,
+        "show_empty_rating": true,
+        "show_description": true,
+        "show_quick_view": true,
+        "show_add_to_cart": true,
+        "show_buy_now": true,
+        "buy_now_label": "Buy now",
+        "show_swatches": true,
+        "view_all_label": "",
+        "bg_color": "#f7f8fa",
+        "heading_color": "#1f2a24",
+        "accent_color": "#1a7f41",
+        "padding_top": 32,
+        "padding_bottom": 56
       }
     },
     "big_deals": {
@@ -269,26 +536,28 @@
         "heading": "Big deals this week",
         "subheading": "Items on sale this week — grab them before they're gone",
         "heading_align": "left",
-        "products_to_show": 8,
+        "collection": "",
+        "products_to_show": 10,
         "view_all_label": "See all deals",
-        "columns_desktop": 4,
+        "view_all_link": "",
+        "columns_desktop": 5,
         "mobile_layout": "swipe",
         "columns_mobile": "2",
         "image_ratio": "square",
         "show_secondary_image": true,
         "show_rating": true,
-        "quick_add": "standard",
-        "bg_color": "#FFFFFF",
-        "heading_color": "#135B33",
-        "padding_top": 32,
-        "padding_bottom": 56,
+        "show_empty_rating": true,
         "card_style": "toggi",
         "show_description": true,
         "show_quick_view": true,
         "show_add_to_cart": true,
         "show_buy_now": true,
         "buy_now_label": "Buy now",
-        "show_empty_rating": true
+        "quick_add": "standard",
+        "bg_color": "#ffffff",
+        "heading_color": "#135b33",
+        "padding_top": 32,
+        "padding_bottom": 56
       }
     },
     "shop_by_age": {
@@ -297,61 +566,76 @@
         "age_1": {
           "type": "age",
           "settings": {
-            "sublabel": "Baby",
-            "icon": "baby",
-            "bg_color": "#DDF0E3",
-            "text_color": "#1A7F41",
             "number": "0–12",
             "unit": "Months",
-            "default_art": "plush"
+            "sublabel": "Baby",
+            "label": "",
+            "collection": "",
+            "link": "",
+            "default_art": "plush",
+            "icon": "baby",
+            "bg_color": "#ddf0e3",
+            "text_color": "#1a7f41"
           }
         },
         "age_2": {
           "type": "age",
           "settings": {
-            "sublabel": "Toddler",
-            "icon": "puzzle",
-            "bg_color": "#FFE4D3",
-            "text_color": "#C94F12",
             "number": "1–3",
             "unit": "Years",
-            "default_art": "blocks"
+            "sublabel": "Toddler",
+            "label": "",
+            "collection": "",
+            "link": "",
+            "default_art": "blocks",
+            "icon": "puzzle",
+            "bg_color": "#ffe4d3",
+            "text_color": "#c94f12"
           }
         },
         "age_3": {
           "type": "age",
           "settings": {
-            "sublabel": "Preschool",
-            "icon": "star",
-            "bg_color": "#FFF0C9",
-            "text_color": "#8A5A00",
             "number": "3–5",
             "unit": "Years",
-            "default_art": "plush"
+            "sublabel": "Preschool",
+            "label": "",
+            "collection": "",
+            "link": "",
+            "default_art": "plush",
+            "icon": "star",
+            "bg_color": "#fff0c9",
+            "text_color": "#8a5a00"
           }
         },
         "age_4": {
           "type": "age",
           "settings": {
-            "sublabel": "Big kids",
-            "icon": "rocket",
-            "bg_color": "#E6F2D2",
-            "text_color": "#4E7A12",
             "number": "5–8",
             "unit": "Years",
-            "default_art": "vehicles"
+            "sublabel": "Big kids",
+            "label": "",
+            "collection": "",
+            "link": "",
+            "default_art": "vehicles",
+            "icon": "rocket",
+            "bg_color": "#e6f2d2",
+            "text_color": "#4e7a12"
           }
         },
         "age_5": {
           "type": "age",
           "settings": {
-            "sublabel": "Pre-teen",
-            "icon": "gift",
-            "bg_color": "#D7EADF",
-            "text_color": "#135B33",
             "number": "8+",
             "unit": "Years",
-            "default_art": "blocks"
+            "sublabel": "Pre-teen",
+            "label": "",
+            "collection": "",
+            "link": "",
+            "default_art": "blocks",
+            "icon": "gift",
+            "bg_color": "#d7eadf",
+            "text_color": "#135b33"
           }
         }
       },
@@ -365,8 +649,8 @@
       "settings": {
         "heading": "Shop by age",
         "subheading": "The right toy for every stage of growing up",
-        "bg_color": "#FFFAF3",
-        "heading_color": "#135B33",
+        "bg_color": "#fffaf3",
+        "heading_color": "#135b33",
         "padding_top": 64,
         "padding_bottom": 64
       }
@@ -377,26 +661,28 @@
         "heading": "Best sellers",
         "subheading": "Our most-loved toys, picked by Bangladeshi parents",
         "heading_align": "center",
-        "products_to_show": 8,
+        "collection": "",
+        "products_to_show": 10,
         "view_all_label": "Shop best sellers",
-        "columns_desktop": 4,
+        "view_all_link": "",
+        "columns_desktop": 5,
         "mobile_layout": "grid",
         "columns_mobile": "2",
         "image_ratio": "square",
         "show_secondary_image": true,
         "show_rating": true,
-        "quick_add": "standard",
-        "bg_color": "#FFFFFF",
-        "heading_color": "#135B33",
-        "padding_top": 56,
-        "padding_bottom": 32,
+        "show_empty_rating": true,
         "card_style": "toggi",
         "show_description": true,
         "show_quick_view": true,
         "show_add_to_cart": true,
         "show_buy_now": true,
         "buy_now_label": "Buy now",
-        "show_empty_rating": true
+        "quick_add": "standard",
+        "bg_color": "#ffffff",
+        "heading_color": "#135b33",
+        "padding_top": 56,
+        "padding_bottom": 32
       }
     },
     "trust": {
@@ -443,11 +729,11 @@
       ],
       "settings": {
         "heading": "Why parents love Toggi",
-        "bg_color": "#EFF7F1",
-        "card_color": "#FFFFFF",
-        "icon_color": "#1A7F41",
-        "icon_bg_color": "#EFF7F1",
-        "heading_color": "#135B33",
+        "bg_color": "#eff7f1",
+        "card_color": "#ffffff",
+        "icon_color": "#1a7f41",
+        "icon_bg_color": "#eff7f1",
+        "heading_color": "#135b33",
         "padding_top": 56,
         "padding_bottom": 56
       }
@@ -460,204 +746,11 @@
         "placeholder": "Enter your email",
         "button_label": "Subscribe",
         "success_message": "Thanks for subscribing! Check your inbox for goodies.",
-        "bg_color": "#135B33",
-        "text_color": "#FFFFFF",
-        "section_bg": "#FFFFFF",
+        "bg_color": "#135b33",
+        "text_color": "#ffffff",
+        "section_bg": "#ffffff",
         "padding_top": 56,
         "padding_bottom": 64
-      }
-    },
-    "trending": {
-      "type": "custom-product-tabs",
-      "blocks": {
-        "tab_1": {
-          "type": "tab",
-          "settings": {
-            "label": "New arrivals",
-            "collection": "all"
-          }
-        },
-        "tab_2": {
-          "type": "tab",
-          "settings": {
-            "label": "Best sellers"
-          }
-        },
-        "tab_3": {
-          "type": "tab",
-          "settings": {
-            "label": "Big deals – up to 20% off"
-          }
-        },
-        "tab_4": {
-          "type": "tab",
-          "settings": {
-            "label": "🔥 Ride-ons & RC cars"
-          }
-        }
-      },
-      "block_order": [
-        "tab_1",
-        "tab_2",
-        "tab_3",
-        "tab_4"
-      ],
-      "settings": {
-        "heading": "Trending products",
-        "subheading": "",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "show_secondary_image": true,
-        "view_all_label": "View all",
-        "bg_color": "#F6F7F5",
-        "heading_color": "#1F2A24",
-        "accent_color": "#1A7F41",
-        "padding_top": 56,
-        "padding_bottom": 56,
-        "show_description": true,
-        "show_quick_view": true,
-        "show_add_to_cart": true,
-        "show_buy_now": true,
-        "buy_now_label": "Buy now",
-        "show_rating": true,
-        "show_empty_rating": true
-      }
-    },
-    "brands": {
-      "type": "custom-brand-showcase",
-      "blocks": {
-        "brand_1": {
-          "type": "brand",
-          "settings": {}
-        },
-        "brand_2": {
-          "type": "brand",
-          "settings": {}
-        },
-        "brand_3": {
-          "type": "brand",
-          "settings": {}
-        },
-        "brand_4": {
-          "type": "brand",
-          "settings": {}
-        },
-        "brand_5": {
-          "type": "brand",
-          "settings": {}
-        },
-        "brand_6": {
-          "type": "brand",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "brand_1",
-        "brand_2",
-        "brand_3",
-        "brand_4",
-        "brand_5",
-        "brand_6"
-      ],
-      "settings": {
-        "heading": "Our brands",
-        "subheading": "Shop toys from the brands kids love — 100% genuine, quality-checked products.",
-        "columns_desktop": 3,
-        "mobile_layout": "swipe",
-        "columns_mobile": "2",
-        "image_ratio": "square",
-        "full_width": true,
-        "show_names": false,
-        "bg_color": "#F7F8FA",
-        "heading_color": "#1F2A24",
-        "padding_top": 56,
-        "padding_bottom": 32
-      }
-    },
-    "brand_products": {
-      "type": "custom-product-tabs",
-      "blocks": {
-        "brand_tab_1": {
-          "type": "tab",
-          "settings": {
-            "label": "Brand 1"
-          }
-        },
-        "brand_tab_2": {
-          "type": "tab",
-          "settings": {
-            "label": "Brand 2"
-          }
-        },
-        "brand_tab_3": {
-          "type": "tab",
-          "settings": {
-            "label": "Brand 3"
-          }
-        },
-        "brand_tab_4": {
-          "type": "tab",
-          "settings": {
-            "label": "Brand 4"
-          }
-        },
-        "brand_tab_5": {
-          "type": "tab",
-          "settings": {
-            "label": "Brand 5"
-          }
-        },
-        "brand_tab_6": {
-          "type": "tab",
-          "settings": {
-            "label": "Brand 6"
-          }
-        },
-        "brand_tab_7": {
-          "type": "tab",
-          "settings": {
-            "label": "Brand 7"
-          }
-        },
-        "brand_tab_8": {
-          "type": "tab",
-          "settings": {
-            "label": "Brand 8"
-          }
-        }
-      },
-      "block_order": [
-        "brand_tab_1",
-        "brand_tab_2",
-        "brand_tab_3",
-        "brand_tab_4",
-        "brand_tab_5",
-        "brand_tab_6",
-        "brand_tab_7",
-        "brand_tab_8"
-      ],
-      "settings": {
-        "heading": "Browse our brands",
-        "subheading": "",
-        "layout": "carousel",
-        "tab_style": "scroll",
-        "products_to_show": 10,
-        "columns_desktop": 5,
-        "show_secondary_image": true,
-        "show_swatches": true,
-        "view_all_label": "",
-        "bg_color": "#F7F8FA",
-        "heading_color": "#1F2A24",
-        "accent_color": "#1A7F41",
-        "padding_top": 32,
-        "padding_bottom": 56,
-        "show_description": true,
-        "show_quick_view": true,
-        "show_add_to_cart": true,
-        "show_buy_now": true,
-        "buy_now_label": "Buy now",
-        "show_rating": true,
-        "show_empty_rating": true
       }
     }
   },
