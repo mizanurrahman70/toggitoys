@@ -1,6 +1,8 @@
 {%- comment -%}
-  Toggi Toys — Shop by age
-  Colourful rounded tiles linking to age collections. Swipe row on mobile, grid on desktop.
+  Toggi Toys — Shop by age (premium cards)
+  Tall gradient cards: big age number + unit, small tag, a toy image rising from the bottom
+  and a round arrow button. Swipe row on mobile, grid on desktop.
+  Cards without an uploaded image use built-in toy art (assets/tg-hero-*.svg).
 {%- endcomment -%}
 {%- style -%}
   #shopify-section-{{ section.id }} .tg-section {
@@ -19,7 +21,9 @@
   }
 {%- endstyle -%}
 
-<div class="tg-section section-{{ section.id }}-padding">
+{%- assign default_arts = 'plush,blocks,vehicles,blocks,vehicles' | split: ',' -%}
+
+<div class="tg-section tg-ages-section section-{{ section.id }}-padding">
   <div class="page-width">
     <div class="tg-section__header tg-section__header--center">
       {%- if section.settings.heading != blank -%}
@@ -32,20 +36,61 @@
 
     <ul class="tg-scroller tg-ages" style="--tg-cols: {{ section.blocks.size | at_least: 1 }};" role="list">
       {%- for block in section.blocks -%}
-        {%- assign url = block.settings.link | default: block.settings.collection.url -%}
+        {%- liquid
+          assign url = block.settings.link | default: block.settings.collection.url
+          assign number = block.settings.number | default: block.settings.label
+          assign art = block.settings.default_art
+          if art == blank or art == 'auto'
+            assign art_index = forloop.index0 | modulo: default_arts.size
+            assign art = default_arts[art_index]
+          endif
+          assign aria = number | append: ' ' | append: block.settings.unit | append: ' ' | append: block.settings.sublabel | strip
+        -%}
         <li {{ block.shopify_attributes }}>
           <a
-            class="tg-age"
+            class="tg-age-card"
             {% if url != blank %}href="{{ url }}"{% else %}role="link" aria-disabled="true"{% endif %}
+            aria-label="{{ aria | escape }}"
             style="--tg-age-bg: {{ block.settings.bg_color }}; --tg-age-text: {{ block.settings.text_color }};"
           >
-            {%- if block.settings.icon != 'none' -%}
-              <span class="tg-age__icon">{% render 'tg-icon', icon: block.settings.icon %}</span>
-            {%- endif -%}
-            <span class="tg-age__label">{{ block.settings.label | escape }}</span>
-            {%- if block.settings.sublabel != blank -%}
-              <span class="tg-age__sub">{{ block.settings.sublabel | escape }}</span>
-            {%- endif -%}
+            <span class="tg-age-card__top">
+              {%- if block.settings.sublabel != blank -%}
+                <span class="tg-age-card__tag">
+                  {%- if block.settings.icon != 'none' -%}
+                    {% render 'tg-icon', icon: block.settings.icon %}
+                  {%- endif -%}
+                  {{- block.settings.sublabel | escape -}}
+                </span>
+              {%- endif -%}
+              <span class="tg-age-card__num">{{ number | escape }}</span>
+              {%- if block.settings.unit != blank -%}
+                <span class="tg-age-card__unit">{{ block.settings.unit | escape }}</span>
+              {%- endif -%}
+            </span>
+
+            <span class="tg-age-card__art">
+              {%- if block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 600
+                  | image_tag:
+                    widths: '300, 450, 600',
+                    sizes: '(min-width: 990px) 20vw, 45vw',
+                    loading: 'lazy',
+                    alt: ''
+                }}
+              {%- elsif art != 'none' -%}
+                <img
+                  src="{{ 'tg-hero-' | append: art | append: '.svg' | asset_url }}"
+                  alt=""
+                  width="600"
+                  height="500"
+                  loading="lazy"
+                >
+              {%- endif -%}
+            </span>
+
+            <span class="tg-age-card__go" aria-hidden="true">{% render 'tg-icon', icon: 'arrow' %}</span>
           </a>
         </li>
       {%- endfor -%}
@@ -100,7 +145,7 @@
       "step": 4,
       "unit": "px",
       "label": "Top padding",
-      "default": 56
+      "default": 64
     },
     {
       "type": "range",
@@ -110,7 +155,7 @@
       "step": 4,
       "unit": "px",
       "label": "Bottom padding",
-      "default": 56
+      "default": 64
     }
   ],
   "blocks": [
@@ -120,15 +165,29 @@
       "settings": [
         {
           "type": "text",
-          "id": "label",
-          "label": "Label",
-          "default": "0–12 M"
+          "id": "number",
+          "label": "Big age text",
+          "info": "e.g. 0–12 or 3–5 or 8+",
+          "default": "0–12"
+        },
+        {
+          "type": "text",
+          "id": "unit",
+          "label": "Unit",
+          "info": "e.g. Months or Years",
+          "default": "Months"
         },
         {
           "type": "text",
           "id": "sublabel",
-          "label": "Sub-label",
+          "label": "Tag",
           "default": "Baby"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Fallback label",
+          "info": "Used only if Big age text is empty (kept for older settings)."
         },
         {
           "type": "collection",
@@ -142,9 +201,28 @@
           "info": "Optional. Uses the collection link if empty."
         },
         {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Optional. A transparent PNG of a toy or child works best (about 600 x 500 px)."
+        },
+        {
+          "type": "select",
+          "id": "default_art",
+          "label": "Default artwork (no image)",
+          "options": [
+            { "value": "auto", "label": "Automatic" },
+            { "value": "plush", "label": "Teddy bear" },
+            { "value": "blocks", "label": "Building blocks" },
+            { "value": "vehicles", "label": "Toy car" },
+            { "value": "none", "label": "None" }
+          ],
+          "default": "auto"
+        },
+        {
           "type": "select",
           "id": "icon",
-          "label": "Icon",
+          "label": "Tag icon",
           "options": [
             { "value": "none", "label": "None" },
             { "value": "baby", "label": "Baby" },
@@ -158,13 +236,13 @@
         {
           "type": "color",
           "id": "bg_color",
-          "label": "Icon background (light tint)",
-          "default": "#EFF7F1"
+          "label": "Card color",
+          "default": "#DDF0E3"
         },
         {
           "type": "color",
           "id": "text_color",
-          "label": "Accent color (icon + label)",
+          "label": "Accent color (number, tag, arrow)",
           "default": "#1A7F41"
         }
       ]
@@ -175,10 +253,10 @@
       "name": "Toggi shop by age",
       "blocks": [
         { "type": "age" },
-        { "type": "age", "settings": { "label": "1–3 Y", "sublabel": "Toddler", "icon": "puzzle", "bg_color": "#FFF3EA", "text_color": "#C94F12" } },
-        { "type": "age", "settings": { "label": "3–5 Y", "sublabel": "Preschool", "icon": "star", "bg_color": "#FFF8E8", "text_color": "#8A5A00" } },
-        { "type": "age", "settings": { "label": "5–8 Y", "sublabel": "Big kids", "icon": "rocket", "bg_color": "#F2F8E6", "text_color": "#4E7A12" } },
-        { "type": "age", "settings": { "label": "8+ Y", "sublabel": "Pre-teen", "icon": "gift", "bg_color": "#E6F0EA", "text_color": "#135B33" } }
+        { "type": "age", "settings": { "number": "1–3", "unit": "Years", "sublabel": "Toddler", "icon": "puzzle", "bg_color": "#FFE4D3", "text_color": "#C94F12" } },
+        { "type": "age", "settings": { "number": "3–5", "unit": "Years", "sublabel": "Preschool", "icon": "star", "bg_color": "#FFF0C9", "text_color": "#8A5A00" } },
+        { "type": "age", "settings": { "number": "5–8", "unit": "Years", "sublabel": "Big kids", "icon": "rocket", "bg_color": "#E6F2D2", "text_color": "#4E7A12" } },
+        { "type": "age", "settings": { "number": "8+", "unit": "Years", "sublabel": "Pre-teen", "icon": "gift", "bg_color": "#D7EADF", "text_color": "#135B33" } }
       ]
     }
   ]

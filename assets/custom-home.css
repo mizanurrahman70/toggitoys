@@ -881,72 +881,202 @@ a.tg-promo:hover .tg-promo__media img {
 }
 
 /* ==========================================================================
-   5. Shop by age
+   5. Shop by age — premium gradient cards
    ========================================================================== */
 .tg-ages {
-  --tg-item-width: 36%;
+  --tg-item-width: 46%;
+  padding-top: 0.6rem;
+  padding-bottom: 2rem;
 }
 
-.tg-age {
+.tg-age-card {
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
+  aspect-ratio: 3 / 4;
   height: 100%;
-  padding: 2rem 1.2rem;
-  border: 1px solid var(--tg-line);
-  border-radius: var(--tg-radius);
-  background: var(--tg-white);
-  color: var(--tg-ink);
-  text-align: center;
+  overflow: hidden;
+  border-radius: 2.4rem;
+  /* Fallback first, then a richer gradient where color-mix is supported */
+  background: var(--tg-age-bg, var(--tg-green-50));
+  background:
+    radial-gradient(120% 60% at 50% 105%, rgba(255, 255, 255, 0.75), transparent 60%),
+    linear-gradient(165deg, var(--tg-age-bg) 0%, color-mix(in srgb, var(--tg-age-bg) 72%, var(--tg-age-text) 28%) 100%);
+  color: var(--tg-age-text, var(--tg-green));
   text-decoration: none;
-  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 1px 2px rgba(20, 40, 28, 0.06), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
-.tg-age:hover {
-  border-color: transparent;
-  box-shadow: var(--tg-shadow-hover);
-  transform: translateY(-3px);
+/* Soft glossy highlight in the top-right corner */
+.tg-age-card::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -25%;
+  z-index: -1;
+  width: 75%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 70%);
 }
 
-.tg-age__icon {
+.tg-age-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 40px -12px color-mix(in srgb, var(--tg-age-text) 45%, transparent),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+.tg-age-card:focus-visible {
+  outline: 3px solid var(--tg-age-text);
+  outline-offset: 3px;
+}
+
+.tg-age-card__top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.8rem 1.8rem 0;
+}
+
+.tg-age-card__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+  padding: 0.4rem 1rem 0.4rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  color: inherit;
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.tg-age-card__tag svg {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.tg-age-card__num {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: calc(var(--font-heading-scale) * 3.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+.tg-age-card__unit {
+  margin-top: 0.4rem;
+  color: var(--tg-ink);
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.15rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* Toy image rising from the bottom */
+.tg-age-card__art {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 0;
+  height: 56%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.tg-age-card__art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  transform: translateY(6%) scale(1.08);
+  transition: transform 0.5s ease;
+}
+
+.tg-age-card:hover .tg-age-card__art img {
+  transform: translateY(2%) scale(1.14);
+}
+
+/* Round arrow button */
+.tg-age-card__go {
+  position: absolute;
+  right: 1.2rem;
+  bottom: 1.2rem;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 5.2rem;
-  height: 5.2rem;
-  margin-bottom: 0.4rem;
+  width: 3.8rem;
+  height: 3.8rem;
   border-radius: 50%;
-  background: var(--tg-age-bg, var(--tg-green-50));
-  color: var(--tg-age-text, var(--tg-green));
+  background: var(--tg-white);
+  color: var(--tg-age-text);
+  box-shadow: 0 6px 16px rgba(20, 40, 28, 0.15);
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
 }
 
-.tg-age__icon svg {
-  width: 2.6rem;
-  height: 2.6rem;
+.tg-age-card__go svg {
+  width: 1.6rem;
+  height: 1.6rem;
 }
 
-.tg-age__label {
-  color: var(--tg-age-text, var(--tg-green));
-  font-family: var(--font-heading-family);
-  font-weight: var(--font-heading-weight);
-  font-size: 2rem;
-  line-height: 1.1;
-}
-
-.tg-age__sub {
-  color: var(--tg-muted);
-  font-size: 1.3rem;
+.tg-age-card:hover .tg-age-card__go {
+  background: var(--tg-age-text);
+  color: var(--tg-white);
+  transform: rotate(-45deg);
 }
 
 @media screen and (min-width: 750px) {
-  .tg-age {
-    padding: 2.8rem 1.6rem;
+  .tg-ages {
+    --tg-item-width: 30%;
   }
 
-  .tg-age__label {
-    font-size: 2.4rem;
+  .tg-ages.tg-scroller {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+  }
+
+  .tg-age-card__top {
+    padding: 2.4rem 2.4rem 0;
+  }
+
+  .tg-age-card__num {
+    font-size: calc(var(--font-heading-scale) * 4.6rem);
+  }
+
+  .tg-age-card__go {
+    right: 1.6rem;
+    bottom: 1.6rem;
+    width: 4.4rem;
+    height: 4.4rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .tg-ages.tg-scroller {
+    grid-template-columns: repeat(var(--tg-cols, 5), minmax(0, 1fr));
+  }
+
+  .tg-age-card__num {
+    font-size: calc(var(--font-heading-scale) * 5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tg-age-card,
+  .tg-age-card__art img,
+  .tg-age-card__go {
+    transition: none;
   }
 }
 
