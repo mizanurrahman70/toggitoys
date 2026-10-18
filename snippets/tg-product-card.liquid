@@ -7,6 +7,8 @@
     show_secondary_image (boolean)
     show_swatches        (boolean — lists Color/Colour option values)
     show_description     (boolean — custom.short_description metafield, else description excerpt)
+    show_rating          (boolean — stars from Shopify's reviews.rating / reviews.rating_count metafields)
+    show_empty_rating    (boolean — grey stars for products without reviews yet)
     show_quick_view      (boolean — eye icon opens the quick view, needs tg-product-card.js)
     show_add_to_cart     (boolean — cart icon on the image)
     show_buy_now         (boolean — "Buy now" button → straight to checkout)
@@ -140,6 +142,38 @@
         {%- endfor -%}
       {%- endif -%}
       <h3 class="tg-card__title">{{ product.title | escape }}</h3>
+      {%- if show_rating -%}
+        {%- comment -%}
+          Shopify's standard review metafields (filled by review apps: Judge.me, Shopify Product Reviews, etc.)
+        {%- endcomment -%}
+        {%- liquid
+          assign rating = product.metafields.reviews.rating.value
+          assign rating_value = 0
+          assign rating_max = 5
+          assign rating_count = 0
+          if rating != blank
+            assign rating_value = rating.rating | times: 1.0
+            assign rating_max = rating.scale_max | times: 1.0
+            assign rating_count = product.metafields.reviews.rating_count.value | default: product.metafields.reviews.rating_count | plus: 0
+          endif
+          assign rating_pct = rating_value | divided_by: rating_max | times: 100 | round: 1
+        -%}
+        {%- if rating_value > 0 or show_empty_rating -%}
+          <div class="tg-card__rating{% if rating_value == 0 %} tg-card__rating--empty{% endif %}">
+            <span class="tg-stars" style="--tg-rating: {{ rating_pct }}%;" aria-hidden="true"></span>
+            {%- if rating_count > 0 -%}
+              <span class="tg-card__rating-count" aria-hidden="true">({{ rating_count }})</span>
+            {%- endif -%}
+            <span class="visually-hidden">
+              {%- if rating_value > 0 -%}
+                {{ 'accessibility.star_reviews_info' | t: rating_value: rating_value, rating_max: rating_max }}, {{ rating_count }} {{ 'accessibility.total_reviews' | t }}
+              {%- else -%}
+                No reviews yet
+              {%- endif -%}
+            </span>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
       {%- if show_description and short_description != blank -%}
         <p class="tg-card__desc">{{ short_description | strip_html | escape }}</p>
       {%- endif -%}
@@ -204,6 +238,12 @@
     </div>
     <div class="tg-card__info">
       <h3 class="tg-card__title">Example toy product name</h3>
+      {%- if show_rating -%}
+        <div class="tg-card__rating" aria-hidden="true">
+          <span class="tg-stars" style="--tg-rating: 90%;"></span>
+          <span class="tg-card__rating-count">(12)</span>
+        </div>
+      {%- endif -%}
       {%- if show_description -%}
         <p class="tg-card__desc">A short, friendly description of the toy appears here.</p>
       {%- endif -%}

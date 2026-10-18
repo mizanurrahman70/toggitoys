@@ -355,3 +355,434 @@
     max-height: 4.8rem;
   }
 }
+
+/* ==========================================================================
+   Big Deals — header button + sale-ticket dropdown (snippets/tg-header-deals.liquid)
+   ========================================================================== */
+.header__icons {
+  align-items: center;
+}
+
+.tg-deals {
+  display: flex;
+  align-items: center;
+  margin-right: 0.8rem;
+}
+
+.tg-deals__btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 4rem;
+  padding: 0 1.3rem 0 0.5rem;
+  border-radius: 999px;
+  background: #135b33;
+  color: #ffffff;
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.4rem;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+/* Invisible bridge from the button down into the dropdown, so the hover isn't lost on the way */
+.tg-deals__btn::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: -3rem;
+  right: -3rem;
+  height: 5.6rem;
+}
+
+.tg-deals__btn:hover,
+.tg-deals.is-open .tg-deals__btn {
+  background: #1a7f41;
+}
+
+.tg-deals__btn:focus-visible {
+  outline: 3px solid #f5e625;
+  outline-offset: 2px;
+}
+
+.tg-deals__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: #f5e625;
+  color: #135b33;
+  font-weight: 800;
+  font-size: 1.4rem;
+}
+
+.tg-deals__caret {
+  width: 1.4rem;
+  height: 1.4rem;
+  transition: transform 0.2s ease;
+}
+
+.tg-deals.is-open .tg-deals__caret {
+  transform: rotate(180deg);
+}
+
+/* Dropdown: hangs under the full header bar, centred with even side margins */
+.tg-deals__panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  padding: 1rem 2.4rem 0;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(0.6rem);
+  transition: opacity 0.16s ease, transform 0.16s ease, visibility 0s linear 0.16s;
+  pointer-events: none;
+}
+
+.tg-deals.is-open .tg-deals__panel,
+tg-deals:not(:defined):hover .tg-deals__panel,
+tg-deals:not(:defined):focus-within .tg-deals__panel {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
+  pointer-events: auto;
+}
+
+.tg-deals__inner {
+  display: grid;
+  grid-template-columns: 24rem minmax(0, 1fr);
+  gap: 2.8rem;
+  width: 100%;
+  max-width: 116rem;
+  padding: 2rem 2.8rem 2rem 2rem;
+  border: 1px solid #e3e9e4;
+  border-radius: 2rem;
+  background: #ffffff;
+  color: #1f2a24;
+  box-shadow: 0 28px 60px -18px rgba(19, 58, 36, 0.35);
+}
+
+/* ---- The sale ticket: punched hole, notched right corners, dashed tear line ---- */
+.tg-deals__ticket {
+  --notch: 1.1rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 3.6rem 2.6rem 2.4rem 2.4rem;
+  border-radius: 1.4rem;
+  background: #135b33;
+  color: #ffffff;
+  -webkit-mask:
+    radial-gradient(circle var(--notch) at 100% 0, #0000 98%, #000) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--notch) at 100% 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
+  mask:
+    radial-gradient(circle var(--notch) at 100% 0, #0000 98%, #000) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--notch) at 100% 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
+}
+
+/* Tear line along the right edge */
+.tg-deals__ticket::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--notch) + 0.6rem);
+  bottom: calc(var(--notch) + 0.6rem);
+  right: 0.9rem;
+  border-right: 2px dashed rgba(255, 255, 255, 0.28);
+}
+
+.tg-deals__hole {
+  position: absolute;
+  top: 1.4rem;
+  left: 2.4rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.tg-deals__title {
+  margin: 0;
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.tg-deals__save {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+
+/* The figure is the memorable bit: big, sun-yellow, set in the display face */
+.tg-deals__figure {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-top: 0.2rem;
+  color: #f5e625;
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: 2.2rem;
+}
+
+.tg-deals__num {
+  font-size: 5.6rem;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+.tg-deals__sub {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1.3rem;
+  line-height: 1.5;
+}
+
+.tg-deals__all {
+  margin-top: auto;
+  padding: 1rem 1.8rem;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #135b33;
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.4rem;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.tg-deals__all:hover {
+  background: #f5e625;
+}
+
+.tg-deals__all:focus-visible {
+  outline: 3px solid #f5e625;
+  outline-offset: 2px;
+}
+
+/* ---- Products: quiet, borderless ---- */
+.tg-deals__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--tg-deals-cols, 5), minmax(0, 1fr));
+  gap: 2rem;
+  align-content: center;
+  margin: 0;
+  padding: 0.4rem 0;
+  list-style: none;
+}
+
+.tg-deal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* White wells: supplier photos are mostly on white, so every image reads the same */
+.tg-deal__media {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid #e8ede9;
+  border-radius: 1.2rem;
+  background: #ffffff;
+  transition: border-color 0.2s ease;
+}
+
+a.tg-deal:hover .tg-deal__media {
+  border-color: #b9d3c1;
+}
+
+.tg-deal__media img,
+.tg-deal__media .placeholder-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.35s ease;
+}
+
+.tg-deal--placeholder .tg-deal__media img {
+  padding: 1.2rem;
+}
+
+a.tg-deal:hover .tg-deal__media img {
+  transform: scale(1.05);
+}
+
+a.tg-deal:focus-visible {
+  outline: 3px solid #1a7f41;
+  outline-offset: 3px;
+  border-radius: 1.2rem;
+}
+
+.tg-deal__pct {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.8rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 0.6rem;
+  background: #c94f12;
+  color: #ffffff;
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.1rem;
+}
+
+.tg-deal__title {
+  display: -webkit-box;
+  min-height: calc(1.4em * 2);
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 1.4rem;
+  line-height: 1.4;
+}
+
+a.tg-deal:hover .tg-deal__title {
+  color: #1a7f41;
+}
+
+.tg-deal__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.8rem;
+}
+
+.tg-deal__now {
+  color: #c94f12;
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.6rem;
+}
+
+.tg-deal__was {
+  color: #8a948e;
+  font-size: 1.3rem;
+}
+
+/* Tablet & phones: compact pill that links to the collection (no dropdown) */
+@media screen and (max-width: 989px) {
+  .tg-deals {
+    margin-right: 0.4rem;
+  }
+
+  .tg-deals__panel,
+  .tg-deals__caret,
+  .tg-deals__btn::after {
+    display: none;
+  }
+
+  .tg-deals__btn {
+    min-height: 3.4rem;
+    padding: 0 1rem 0 0.4rem;
+    font-size: 1.2rem;
+  }
+
+  .tg-deals__badge {
+    width: 2.6rem;
+    height: 2.6rem;
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .tg-deals__btn {
+    padding: 0.4rem;
+  }
+
+  .tg-deals__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tg-deals__panel,
+  .tg-deals__btn,
+  .tg-deals__caret,
+  .tg-deal__media img {
+    transition: none;
+  }
+}
+
+/* Announcement bar: side items — left (About Us, Featured Products), right (Order Tracking, FAQ).
+   Desktop only; the offer message stays centred between them. */
+.tg-utility-side {
+  display: none;
+  align-items: center;
+  gap: 2.4rem;
+}
+
+.tg-utility-item {
+  color: var(--tg-note-color, #f5e625);
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.3rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.tg-utility-item--link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+.tg-utility-item--link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media screen and (min-width: 990px) {
+  /* left | announcement (centred) | right */
+  .utility-bar__grid.tg-utility-grid--note {
+    grid-template-columns: 1fr minmax(0, 2fr) 1fr;
+    grid-template-areas: 'tg-left announcements tg-right';
+    align-items: center;
+  }
+
+  .tg-utility-grid--note .tg-utility-side {
+    display: flex;
+  }
+
+  .tg-utility-side--left {
+    grid-area: tg-left;
+    justify-self: start;
+  }
+
+  .tg-utility-side--right {
+    grid-area: tg-right;
+    justify-self: end;
+  }
+
+  .tg-utility-side--inline {
+    display: flex;
+    margin-right: 1.6rem;
+  }
+
+  .localization-wrapper:has(.tg-utility-side--inline) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}

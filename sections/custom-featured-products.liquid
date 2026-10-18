@@ -14,7 +14,7 @@
   endif
 -%}
 {%- if toggi_card -%}
-  {% render 'tg-card-assets', buy_now_label: section.settings.buy_now_label %}
+  {% render 'tg-card-assets', buy_now_label: section.settings.buy_now_label, show_rating: section.settings.show_rating, show_empty_rating: section.settings.show_empty_rating %}
 {%- endif -%}
 
 {%- if toggi_card == false and section.settings.quick_add == 'standard' -%}
@@ -77,7 +77,7 @@
         {%- for product in collection_obj.products limit: section.settings.products_to_show -%}
           <li>
             {%- if toggi_card -%}
-              {% render 'tg-product-card', product: product, show_secondary_image: section.settings.show_secondary_image, show_description: section.settings.show_description, show_quick_view: section.settings.show_quick_view, show_add_to_cart: section.settings.show_add_to_cart, show_buy_now: section.settings.show_buy_now, buy_now_label: section.settings.buy_now_label, id_prefix: section.id %}
+              {% render 'tg-product-card', product: product, show_secondary_image: section.settings.show_secondary_image, show_description: section.settings.show_description, show_quick_view: section.settings.show_quick_view, show_add_to_cart: section.settings.show_add_to_cart, show_buy_now: section.settings.show_buy_now, buy_now_label: section.settings.buy_now_label, show_rating: section.settings.show_rating, show_empty_rating: section.settings.show_empty_rating, id_prefix: section.id %}
             {%- else -%}
             {% render 'card-product',
               card_product: product,
@@ -239,7 +239,14 @@
       "type": "checkbox",
       "id": "show_rating",
       "label": "Show product rating",
+      "info": "Uses Shopify product reviews (any review app that fills the standard rating fields).",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_empty_rating",
+      "label": "Show grey stars when a product has no reviews (Toggi card)",
+      "default": true
     },
     {
       "type": "select",

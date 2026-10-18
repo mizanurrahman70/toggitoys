@@ -1,0 +1,173 @@
+{%- comment -%}
+  Toggi Toys — "Big Deals" header button + dropdown of sale products.
+  Rendered inside Dawn's header (sections/header.liquid). Header schema settings:
+    deals_enable, deals_label, deals_collection, deals_heading, deals_subheading, deals_cta, deals_count
+  Collection: the chosen one, else the collection with handle "big-deals".
+  Left: a green sale ticket (punched hole, notched corners, tear line) showing the real
+  "Up to N% off" for the products listed. Right: the sale products.
+  <tg-deals> opens on hover with a short close delay (so the pointer can travel to the products),
+  opens on keyboard focus, closes on Esc. Without JS it falls back to CSS :hover / :focus-within.
+  Styles: assets/custom-theme.css ("Big Deals").
+{%- endcomment -%}
+{%- liquid
+  assign deals = section.settings.deals_collection
+  if deals == blank
+    assign deals = collections['big-deals']
+  endif
+  assign deals_url = deals.url | default: routes.all_products_collection_url
+  assign count = section.settings.deals_count | default: 5
+  assign has_products = false
+  if deals != blank and deals.products_count > 0
+    assign has_products = true
+  endif
+
+  comment
+    Biggest discount among the products shown, for the ticket.
+  endcomment
+  assign best_pct = 0
+  if has_products
+    for product in deals.products limit: count
+      if product.compare_at_price > product.price
+        assign pct = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round
+        if pct > best_pct
+          assign best_pct = pct
+        endif
+      endif
+    endfor
+  else
+    assign best_pct = 15
+  endif
+  assign placeholder_arts = 'vehicles,blocks,plush' | split: ','
+-%}
+<tg-deals class="tg-deals">
+  <a href="{{ deals_url }}" class="tg-deals__btn" aria-haspopup="true" aria-expanded="false" data-deals-btn>
+    <span class="tg-deals__badge" aria-hidden="true">%</span>
+    <span class="tg-deals__label">{{ section.settings.deals_label | default: 'Big Deals' | escape }}</span>
+    <svg class="tg-deals__caret" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </a>
+
+  <div class="tg-deals__panel">
+    <div class="tg-deals__inner">
+      {%- comment -%} The sale ticket {%- endcomment -%}
+      <div class="tg-deals__ticket">
+        <span class="tg-deals__hole" aria-hidden="true"></span>
+        {%- if section.settings.deals_heading != blank -%}
+          <p class="tg-deals__title">{{ section.settings.deals_heading | escape }}</p>
+        {%- endif -%}
+        {%- if best_pct > 0 -%}
+          <p class="tg-deals__save">
+            Up to
+            <span class="tg-deals__figure"><span class="tg-deals__num">{{ best_pct }}%</span> off</span>
+          </p>
+        {%- endif -%}
+        {%- if section.settings.deals_subheading != blank -%}
+          <p class="tg-deals__sub">{{ section.settings.deals_subheading | escape }}</p>
+        {%- endif -%}
+        <a href="{{ deals_url }}" class="tg-deals__all">{{ section.settings.deals_cta | default: 'Shop all deals' | escape }}</a>
+      </div>
+
+      <ul class="tg-deals__grid" role="list" style="--tg-deals-cols: {{ count }};">
+        {%- if has_products -%}
+          {%- for product in deals.products limit: count -%}
+            {%- liquid
+              assign image = product.featured_media.preview_image
+              assign on_sale = false
+              if product.compare_at_price > product.price
+                assign on_sale = true
+                assign pct = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round
+              endif
+            -%}
+            <li>
+              <a href="{{ product.url }}" class="tg-deal">
+                <span class="tg-deal__media">
+                  {%- if image -%}
+                    {{
+                      image
+                      | image_url: width: 400
+                      | image_tag:
+                        widths: '200, 300, 400',
+                        sizes: '180px',
+                        loading: 'lazy',
+                        alt: product.title
+                    }}
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                  {%- if on_sale -%}
+                    <span class="tg-deal__pct">-{{ pct }}%</span>
+                  {%- endif -%}
+                </span>
+                <span class="tg-deal__title">{{ product.title | escape }}</span>
+                <span class="tg-deal__price">
+                  <span class="tg-deal__now">{{ product.price | money }}</span>
+                  {%- if on_sale -%}
+                    <s class="tg-deal__was">{{ product.compare_at_price | money }}</s>
+                  {%- endif -%}
+                </span>
+              </a>
+            </li>
+          {%- endfor -%}
+        {%- else -%}
+          {%- comment -%} Example cards until the deals collection has products {%- endcomment -%}
+          {%- for i in (1..count) -%}
+            {%- assign art_index = forloop.index0 | modulo: placeholder_arts.size -%}
+            <li>
+              <span class="tg-deal tg-deal--placeholder">
+                <span class="tg-deal__media">
+                  <img
+                    src="{{ 'tg-hero-' | append: placeholder_arts[art_index] | append: '.svg' | asset_url }}"
+                    alt=""
+                    width="600"
+                    height="500"
+                    loading="lazy"
+                  >
+                  <span class="tg-deal__pct">-15%</span>
+                </span>
+                <span class="tg-deal__title">Sale toy name</span>
+                <span class="tg-deal__price">
+                  <span class="tg-deal__now">{{ 85000 | money }}</span>
+                  <s class="tg-deal__was">{{ 100000 | money }}</s>
+                </span>
+              </span>
+            </li>
+          {%- endfor -%}
+        {%- endif -%}
+      </ul>
+    </div>
+  </div>
+</tg-deals>
+
+<script>
+  // Hover-intent dropdown: opens quickly, closes after a short delay so the pointer can reach the products.
+  if (!customElements.get('tg-deals')) {
+    customElements.define(
+      'tg-deals',
+      class extends HTMLElement {
+        connectedCallback() {
+          this.btn = this.querySelector('[data-deals-btn]');
+          this.addEventListener('mouseenter', () => this.set(true, 60));
+          this.addEventListener('mouseleave', () => this.set(false, 300));
+          this.addEventListener('focusin', () => this.set(true, 0));
+          this.addEventListener('focusout', (e) => {
+            if (!this.contains(e.relatedTarget)) this.set(false, 0);
+          });
+          this.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.classList.contains('is-open')) {
+              this.set(false, 0);
+              this.btn.focus();
+            }
+          });
+        }
+        set(open, delay) {
+          clearTimeout(this.timer);
+          const apply = () => {
+            this.classList.toggle('is-open', open);
+            this.btn.setAttribute('aria-expanded', String(open));
+          };
+          if (delay) this.timer = setTimeout(apply, delay);
+          else apply();
+        }
+      }
+    );
+  }
+</script>

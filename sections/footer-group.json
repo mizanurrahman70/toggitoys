@@ -82,7 +82,7 @@
       "settings": {
         "show_payment": true,
         "payment_text": "Your payment is secured with us",
-        "copyright": "<p>Copyright [year] © toggitoys.com. All right's reserved. Powered By <strong>Ajer X Limited!</strong></p>",
+        "copyright": "<p>Copyright [year] © toggitoys.com. All rights reserved. Powered by <a href=\"https://traideas.com/\" target=\"_blank\" title=\"Traideas\">Traideas</a></p>",
         "bg_color": "#FFFFFF",
         "strip_color": "#F6F7F5",
         "heading_color": "#1F2A24",

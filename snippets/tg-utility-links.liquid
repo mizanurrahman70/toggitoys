@@ -1,0 +1,22 @@
+{%- comment -%}
+  Toggi Toys — small text items for the announcement bar sides.
+  Usage: {% render 'tg-utility-links', text: section.settings.tg_left_links, color: section.settings.tg_note_color %}
+  One item per line:
+    Label | /url   → link
+    Label          → plain text (not clickable)
+{%- endcomment -%}
+{%- if text != blank -%}
+  {%- assign lines = text | newline_to_br | split: '<br />' -%}
+  {%- for line in lines -%}
+    {%- assign parts = line | strip_newlines | split: '|' -%}
+    {%- assign label = parts[0] | strip -%}
+    {%- assign url = parts[1] | strip -%}
+    {%- if label != blank -%}
+      {%- if url != blank -%}
+        <a href="{{ url }}" class="tg-utility-item tg-utility-item--link" style="--tg-note-color: {{ color }};">{{ label | escape }}</a>
+      {%- else -%}
+        <span class="tg-utility-item" style="--tg-note-color: {{ color }};">{{ label | escape }}</span>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}

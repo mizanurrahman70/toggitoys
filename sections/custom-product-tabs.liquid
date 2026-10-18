@@ -6,7 +6,7 @@
   tab row (for many brands), and colour option pills on cards.
 {%- endcomment -%}
 <script src="{{ 'custom-home.js' | asset_url }}" defer="defer"></script>
-{% render 'tg-card-assets', buy_now_label: section.settings.buy_now_label %}
+{% render 'tg-card-assets', buy_now_label: section.settings.buy_now_label, show_rating: section.settings.show_rating, show_empty_rating: section.settings.show_empty_rating %}
 
 {%- style -%}
   #shopify-section-{{ section.id }} .tg-section {
@@ -97,7 +97,7 @@
             {%- if collection_obj != blank and collection_obj.products_count > 0 -%}
               {%- for product in collection_obj.products limit: section.settings.products_to_show -%}
                 <li>{%- assign card_prefix = section.id | append: '-' | append: block.id -%}
-                <li>{% render 'tg-product-card', product: product, show_secondary_image: section.settings.show_secondary_image, show_swatches: section.settings.show_swatches, show_description: section.settings.show_description, show_quick_view: section.settings.show_quick_view, show_add_to_cart: section.settings.show_add_to_cart, show_buy_now: section.settings.show_buy_now, buy_now_label: section.settings.buy_now_label, id_prefix: card_prefix %}</li></li>
+                <li>{% render 'tg-product-card', product: product, show_secondary_image: section.settings.show_secondary_image, show_swatches: section.settings.show_swatches, show_description: section.settings.show_description, show_quick_view: section.settings.show_quick_view, show_add_to_cart: section.settings.show_add_to_cart, show_buy_now: section.settings.show_buy_now, buy_now_label: section.settings.buy_now_label, show_rating: section.settings.show_rating, show_empty_rating: section.settings.show_empty_rating, id_prefix: card_prefix %}</li></li>
               {%- endfor -%}
             {%- else -%}
               {%- for i in (1..section.settings.products_to_show) -%}
@@ -190,6 +190,19 @@
       "type": "checkbox",
       "id": "show_secondary_image",
       "label": "Show second image on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show star rating",
+      "info": "Uses Shopify product reviews (any review app that fills the standard rating fields).",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_empty_rating",
+      "label": "Show grey stars when a product has no reviews",
       "default": true
     },
     {

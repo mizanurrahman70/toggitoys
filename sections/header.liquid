@@ -259,6 +259,10 @@
     {%- endif -%}
 
     <div class="header__icons{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header__icons--localization header-localization{% endif %}">
+      {%- comment -%} Toggi: Big Deals button + sale products dropdown {%- endcomment -%}
+      {%- if section.settings.deals_enable -%}
+        {% render 'tg-header-deals', section: section %}
+      {%- endif -%}
       <div class="desktop-localization-wrapper">
         {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
           <localization-form class="small-hide medium-hide" data-prevent-hide>
@@ -640,6 +644,56 @@
     {
       "type": "paragraph",
       "content": "t:sections.header.settings.customer_account_menu.content"
+    },
+    {
+      "type": "header",
+      "content": "Big Deals button"
+    },
+    {
+      "type": "checkbox",
+      "id": "deals_enable",
+      "label": "Show Big Deals button",
+      "info": "Hover (desktop) shows sale products from the collection below.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "deals_label",
+      "label": "Button label",
+      "default": "Big Deals"
+    },
+    {
+      "type": "collection",
+      "id": "deals_collection",
+      "label": "Deals collection",
+      "info": "Uses the collection with handle big-deals if empty."
+    },
+    {
+      "type": "text",
+      "id": "deals_heading",
+      "label": "Ticket heading",
+      "default": "Items on sale this week"
+    },
+    {
+      "type": "text",
+      "id": "deals_subheading",
+      "label": "Ticket text",
+      "default": "Discounts on our best-selling toys, while stock lasts."
+    },
+    {
+      "type": "text",
+      "id": "deals_cta",
+      "label": "Ticket button label",
+      "default": "Shop all deals"
+    },
+    {
+      "type": "range",
+      "id": "deals_count",
+      "label": "Products in dropdown",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "default": 5
     },
     {
       "type": "header",

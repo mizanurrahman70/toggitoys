@@ -48,7 +48,11 @@
         "show_line_separator": false,
         "show_social": false,
         "enable_country_selector": false,
-        "enable_language_selector": false
+        "enable_language_selector": false,
+        "tg_note_text": "Order Tracking",
+        "tg_note_color": "#F5E625",
+        "tg_left_links": "About Us | /pages/about-us\nFeatured Products | /collections/all",
+        "tg_right_links": "FAQ | /pages/faq"
       }
     },
     "header": {
@@ -66,7 +70,13 @@
         "enable_language_selector": true,
         "margin_bottom": 0,
         "padding_top": 12,
-        "padding_bottom": 12
+        "padding_bottom": 12,
+        "deals_enable": true,
+        "deals_label": "Big Deals",
+        "deals_heading": "Items on sale this week",
+        "deals_subheading": "Discounts on our best-selling toys, while stock lasts.",
+        "deals_cta": "Shop all deals",
+        "deals_count": 5
       }
     }
   },

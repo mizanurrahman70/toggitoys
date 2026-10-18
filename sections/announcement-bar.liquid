@@ -12,6 +12,20 @@
   if section.blocks.size > 0
     assign announcement_bar = true
   endif
+
+  # Toggi: right-hand note ("Order Tracking"). Own grid column when Dawn's grid is single-column;
+  # otherwise it sits inside the right-hand localization column.
+  assign tg_note = section.settings.tg_note_text
+  assign tg_has_sides = false
+  if tg_note != blank or section.settings.tg_right_links != blank or section.settings.tg_left_links != blank
+    assign tg_has_sides = true
+  endif
+  assign tg_multi_col = false
+  if announcement_bar and language_country_selector or section.settings.show_social and social_icons
+    assign tg_multi_col = true
+  elsif language_country_selector or section.settings.show_social and social_icons
+    assign tg_multi_col = true
+  endif
 -%}
 
 {% if social_icons %}
@@ -21,7 +35,7 @@
 <div
   class="utility-bar color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator and section.blocks.size > 0 %} utility-bar--bottom-border{% elsif section.settings.show_line_separator and section.settings.show_social and social_icons%} utility-bar--bottom-border-social-only{% endif %}{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header-localization{% endif %}"
 >
-  <div class="page-width utility-bar__grid{% if announcement_bar and language_country_selector or section.settings.show_social and social_icons %} utility-bar__grid--3-col{% elsif language_country_selector or section.settings.show_social and social_icons %} utility-bar__grid--2-col{% endif %}">
+  <div class="page-width utility-bar__grid{% if announcement_bar and language_country_selector or section.settings.show_social and social_icons %} utility-bar__grid--3-col{% elsif language_country_selector or section.settings.show_social and social_icons %} utility-bar__grid--2-col{% endif %}{% if tg_has_sides and tg_multi_col == false %} tg-utility-grid--note{% endif %}">
     {%- if section.settings.show_social and social_icons -%}
       {%- render 'social-icons' -%}
     {%- endif -%}
@@ -136,7 +150,26 @@
         </style>
       {%- endif -%}
     {%- endif -%}
+    {%- if tg_has_sides and tg_multi_col == false -%}
+      <div class="tg-utility-side tg-utility-side--left">
+        {%- render 'tg-utility-links', text: section.settings.tg_left_links, color: section.settings.tg_note_color -%}
+      </div>
+      <div class="tg-utility-side tg-utility-side--right">
+        {%- if tg_note != blank -%}
+          <span class="tg-utility-item" style="--tg-note-color: {{ section.settings.tg_note_color }};">{{ tg_note | escape }}</span>
+        {%- endif -%}
+        {%- render 'tg-utility-links', text: section.settings.tg_right_links, color: section.settings.tg_note_color -%}
+      </div>
+    {%- endif -%}
     <div class="localization-wrapper">
+      {%- if tg_has_sides and tg_multi_col -%}
+        <div class="tg-utility-side tg-utility-side--inline">
+          {%- if tg_note != blank -%}
+            <span class="tg-utility-item" style="--tg-note-color: {{ section.settings.tg_note_color }};">{{ tg_note | escape }}</span>
+          {%- endif -%}
+          {%- render 'tg-utility-links', text: section.settings.tg_right_links, color: section.settings.tg_note_color -%}
+        </div>
+      {%- endif -%}
       {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
         <localization-form class="small-hide medium-hide">
           {%- form 'localization', id: 'AnnouncementCountryForm', class: 'localization-form' -%}
@@ -207,6 +240,37 @@
       "type": "paragraph",
          "content": "t:sections.announcement-bar.settings.paragraph.content"
     },             
+    {
+      "type": "header",
+      "content": "Side links (desktop)"
+    },
+    {
+      "type": "textarea",
+      "id": "tg_left_links",
+      "label": "Left side",
+      "info": "One per line: Label | /url  (leave out | /url for plain text)",
+      "default": "About Us | /pages/about-us\nFeatured Products | /collections/all"
+    },
+    {
+      "type": "text",
+      "id": "tg_note_text",
+      "label": "Right side: first item (plain text)",
+      "info": "Not a link. Leave empty to hide.",
+      "default": "Order Tracking"
+    },
+    {
+      "type": "textarea",
+      "id": "tg_right_links",
+      "label": "Right side: more items",
+      "info": "One per line: Label | /url  (leave out | /url for plain text)",
+      "default": "FAQ | /pages/faq"
+    },
+    {
+      "type": "color",
+      "id": "tg_note_color",
+      "label": "Side text color",
+      "default": "#F5E625"
+    },
     {
       "type": "checkbox",
       "id": "show_social",
