@@ -2,6 +2,8 @@
   Toggi Toys — Trending products with collection tabs
   Each "Tab" block = one collection. Panels are rendered server-side; a tiny
   <tg-tabs> element switches them (images in hidden panels stay lazy).
+  Options: grid or carousel (with page dots), centered pill tabs or a scrolling
+  tab row (for many brands), and colour option pills on cards.
 {%- endcomment -%}
 <script src="{{ 'custom-home.js' | asset_url }}" defer="defer"></script>
 
@@ -25,7 +27,13 @@
 
 <div class="tg-section tg-tabs-section section-{{ section.id }}-padding">
   <div class="page-width">
-    <tg-tabs class="tg-tabs">
+    {%- liquid
+      assign carousel = false
+      if section.settings.layout == 'carousel'
+        assign carousel = true
+      endif
+    -%}
+    <tg-tabs class="tg-tabs tg-tabs--{{ section.settings.tab_style }}{% if carousel %} tg-tabs--carousel{% endif %}">
       <div class="tg-section__header tg-section__header--center">
         {%- if section.settings.heading != blank -%}
           <h2 class="tg-heading">{{ section.settings.heading | escape }}</h2>
@@ -55,6 +63,9 @@
             {%- endfor -%}
           </div>
         </div>
+        {%- if section.settings.tab_style == 'scroll' -%}
+          <div class="tg-tabs__track" aria-hidden="true" hidden><span class="tg-tabs__thumb"></span></div>
+        {%- endif -%}
       {%- endif -%}
 
       {%- for block in section.blocks -%}
@@ -70,10 +81,21 @@
           data-view-all="{{ view_all_url }}"
           {% unless forloop.first %}hidden{% endunless %}
         >
-          <ul class="tg-tabs__grid" style="--tg-cols: {{ section.settings.columns_desktop }};" role="list">
+          {%- if carousel -%}
+            <tg-carousel class="tg-carousel">
+            <button type="button" class="tg-carousel__arrow tg-carousel__arrow--prev" data-prev aria-label="{{ 'general.slider.previous_slide' | t }}">
+              {% render 'tg-icon', icon: 'arrow' %}
+            </button>
+          {%- endif -%}
+          <ul
+            class="tg-tabs__grid{% if carousel %} tg-tabs__grid--carousel{% endif %}"
+            style="--tg-cols: {{ section.settings.columns_desktop }};"
+            role="list"
+            {% if carousel %}data-carousel tabindex="0" aria-label="{{ block.settings.label | default: collection_obj.title | escape }}"{% endif %}
+          >
             {%- if collection_obj != blank and collection_obj.products_count > 0 -%}
               {%- for product in collection_obj.products limit: section.settings.products_to_show -%}
-                <li>{% render 'tg-product-card', product: product, show_secondary_image: section.settings.show_secondary_image %}</li>
+                <li>{% render 'tg-product-card', product: product, show_secondary_image: section.settings.show_secondary_image, show_swatches: section.settings.show_swatches %}</li>
               {%- endfor -%}
             {%- else -%}
               {%- for i in (1..section.settings.products_to_show) -%}
@@ -81,6 +103,13 @@
               {%- endfor -%}
             {%- endif -%}
           </ul>
+          {%- if carousel -%}
+            <button type="button" class="tg-carousel__arrow tg-carousel__arrow--next" data-next aria-label="{{ 'general.slider.next_slide' | t }}">
+              {% render 'tg-icon', icon: 'arrow' %}
+            </button>
+            <div class="tg-dots" data-dots></div>
+            </tg-carousel>
+          {%- endif -%}
         </div>
       {%- endfor -%}
 
@@ -104,7 +133,7 @@
   "name": "Toggi product tabs",
   "tag": "section",
   "class": "section",
-  "max_blocks": 6,
+  "max_blocks": 12,
   "settings": [
     {
       "type": "text",
@@ -118,11 +147,31 @@
       "label": "Subheading"
     },
     {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "carousel", "label": "Carousel with dots" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "select",
+      "id": "tab_style",
+      "label": "Tab style",
+      "options": [
+        { "value": "centered", "label": "Centered pill bar" },
+        { "value": "scroll", "label": "Scrolling row (many tabs)" }
+      ],
+      "default": "centered"
+    },
+    {
       "type": "range",
       "id": "products_to_show",
       "label": "Products per tab",
       "min": 2,
-      "max": 12,
+      "max": 16,
       "step": 1,
       "default": 8
     },
@@ -140,6 +189,13 @@
       "id": "show_secondary_image",
       "label": "Show second image on hover",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_swatches",
+      "label": "Show colour options on cards",
+      "info": "Shows the values of a product's Color / Colour option.",
+      "default": false
     },
     {
       "type": "text",

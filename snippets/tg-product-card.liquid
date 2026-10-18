@@ -3,7 +3,7 @@
   Usage:
     {% render 'tg-product-card', product: product %}
     {% render 'tg-product-card', placeholder_index: 1 %}   (no product → placeholder card)
-  Optional: show_secondary_image (boolean)
+  Optional: show_secondary_image (boolean), show_swatches (boolean — lists Color/Colour option values)
 {%- endcomment -%}
 {%- if product != blank -%}
   {%- liquid
@@ -59,6 +59,22 @@
     </div>
 
     <div class="tg-card__info">
+      {%- if show_swatches -%}
+        {%- for option in product.options_with_values -%}
+          {%- assign option_name = option.name | downcase -%}
+          {%- if option_name contains 'color' or option_name contains 'colour' -%}
+            <ul class="tg-card__swatches" aria-label="{{ option.name | escape }}">
+              {%- for value in option.values limit: 4 -%}
+                <li>{{ value | escape }}</li>
+              {%- endfor -%}
+              {%- if option.values.size > 4 -%}
+                <li>+{{ option.values.size | minus: 4 }}</li>
+              {%- endif -%}
+            </ul>
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
       <h3 class="tg-card__title">{{ product.title | escape }}</h3>
       <div class="tg-card__price">
         <span class="tg-card__price-now">

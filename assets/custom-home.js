@@ -98,6 +98,20 @@ if (!customElements.get('tg-tabs')) {
       this.tabs = Array.from(this.querySelectorAll('[role="tab"]'));
       this.panels = Array.from(this.querySelectorAll('[role="tabpanel"]'));
       this.viewAll = this.querySelector('[data-view-all-link]');
+
+      this.resizeObserver = new ResizeObserver(() => this.updateThumb());
+      this.resizeObserver.observe(this);
+
+      // Scrolling tab row: thin indicator line shows scroll position.
+      this.barWrap = this.querySelector('.tg-tabs__bar-wrap');
+      this.track = this.querySelector('.tg-tabs__track');
+      if (this.track && this.barWrap) {
+        this.thumb = this.track.querySelector('.tg-tabs__thumb');
+        this.barWrap.addEventListener('scroll', () => this.updateThumb(), { passive: true });
+        this.track.addEventListener('pointerdown', (event) => this.startDrag(event));
+        this.updateThumb();
+      }
+
       if (this.tabs.length < 2) return;
 
       this.tabs.forEach((tab, i) => {
@@ -114,6 +128,59 @@ if (!customElements.get('tg-tabs')) {
 
     disconnectedCallback() {
       document.removeEventListener('shopify:block:select', this.onBlockSelect);
+      this.resizeObserver?.disconnect();
+    }
+
+    updateThumb() {
+      if (!this.thumb) return;
+      const { scrollWidth, clientWidth, scrollLeft } = this.barWrap;
+      const overflow = scrollWidth > clientWidth + 2;
+      this.track.hidden = !overflow;
+      if (!overflow) return;
+      const ratio = clientWidth / scrollWidth;
+      this.thumb.style.width = `${ratio * 100}%`;
+      this.thumb.style.transform = `translateX(${(scrollLeft / clientWidth) * 100}%)`;
+    }
+
+    /**
+     * Drag the thumb (or press anywhere on the line) to scroll the tab row,
+     * like a scrollbar. Works with mouse, touch and pen.
+     */
+    startDrag(event) {
+      if (event.button > 0) return;
+      event.preventDefault();
+      const bar = this.barWrap;
+      const trackWidth = this.track.clientWidth;
+      const scale = bar.scrollWidth / trackWidth; // px of tab row per px of line
+
+      // Pressing the line (not the thumb) first jumps so the thumb centres on the pointer.
+      if (event.target !== this.thumb) {
+        const x = event.clientX - this.track.getBoundingClientRect().left;
+        bar.scrollLeft = x * scale - bar.clientWidth / 2;
+      }
+
+      const startX = event.clientX;
+      const startScroll = bar.scrollLeft;
+      this.track.classList.add('is-dragging');
+      try {
+        this.track.setPointerCapture(event.pointerId);
+      } catch (e) {
+        // Capture is optional; dragging still works while the pointer stays on the line.
+      }
+
+      const onMove = (e) => {
+        bar.scrollLeft = startScroll + (e.clientX - startX) * scale;
+      };
+      const onUp = (e) => {
+        this.track.classList.remove('is-dragging');
+        if (this.track.hasPointerCapture?.(e.pointerId)) this.track.releasePointerCapture(e.pointerId);
+        this.track.removeEventListener('pointermove', onMove);
+        this.track.removeEventListener('pointerup', onUp);
+        this.track.removeEventListener('pointercancel', onUp);
+      };
+      this.track.addEventListener('pointermove', onMove);
+      this.track.addEventListener('pointerup', onUp);
+      this.track.addEventListener('pointercancel', onUp);
     }
 
     onKey(event, i) {
@@ -133,7 +200,12 @@ if (!customElements.get('tg-tabs')) {
         tab.tabIndex = active ? 0 : -1;
         this.panels[i].hidden = !active;
       });
-      this.tabs[index].scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+      // Scroll only the tab row (not the page) so the active tab is visible.
+      const bar = this.barWrap || this.querySelector('.tg-tabs__bar-wrap');
+      const tab = this.tabs[index];
+      if (bar && bar.scrollWidth > bar.clientWidth) {
+        bar.scrollTo({ left: tab.offsetLeft - (bar.clientWidth - tab.offsetWidth) / 2, behavior: 'smooth' });
+      }
       if (this.viewAll && this.panels[index].dataset.viewAll) {
         this.viewAll.href = this.panels[index].dataset.viewAll;
       }
@@ -141,4 +213,130 @@ if (!customElements.get('tg-tabs')) {
   }
 
   customElements.define('tg-tabs', TgTabs);
+}
+
+/**
+ * <tg-carousel> — product row that scrolls sideways.
+ * Contains: [data-prev] / [data-next] arrows, a [data-carousel] list and a [data-dots] container.
+ * Native scroll-snap does the work (touch swipe on phones); this adds page dots,
+ * arrows, and mouse drag on desktop. Rebuilds itself when resized or when its tab is shown.
+ */
+if (!customElements.get('tg-carousel')) {
+  class TgCarousel extends HTMLElement {
+    connectedCallback() {
+      this.track = this.querySelector('[data-carousel]');
+      if (!this.track) return;
+      this.items = Array.from(this.track.children);
+      this.dots = this.querySelector('[data-dots]');
+      this.prevBtn = this.querySelector('[data-prev]');
+      this.nextBtn = this.querySelector('[data-next]');
+      this.page = 0;
+      this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      this.track.addEventListener('scroll', () => this.update(), { passive: true });
+      this.prevBtn?.addEventListener('click', () => this.goTo(this.page - 1));
+      this.nextBtn?.addEventListener('click', () => this.goTo(this.page + 1));
+
+      // Mouse drag (touch devices keep native swiping).
+      this.track.addEventListener('pointerdown', (event) => this.onPointerDown(event));
+      this.track.addEventListener('dragstart', (event) => event.preventDefault());
+      // A drag must not open the product under the cursor.
+      this.track.addEventListener(
+        'click',
+        (event) => {
+          if (!this.dragged) return;
+          event.preventDefault();
+          event.stopPropagation();
+          this.dragged = false;
+        },
+        true
+      );
+
+      // Fires on resize and when a hidden tab panel becomes visible (width 0 -> n).
+      this.resizeObserver = new ResizeObserver(() => this.build());
+      this.resizeObserver.observe(this.track);
+    }
+
+    disconnectedCallback() {
+      this.resizeObserver?.disconnect();
+    }
+
+    build() {
+      if (!this.track.clientWidth || !this.items.length) return;
+      const gap = parseFloat(getComputedStyle(this.track).columnGap) || 0;
+      const step = this.items[0].getBoundingClientRect().width + gap; // one card + gap
+      const perPage = Math.max(1, Math.round((this.track.clientWidth + gap) / step));
+      const pages = Math.max(1, Math.ceil(this.items.length / perPage));
+      this.metrics = { step, perPage, pages };
+
+      if (this.dots && this.dots.childElementCount !== pages) {
+        this.dots.innerHTML = '';
+        for (let i = 0; i < pages; i++) {
+          const dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'tg-dots__dot';
+          dot.setAttribute('aria-label', `Page ${i + 1} of ${pages}`);
+          dot.addEventListener('click', () => this.goTo(i));
+          this.dots.appendChild(dot);
+        }
+      }
+      this.classList.toggle('is-static', pages < 2);
+      if (this.dots) this.dots.hidden = pages < 2;
+      this.update();
+    }
+
+    goTo(page) {
+      if (!this.metrics) return;
+      const { step, perPage, pages } = this.metrics;
+      const target = Math.max(0, Math.min(page, pages - 1));
+      this.track.scrollTo({ left: target * perPage * step, behavior: this.reduceMotion ? 'auto' : 'smooth' });
+    }
+
+    update() {
+      if (!this.metrics) return;
+      const { step, perPage, pages } = this.metrics;
+      const { scrollLeft, scrollWidth, clientWidth } = this.track;
+      const atStart = scrollLeft <= 4;
+      const atEnd = scrollLeft >= scrollWidth - clientWidth - 4;
+      this.page = atEnd ? pages - 1 : Math.min(pages - 1, Math.round(scrollLeft / (perPage * step)));
+      this.dots?.querySelectorAll('.tg-dots__dot').forEach((dot, i) => {
+        dot.setAttribute('aria-current', i === this.page ? 'true' : 'false');
+      });
+      if (this.prevBtn) this.prevBtn.disabled = atStart;
+      if (this.nextBtn) this.nextBtn.disabled = atEnd;
+    }
+
+    onPointerDown(event) {
+      if (event.pointerType !== 'mouse' || event.button !== 0) return;
+      const startX = event.clientX;
+      const startScroll = this.track.scrollLeft;
+      this.dragged = false;
+
+      const onMove = (e) => {
+        const dx = e.clientX - startX;
+        if (!this.dragged && Math.abs(dx) > 6) {
+          this.dragged = true;
+          this.track.classList.add('is-dragging');
+          try {
+            this.track.setPointerCapture(e.pointerId);
+          } catch (err) {
+            // Capture is optional.
+          }
+        }
+        if (this.dragged) this.track.scrollLeft = startScroll - dx;
+      };
+      const onUp = () => {
+        this.track.removeEventListener('pointermove', onMove);
+        if (!this.dragged) return;
+        this.track.classList.remove('is-dragging');
+        // Settle on the nearest card.
+        const step = this.metrics?.step || 1;
+        this.track.scrollTo({ left: Math.round(this.track.scrollLeft / step) * step, behavior: 'smooth' });
+      };
+      this.track.addEventListener('pointermove', onMove);
+      window.addEventListener('pointerup', onUp, { once: true });
+    }
+  }
+
+  customElements.define('tg-carousel', TgCarousel);
 }

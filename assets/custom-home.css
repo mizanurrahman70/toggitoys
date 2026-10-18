@@ -1223,6 +1223,7 @@ a.tg-promo:hover .tg-promo__media img {
 .tg-tabs__bar-wrap {
   /* No justify-content: center here — it would clip the first tab when the bar overflows.
      The bar's auto margins centre it when it fits. */
+  position: relative; /* offset parent for tab scrolling */
   display: flex;
   margin: 0 -1.5rem 2.4rem;
   padding: 0 1.5rem;
@@ -1657,5 +1658,276 @@ a.tg-promo:hover .tg-promo__media img {
 @media (prefers-reduced-motion: reduce) {
   .tg-brand__img {
     transition: none;
+  }
+}
+
+/* ---------- Product tabs: scrolling tab row (many brands) ---------- */
+.tg-tabs--scroll .tg-tabs__bar-wrap {
+  margin-bottom: 0;
+  padding-bottom: 0.2rem;
+}
+
+.tg-tabs--scroll .tg-tabs__bar {
+  margin: 0 auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  gap: 0.2rem;
+}
+
+.tg-tabs--scroll .tg-tabs__tab {
+  padding: 0 2rem;
+}
+
+/* Draggable scroll line under the tabs.
+   The track is a tall invisible hit area; the visible line is drawn with ::before. */
+.tg-tabs__track {
+  position: relative;
+  height: 1.6rem;
+  margin: 0.8rem 0 2.8rem;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+}
+
+.tg-tabs__track::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--tg-line);
+  transform: translateY(-50%);
+}
+
+.tg-tabs__track[hidden] {
+  display: none;
+}
+
+.tg-tabs__thumb {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 3px;
+  width: 30%;
+  margin-top: -1.5px;
+  border-radius: 3px;
+  background: #6b7570;
+  cursor: grab;
+  transition: height 0.15s ease, margin-top 0.15s ease, background-color 0.15s ease;
+}
+
+/* Bigger invisible grab area around the thumb */
+.tg-tabs__thumb::before {
+  content: '';
+  position: absolute;
+  inset: -0.8rem 0;
+}
+
+.tg-tabs__track:hover .tg-tabs__thumb,
+.tg-tabs__track.is-dragging .tg-tabs__thumb {
+  height: 5px;
+  margin-top: -2.5px;
+  background: var(--tg-tab-active, var(--tg-green));
+}
+
+.tg-tabs__track.is-dragging,
+.tg-tabs__track.is-dragging .tg-tabs__thumb {
+  cursor: grabbing;
+}
+
+/* No indicator line → keep normal spacing under the tabs */
+.tg-tabs--scroll .tg-tabs__track[hidden] ~ .tg-tabs__panel {
+  margin-top: 2.8rem;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-tabs--scroll .tg-tabs__track[hidden] ~ .tg-tabs__panel {
+    margin-top: 3.6rem;
+  }
+}
+
+/* ---------- Product tabs: carousel layout ---------- */
+.tg-tabs__grid--carousel {
+  --tg-c: 2;
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - (var(--tg-c) - 1) * 1.2rem) / var(--tg-c));
+  padding: 0.4rem 0 1rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.tg-tabs__grid--carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.tg-tabs__grid--carousel > li {
+  scroll-snap-align: start;
+}
+
+.tg-tabs__grid--carousel:focus-visible {
+  outline: 2px solid var(--tg-green);
+  outline-offset: 4px;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-tabs--scroll .tg-tabs__bar-wrap {
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+
+  .tg-tabs__track {
+    margin: 1.2rem 0 4rem;
+  }
+
+  .tg-tabs__grid--carousel {
+    --tg-c: 3;
+    grid-template-columns: none;
+    grid-auto-columns: calc((100% - (var(--tg-c) - 1) * 2rem) / var(--tg-c));
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .tg-tabs__grid--carousel {
+    --tg-c: var(--tg-cols, 5);
+    grid-template-columns: none;
+  }
+}
+
+/* Page dots under carousels */
+.tg-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.tg-dots[hidden] {
+  display: none;
+}
+
+.tg-dots__dot {
+  width: 0.9rem;
+  height: 0.9rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #cfd8d2;
+  cursor: pointer;
+  transition: width 0.2s ease, background-color 0.2s ease;
+}
+
+.tg-dots__dot[aria-current='true'] {
+  width: 2.8rem;
+  background: var(--tg-tab-active, var(--tg-green));
+}
+
+/* Colour option pills on product cards */
+.tg-card__swatches {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tg-card__swatches li {
+  padding: 0.2rem 0.7rem;
+  border: 1px solid var(--tg-line);
+  border-radius: 0.6rem;
+  color: var(--tg-muted);
+  font-size: 1.15rem;
+  line-height: 1.5;
+}
+
+/* ---------- Carousel arrows + mouse drag ---------- */
+.tg-carousel {
+  position: relative;
+  display: block;
+}
+
+.tg-carousel__arrow {
+  display: none;
+}
+
+.tg-tabs__grid--carousel img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.tg-tabs__grid--carousel.is-dragging {
+  scroll-snap-type: none;
+  cursor: grabbing;
+  user-select: none;
+}
+
+.tg-tabs__grid--carousel.is-dragging .tg-card {
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tg-tabs__grid--carousel {
+    cursor: grab;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .tg-carousel__arrow {
+    position: absolute;
+    top: 36%;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.4rem;
+    height: 4.4rem;
+    padding: 0;
+    border: 1px solid var(--tg-line);
+    border-radius: 50%;
+    background: var(--tg-white);
+    color: var(--tg-ink);
+    box-shadow: var(--tg-shadow);
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .tg-carousel__arrow svg {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  .tg-carousel__arrow:hover {
+    background: var(--tg-tab-active, var(--tg-green));
+    border-color: transparent;
+    color: var(--tg-white);
+  }
+
+  .tg-carousel__arrow--prev {
+    left: -2.2rem;
+  }
+
+  .tg-carousel__arrow--prev svg {
+    transform: rotate(180deg);
+  }
+
+  .tg-carousel__arrow--next {
+    right: -2.2rem;
+  }
+
+  .tg-carousel__arrow[disabled] {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .tg-carousel.is-static .tg-carousel__arrow {
+    display: none;
   }
 }
