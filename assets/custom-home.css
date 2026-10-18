@@ -3386,3 +3386,135 @@ html.tg-qv-open {
     font-size: 1.25rem;
   }
 }
+
+/* ==========================================================================
+   15. Hero photos — dimmed image, text-first on the left
+   ========================================================================== */
+.tg-hero__media--photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Photo slides: deep green-black wash, darkest behind the text */
+.tg-hero__slide--overlay .tg-hero__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(6, 22, 13, 0.88) 0%, rgba(6, 22, 13, 0.55) 45%, rgba(6, 22, 13, 0.2) 100%);
+  pointer-events: none;
+}
+
+.tg-hero__slide--overlay .tg-hero__content {
+  background: none;
+}
+
+.tg-hero__slide--overlay .tg-hero__heading {
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+}
+
+.tg-hero__slide--overlay .tg-hero__text {
+  opacity: 0.9;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-hero__slide--overlay .tg-hero__media::after {
+    background:
+      linear-gradient(90deg, rgba(6, 22, 13, 0.9) 0%, rgba(6, 22, 13, 0.72) 32%, rgba(6, 22, 13, 0.25) 62%, rgba(6, 22, 13, 0.1) 100%);
+  }
+
+  .tg-hero__slide--overlay .tg-hero__content,
+  .tg-hero__slide--overlay .tg-hero__content--center,
+  .tg-hero__slide--overlay .tg-hero__content--right {
+    background: none;
+  }
+}
+
+/* Even line lengths for hero headings (no lonely last word) */
+.tg-hero__heading {
+  text-wrap: balance;
+}
+
+/* ---------- Hero v2: scale with wide screens, stronger type, calmer label ---------- */
+.tg-hero__slide--overlay .tg-hero__eyebrow {
+  padding: 0.6rem 1.4rem;
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 1.3rem;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.tg-hero__slide--overlay .tg-hero__heading {
+  max-width: 13ch;
+}
+
+.tg-hero__slide--overlay .tg-hero__text {
+  max-width: 40ch;
+}
+
+@media screen and (min-width: 750px) {
+  /* About a third of the screen width, between the chosen height and 720px */
+  .tg-hero__slide {
+    min-height: clamp(var(--tg-hero-h-desktop, 48rem), 34vw, 72rem);
+  }
+
+  .tg-hero__slide--overlay .tg-hero__heading {
+    font-size: calc(var(--font-heading-scale) * clamp(4.4rem, 3.6vw, 6.8rem));
+    line-height: 1.05;
+  }
+
+  .tg-hero__slide--overlay .tg-hero__text {
+    font-size: clamp(1.6rem, 1.15vw, 1.9rem);
+  }
+
+  .tg-hero__slide--overlay .tg-hero__content .tg-btn {
+    min-height: 5rem;
+    padding: 0 2.8rem;
+    font-size: 1.6rem;
+  }
+
+  /* Arrows sit centred on the (now taller) slide */
+  .tg-hero__arrow {
+    top: calc(clamp(var(--tg-hero-h-desktop, 48rem), 34vw, 72rem) / 2);
+  }
+}
+
+/* ---------- Special offers: built-in photos ---------- */
+.tg-promos--premium .tg-promo__media--photo img {
+  object-fit: cover;
+}
+
+@media screen and (min-width: 990px) {
+  /* Smaller mosaic tiles: photo fills the right side and fades into the green; text sits on solid colour */
+  .tg-promos--mosaic.tg-promos--count-3 .tg-promo:not(:first-child) .tg-promo__media {
+    left: 38%;
+  }
+
+  .tg-promos--mosaic.tg-promos--count-3 .tg-promo--has-image:not(:first-child) .tg-promo__media::after {
+    background:
+      linear-gradient(90deg, #0a2a18 0%, rgba(10, 42, 24, 0.55) 30%, rgba(10, 42, 24, 0) 65%),
+      linear-gradient(to top, rgba(4, 20, 11, 0.45) 0%, rgba(4, 20, 11, 0) 45%);
+  }
+
+  .tg-promos--mosaic.tg-promos--count-3 .tg-promo:not(:first-child) {
+    background: #0a2a18;
+  }
+}
+
+/* Special offers photos: lighter shade — dark only where the text sits */
+.tg-promos--premium .tg-promo__media--photo::after {
+  background: linear-gradient(to top, rgba(4, 20, 11, 0.9) 0%, rgba(4, 20, 11, 0.45) 38%, rgba(4, 20, 11, 0) 62%) !important;
+}
+
+@media screen and (min-width: 990px) {
+  .tg-promos--mosaic.tg-promos--count-3 .tg-promo:not(:first-child) .tg-promo__media--photo::after {
+    background:
+      linear-gradient(90deg, #0a2a18 0%, rgba(10, 42, 24, 0.45) 26%, rgba(10, 42, 24, 0) 55%),
+      linear-gradient(to top, rgba(4, 20, 11, 0.35) 0%, rgba(4, 20, 11, 0) 40%) !important;
+  }
+}

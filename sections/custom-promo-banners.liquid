@@ -84,8 +84,18 @@
           if block.settings.default_art != blank and block.settings.default_art != 'auto'
             assign art_index = block.settings.default_art
           endif
+          # Built-in photo (until an image is uploaded): assets/tg-promo-photo-N-{900,1600}.webp
+          # "auto" (or no saved value) = photo matching the banner's position (1–3)
+          assign photo_choice = block.settings.default_photo | default: 'auto'
+          if photo_choice == 'auto'
+            assign photo_choice = forloop.index0 | modulo: 3 | plus: 1 | append: ''
+          endif
+          assign use_photo = false
+          if has_image == false and photo_choice != 'none'
+            assign use_photo = true
+          endif
           assign show_art = false
-          if premium and has_image == false and block.settings.default_art != 'none'
+          if premium and has_image == false and use_photo == false and block.settings.default_art != 'none'
             assign show_art = true
           endif
           assign img_loading = 'lazy'
@@ -95,7 +105,7 @@
           endif
         -%}
         <div
-          class="tg-promo{% if has_image or show_art %} tg-promo--has-image{% else %} tg-promo--no-image{% endif %}"
+          class="tg-promo{% if has_image or use_photo or show_art %} tg-promo--has-image{% else %} tg-promo--no-image{% endif %}"
           {% unless premium %}
             style="--tg-promo-bg: {{ block.settings.bg_color }}; --tg-promo-text: {{ block.settings.text_color }};"
           {% endunless %}
@@ -131,6 +141,33 @@
                     alt: block.settings.image.alt
                 }}
               {%- endif -%}
+            </div>
+          {%- elsif use_photo -%}
+            {%- liquid
+              assign photo_base = 'tg-promo-photo-' | append: photo_choice
+              assign photo_900 = photo_base | append: '-900.webp' | asset_url
+              assign photo_1600 = photo_base | append: '-1600.webp' | asset_url
+              # Where the subject sits in each photo
+              case photo_choice
+                when '1'
+                  assign photo_focus = '55% 45%'
+                when '2'
+                  assign photo_focus = '50% 28%'
+                else
+                  assign photo_focus = '62% 50%'
+              endcase
+            -%}
+            <div class="tg-promo__media tg-promo__media--photo">
+              <img
+                src="{{ photo_900 }}"
+                srcset="{{ photo_900 }} 900w, {{ photo_1600 }} 1600w"
+                sizes="{{ img_sizes }}"
+                width="1600"
+                height="1066"
+                alt=""
+                loading="lazy"
+                style="object-position: {{ photo_focus }};"
+              >
             </div>
           {%- elsif show_art -%}
             <div class="tg-promo__media tg-promo__media--art">
@@ -324,6 +361,20 @@
           "id": "image_mobile",
           "label": "Mobile image",
           "info": "Optional. Portrait 1100 x 1300 px."
+        },
+        {
+          "type": "select",
+          "id": "default_photo",
+          "label": "Built-in photo (no image uploaded)",
+          "info": "Free Unsplash photos bundled with the theme. Uploading an image replaces it.",
+          "options": [
+{ "value": "auto", "label": "Automatic (photo matching this position)" },
+            { "value": "none", "label": "None (use artwork)" },
+            { "value": "1", "label": "Wrapped gifts (gold & kraft)" },
+            { "value": "2", "label": "Red ride-on car on grass" },
+            { "value": "3", "label": "Yellow toy truck" }
+          ],
+          "default": "auto"
         },
         {
           "type": "select",

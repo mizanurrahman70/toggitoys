@@ -65,16 +65,33 @@
             if mobile_image != blank
               assign has_image = true
             endif
+
+            # Built-in photo (until a photo is uploaded): assets/tg-hero-photo-N-{1500,2400,m}.webp
+            # "auto" (or no saved value) = photo matching the slide's position (1–3)
+            assign photo_choice = block.settings.default_photo | default: 'auto'
+            if photo_choice == 'auto'
+              assign photo_choice = forloop.index0 | modulo: 3 | plus: 1 | append: ''
+            endif
+            assign use_photo = false
+            if has_image == false and photo_choice != 'none'
+              assign use_photo = true
+            endif
+            assign photo_slide = false
+            if has_image or use_photo
+              assign photo_slide = true
+            endif
+            assign desktop_focus = 'object-position: ' | append: block.settings.image.presentation.focal_point
+            assign mobile_focus = 'object-position: ' | append: mobile_image.presentation.focal_point
           -%}
           <li
-            class="tg-hero__slide{% if has_image %}{% if block.settings.overlay %} tg-hero__slide--overlay{% endif %}{% else %} tg-hero__slide--no-image{% endif %}"
+            class="tg-hero__slide{% if photo_slide %}{% if block.settings.overlay %} tg-hero__slide--overlay{% endif %}{% else %} tg-hero__slide--no-image{% endif %}"
             id="Slide-{{ section.id }}-{{ forloop.index }}"
             data-slide
             data-block-id="{{ block.id }}"
             role="group"
             aria-roledescription="slide"
             aria-label="{{ forloop.index }} / {{ forloop.length }}"
-            style="--tg-slide-bg: {{ block.settings.bg_color }};{% if has_image %} --tg-slide-text: {{ block.settings.text_color }};{% endif %}"
+            style="--tg-slide-bg: {{ block.settings.bg_color }};{% if photo_slide %} --tg-slide-text: {{ block.settings.text_color }};{% endif %}"
             {{ block.shopify_attributes }}
           >
             {%- if has_image and has_desktop -%}
@@ -87,6 +104,7 @@
                     sizes: '100vw',
                     loading: loading,
                     fetchpriority: priority,
+                    style: desktop_focus,
                     alt: block.settings.image.alt
                 }}
               </div>
@@ -101,8 +119,44 @@
                     sizes: '100vw',
                     loading: loading,
                     fetchpriority: priority,
+                    style: mobile_focus,
                     alt: mobile_image.alt
                 }}
+              </div>
+            {%- elsif use_photo -%}
+              {%- liquid
+                assign photo_base = 'tg-hero-photo-' | append: photo_choice
+                assign photo_m = photo_base | append: '-m.webp' | asset_url
+                assign photo_1500 = photo_base | append: '-1500.webp' | asset_url
+                assign photo_2400 = photo_base | append: '-2400.webp' | asset_url
+                # Where the subject is in each photo, so any hero height keeps it in frame.
+                case photo_choice
+                  when '1'
+                    assign photo_focus = '62% 28%'
+                    assign photo_h = 1600
+                  when '2'
+                    assign photo_focus = '62% 62%'
+                    assign photo_h = 1600
+                  else
+                    assign photo_focus = '68% 55%'
+                    assign photo_h = 1800
+                endcase
+              -%}
+              <div class="tg-hero__media tg-hero__media--photo">
+                <picture>
+                  <source media="(max-width: 749px)" srcset="{{ photo_m }}" width="900" height="1059">
+                  <img
+                    src="{{ photo_1500 }}"
+                    srcset="{{ photo_1500 }} 1500w, {{ photo_2400 }} 2400w"
+                    sizes="100vw"
+                    width="2400"
+                    height="{{ photo_h }}"
+                    style="object-position: {{ photo_focus }};"
+                    alt=""
+                    loading="{{ loading }}"
+                    fetchpriority="{{ priority }}"
+                  >
+                </picture>
               </div>
             {%- elsif block.settings.default_art == 'none' -%}
               <div class="tg-hero__media">
@@ -137,7 +191,7 @@
             </div>
 
             {%- comment -%} Built-in illustration shown until a photo is uploaded {%- endcomment -%}
-            {%- unless has_image or block.settings.default_art == 'none' -%}
+            {%- unless photo_slide or block.settings.default_art == 'none' -%}
               <div class="tg-hero__art-wrap">
                 <img
                   class="tg-hero__art"
@@ -267,6 +321,20 @@
           "id": "image_mobile",
           "label": "Mobile image",
           "info": "Recommended 1100 x 1300 px. Falls back to the desktop image."
+        },
+        {
+          "type": "select",
+          "id": "default_photo",
+          "label": "Built-in photo (no image uploaded)",
+          "info": "Free Unsplash photos bundled with the theme. Uploading an image replaces it.",
+          "options": [
+{ "value": "auto", "label": "Automatic (photo matching this position)" },
+            { "value": "none", "label": "None (use illustration)" },
+            { "value": "1", "label": "Kid playing with toy cars outdoors" },
+            { "value": "2", "label": "Hands with toy cars (close-up)" },
+            { "value": "3", "label": "Colourful wooden blocks" }
+          ],
+          "default": "auto"
         },
         {
           "type": "select",

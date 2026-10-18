@@ -16,48 +16,51 @@
           "type": "slide",
           "settings": {
             "default_art": "blocks",
-            "eyebrow": "New arrivals",
-            "heading": "Toys that spark big smiles",
-            "text": "<p>Bangladesh's trusted kids' toy brand. Free shipping on orders over ৳4999.</p>",
-            "button_label": "Shop now",
+            "eyebrow": "New this season",
+            "heading": "Little hands, big adventures",
+            "text": "<p>Fresh toys for every age, delivered all over Bangladesh. Free shipping on orders over ৳4999.</p>",
+            "button_label": "Shop new arrivals",
             "button_link": "shopify://collections/all",
-            "button_style": "green",
+            "button_style": "orange",
             "text_position": "left",
             "overlay": true,
-            "text_color": "#ffffff",
-            "bg_color": "#eff7f1"
+            "text_color": "#FFFFFF",
+            "bg_color": "#eff7f1",
+            "default_photo": "auto"
           }
         },
         "slide_2": {
           "type": "slide",
           "settings": {
             "default_art": "vehicles",
-            "eyebrow": "Weekend deals",
-            "heading": "Up to 20% off ride-ons & vehicles",
-            "text": "<p>Bikes, cars and scooters for little speedsters.</p>",
-            "button_label": "Grab the deal",
+            "eyebrow": "This week only",
+            "heading": "Up to 20% off toy cars & ride‑ons",
+            "text": "<p>Racers, trucks and ride‑ons for little speedsters, while stock lasts.</p>",
+            "button_label": "Shop the deals",
             "button_link": "shopify://collections/all",
             "button_style": "orange",
             "text_position": "left",
             "overlay": true,
-            "text_color": "#ffffff",
-            "bg_color": "#fff3ea"
+            "text_color": "#FFFFFF",
+            "bg_color": "#fff3ea",
+            "default_photo": "auto"
           }
         },
         "slide_3": {
           "type": "slide",
           "settings": {
             "default_art": "plush",
-            "eyebrow": "Build & learn",
-            "heading": "Building blocks for big imaginations",
-            "text": "<p>Creative sets that grow with your child.</p>",
-            "button_label": "Explore blocks",
+            "eyebrow": "Learn through play",
+            "heading": "Build, stack, imagine",
+            "text": "<p>Wooden blocks and building sets that grow with your child.</p>",
+            "button_label": "Explore building toys",
             "button_link": "shopify://collections/all",
-            "button_style": "green",
+            "button_style": "orange",
             "text_position": "left",
             "overlay": true,
-            "text_color": "#ffffff",
-            "bg_color": "#fff8e8"
+            "text_color": "#FFFFFF",
+            "bg_color": "#fff8e8",
+            "default_photo": "auto"
           }
         }
       },
@@ -306,7 +309,8 @@
             "link": "shopify://collections/all",
             "button_style": "green",
             "bg_color": "#fff3ea",
-            "text_color": "#1f2a24"
+            "text_color": "#1f2a24",
+            "default_photo": "auto"
           }
         },
         "promo_2": {
@@ -321,7 +325,8 @@
             "link": "shopify://collections/all",
             "button_style": "green",
             "bg_color": "#eff7f1",
-            "text_color": "#135b33"
+            "text_color": "#135b33",
+            "default_photo": "auto"
           }
         },
         "promo_3": {
@@ -336,7 +341,8 @@
             "link": "shopify://collections/all",
             "button_style": "green",
             "bg_color": "#fff8e8",
-            "text_color": "#1f2a24"
+            "text_color": "#1f2a24",
+            "default_photo": "auto"
           }
         }
       },
