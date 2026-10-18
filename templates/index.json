@@ -197,11 +197,14 @@
         "promo_1": {
           "type": "banner",
           "settings": {
-            "eyebrow": "Special offer",
-            "heading": "Building blocks for little builders",
+            "default_art": "1",
+            "eyebrow": "Welcome gift",
+            "offer_text": "৳50 OFF",
+            "heading": "On your first order at Toggi Toys",
+            "code": "FREE256MAC",
             "button_label": "Shop now",
             "link": "shopify://collections/all",
-            "button_style": "orange",
+            "button_style": "green",
             "bg_color": "#FFF3EA",
             "text_color": "#1F2A24"
           }
@@ -209,26 +212,53 @@
         "promo_2": {
           "type": "banner",
           "settings": {
-            "eyebrow": "Free shipping over ৳4999",
-            "heading": "Ride-ons & RC cars for speedy fun",
-            "button_label": "Shop now",
+            "default_art": "2",
+            "eyebrow": "Weekend deal",
+            "offer_text": "UP TO 20% OFF",
+            "heading": "Ride-ons, RC cars & more",
+            "code": "",
+            "button_label": "Shop the deal",
             "link": "shopify://collections/all",
             "button_style": "green",
             "bg_color": "#EFF7F1",
             "text_color": "#135B33"
           }
+        },
+        "promo_3": {
+          "type": "banner",
+          "settings": {
+            "default_art": "3",
+            "eyebrow": "Free delivery",
+            "offer_text": "FREE SHIPPING",
+            "heading": "On orders over ৳4999, all over Bangladesh",
+            "code": "",
+            "button_label": "Start shopping",
+            "link": "shopify://collections/all",
+            "button_style": "green",
+            "bg_color": "#FFF8E8",
+            "text_color": "#1F2A24"
+          }
         }
       },
       "block_order": [
         "promo_1",
-        "promo_2"
+        "promo_2",
+        "promo_3"
       ],
       "settings": {
-        "heading": "",
+        "style": "premium",
+        "layout": "mosaic",
+        "tile_height": "medium",
+        "full_width": true,
+        "eyebrow": "Limited time",
+        "heading": "Special offers",
+        "subheading": "Exclusive deals for Toggi families — grab them before they're gone",
+        "end_date": "",
+        "countdown_label": "Offer ends in",
         "bg_color": "#FFFFFF",
         "heading_color": "#135B33",
-        "padding_top": 32,
-        "padding_bottom": 32
+        "padding_top": 72,
+        "padding_bottom": 72
       }
     },
     "big_deals": {

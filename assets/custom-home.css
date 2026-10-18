@@ -1931,3 +1931,451 @@ a.tg-promo:hover .tg-promo__media img {
     display: none;
   }
 }
+
+/* ==========================================================================
+   10. Promo banners — PREMIUM style (full-width dark green band + gold)
+   ========================================================================== */
+.tg-offers {
+  --tg-gold: #f2c46d;
+  --tg-gold-light: #ffe6a8;
+  --tg-gold-deep: #d9a441;
+  --tg-night: #06200f;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(70rem 36rem at 12% 0%, rgba(42, 140, 84, 0.5), transparent 70%),
+    radial-gradient(60rem 36rem at 100% 100%, rgba(242, 196, 109, 0.1), transparent 70%),
+    linear-gradient(165deg, #12492b 0%, #0b3520 50%, var(--tg-night) 100%);
+  color: var(--tg-white);
+}
+
+/* Fine dot texture */
+.tg-offers::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 20px 20px;
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent 70%);
+  mask-image: linear-gradient(to bottom, #000, transparent 70%);
+}
+
+.tg-offers__wrap {
+  padding-inline: 1.5rem;
+}
+
+.tg-offers .tg-heading {
+  color: var(--tg-white);
+}
+
+.tg-offers .tg-heading::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='6' viewBox='0 0 48 6'%3E%3Cpath d='M1 3 Q7 0 13 3 T25 3 T37 3 T47 3' fill='none' stroke='%23F2C46D' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+.tg-offers .tg-subheading {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.tg-offers__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+  padding: 0.5rem 1.4rem;
+  border: 1px solid rgba(242, 196, 109, 0.45);
+  border-radius: 999px;
+  background: rgba(242, 196, 109, 0.1);
+  color: var(--tg-gold, #f2c46d);
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.tg-offers__eyebrow::before {
+  content: '✦';
+  font-size: 1.1rem;
+}
+
+/* Countdown */
+.tg-countdown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2.4rem;
+}
+
+.tg-countdown[hidden] {
+  display: none;
+}
+
+.tg-countdown__label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.2rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tg-countdown__units {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.tg-countdown__unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 6.2rem;
+  padding: 1rem 0.6rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 1.2rem;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.tg-countdown__unit b {
+  color: var(--tg-gold);
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: 2.6rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.tg-countdown__unit small {
+  margin-top: 0.4rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---------- Premium tiles ---------- */
+.tg-promos--premium {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.2rem;
+}
+
+.tg-promos--premium .tg-promo {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  min-height: 44rem;
+  overflow: hidden;
+  border-radius: 2rem;
+  background: var(--tg-night);
+  color: var(--tg-white);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+}
+
+/* Gold hairline frame */
+.tg-promos--premium .tg-promo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(242, 196, 109, 0.28);
+  pointer-events: none;
+  transition: box-shadow 0.3s ease;
+}
+
+/* Light sweep on hover */
+.tg-promos--premium .tg-promo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.14) 50%, transparent 65%);
+  transform: translateX(-110%);
+  pointer-events: none;
+}
+
+.tg-promos--premium .tg-promo:hover::before {
+  transform: translateX(110%);
+  transition: transform 1s ease;
+}
+
+.tg-promos--premium .tg-promo:hover::after {
+  box-shadow: inset 0 0 0 1px rgba(242, 196, 109, 0.65);
+}
+
+.tg-promos--premium .tg-promo__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+.tg-promos--premium .tg-promo__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.tg-promos--premium .tg-promo__media--art img {
+  object-position: 72% 25%;
+}
+
+.tg-promos--premium .tg-promo:hover .tg-promo__media img {
+  transform: scale(1.05);
+}
+
+/* Dark gradient so text is always readable */
+.tg-promos--premium .tg-promo--has-image .tg-promo__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(4, 20, 11, 0.94) 0%, rgba(4, 20, 11, 0.6) 34%, rgba(4, 20, 11, 0) 64%);
+}
+
+.tg-promos--premium .tg-promo--no-image {
+  background:
+    radial-gradient(30rem 22rem at 100% 0%, rgba(242, 196, 109, 0.22), transparent 70%),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)), var(--tg-night);
+}
+
+.tg-promos--premium .tg-promo__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+  max-width: 56rem;
+  padding: 2.8rem 2.4rem;
+}
+
+.tg-promos--premium .tg-promo__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--tg-gold);
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.2rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 1;
+}
+
+.tg-promos--premium .tg-promo__eyebrow::before {
+  content: '';
+  width: 2.4rem;
+  height: 1px;
+  background: currentColor;
+}
+
+/* Big gold gradient offer text */
+.tg-promos--premium .tg-promo__offer {
+  background: linear-gradient(180deg, var(--tg-gold-light) 0%, var(--tg-gold) 55%, var(--tg-gold-deep) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: calc(var(--font-heading-scale) * 4.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  filter: drop-shadow(0 4px 18px rgba(242, 196, 109, 0.25));
+}
+
+.tg-promos--premium .tg-promo__heading {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.94);
+  font-family: var(--font-body-family);
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.7rem;
+  line-height: 1.35;
+}
+
+.tg-promo__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.2rem;
+  margin-top: 0.8rem;
+}
+
+.tg-promos--premium .tg-promo__cta {
+  margin: 0;
+}
+
+/* Coupon chip */
+.tg-promo__code {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0.5rem 0.5rem 1.4rem;
+  border: 1.5px dashed currentColor;
+  border-radius: 999px;
+  font-size: 1.3rem;
+}
+
+.tg-promo__code strong {
+  letter-spacing: 0.06em;
+}
+
+.tg-promo__copy {
+  min-height: 3.2rem;
+  padding: 0 1.3rem;
+  border: 0;
+  border-radius: 999px;
+  background: currentColor;
+  font-family: var(--font-body-family);
+  font-weight: var(--font-body-weight-bold);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.tg-promo__copy span {
+  color: var(--tg-white);
+}
+
+.tg-promos--premium .tg-promo__code {
+  border-color: rgba(242, 196, 109, 0.6);
+  background: rgba(0, 0, 0, 0.32);
+  color: var(--tg-gold-light);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.tg-promos--premium .tg-promo__copy {
+  background: var(--tg-gold);
+}
+
+.tg-promos--premium .tg-promo__copy span {
+  color: var(--tg-night);
+}
+
+.tg-promo__code.is-copied .tg-promo__copy {
+  background: var(--tg-lime);
+}
+
+/* Gold button */
+.tg-btn--gold {
+  --tg-btn-bg: linear-gradient(180deg, #ffe6a8 0%, #f2c46d 60%, #e3ae4f 100%);
+  --tg-btn-text: #06200f;
+  background: var(--tg-btn-bg);
+  box-shadow: 0 8px 22px rgba(242, 196, 109, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.tg-btn--gold:hover {
+  box-shadow: 0 12px 28px rgba(242, 196, 109, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Mobile: the first tile is the hero of the band */
+.tg-promos--premium .tg-promo:first-child {
+  min-height: 52rem;
+}
+
+@media screen and (min-width: 750px) {
+  .tg-offers__wrap {
+    padding-inline: 2rem;
+  }
+
+  .tg-promos--premium {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+  }
+
+  .tg-promos--premium .tg-promo,
+  .tg-promos--premium .tg-promo:first-child {
+    min-height: 42rem;
+  }
+
+  .tg-promos--premium .tg-promo:first-child:not(:only-child) {
+    grid-column: 1 / -1;
+  }
+
+  .tg-promos--premium .tg-promo__content {
+    padding: 3.6rem 4rem;
+  }
+
+  .tg-promos--premium .tg-promo__offer {
+    font-size: calc(var(--font-heading-scale) * 5.2rem);
+  }
+
+  .tg-countdown__unit {
+    min-width: 7.4rem;
+    padding: 1.2rem 0.8rem 1rem;
+  }
+
+  .tg-countdown__unit b {
+    font-size: 3.2rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .tg-promos--premium {
+    grid-template-columns: repeat(var(--tg-cols, 3), minmax(0, 1fr));
+  }
+
+  .tg-promos--premium .tg-promo,
+  .tg-promos--premium .tg-promo:first-child {
+    min-height: calc(var(--tg-pb-h, 60rem) * 0.8);
+  }
+
+  .tg-promos--premium .tg-promo:first-child:not(:only-child) {
+    grid-column: auto;
+  }
+
+  /* Mosaic: first tile tall on the left, the next two stacked on the right */
+  .tg-promos--mosaic.tg-promos--count-3 {
+    grid-template-columns: 1.3fr 1fr;
+    grid-template-rows: repeat(2, calc((var(--tg-pb-h, 60rem) - 2rem) / 2));
+  }
+
+  .tg-promos--mosaic.tg-promos--count-3 .tg-promo,
+  .tg-promos--mosaic.tg-promos--count-3 .tg-promo:first-child {
+    min-height: 0;
+  }
+
+  .tg-promos--mosaic.tg-promos--count-3 .tg-promo:first-child {
+    grid-row: 1 / span 2;
+  }
+
+  .tg-promos--mosaic.tg-promos--count-2 {
+    grid-template-columns: 1.3fr 1fr;
+  }
+
+  /* Feature tile gets the biggest type */
+  .tg-promos--mosaic .tg-promo:first-child .tg-promo__content {
+    padding: 5.6rem;
+  }
+
+  .tg-promos--mosaic .tg-promo:first-child .tg-promo__offer {
+    font-size: calc(var(--font-heading-scale) * 8rem);
+  }
+
+  .tg-promos--mosaic .tg-promo:first-child .tg-promo__heading {
+    font-size: 2.2rem;
+  }
+
+  .tg-promos--mosaic.tg-promos--count-3 .tg-promo:not(:first-child) .tg-promo__content {
+    max-width: 44rem;
+    padding: 3.2rem 3.6rem;
+  }
+
+  .tg-promos--mosaic.tg-promos--count-3 .tg-promo:not(:first-child) .tg-promo__offer {
+    font-size: calc(var(--font-heading-scale) * 4.4rem);
+  }
+
+  /* Smaller tiles: shade from the left so the toys never compete with the text */
+  .tg-promos--mosaic.tg-promos--count-3 .tg-promo--has-image:not(:first-child) .tg-promo__media::after {
+    background:
+      linear-gradient(90deg, rgba(4, 20, 11, 0.88) 0%, rgba(4, 20, 11, 0.55) 45%, rgba(4, 20, 11, 0) 75%),
+      linear-gradient(to top, rgba(4, 20, 11, 0.6) 0%, rgba(4, 20, 11, 0) 50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tg-promos--premium .tg-promo::before,
+  .tg-promos--premium .tg-promo__media img {
+    transition: none;
+  }
+}

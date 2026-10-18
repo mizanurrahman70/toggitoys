@@ -286,6 +286,7 @@ if (!customElements.get('tg-carousel')) {
     }
 
     goTo(page) {
+      if (!this.metrics) this.build(); // e.g. clicked before the first resize callback
       if (!this.metrics) return;
       const { step, perPage, pages } = this.metrics;
       const target = Math.max(0, Math.min(page, pages - 1));
@@ -339,4 +340,72 @@ if (!customElements.get('tg-carousel')) {
   }
 
   customElements.define('tg-carousel', TgCarousel);
+}
+
+/**
+ * <tg-countdown data-end="YYYY-MM-DD"> — counts down to the end of that day
+ * (shopper's local time). Stays hidden if the date is invalid or already past.
+ */
+if (!customElements.get('tg-countdown')) {
+  class TgCountdown extends HTMLElement {
+    connectedCallback() {
+      this.end = new Date(`${this.dataset.end}T23:59:59`).getTime();
+      if (Number.isNaN(this.end)) return;
+      this.parts = {
+        days: this.querySelector('[data-days]'),
+        hours: this.querySelector('[data-hours]'),
+        minutes: this.querySelector('[data-minutes]'),
+        seconds: this.querySelector('[data-seconds]'),
+      };
+      this.tick();
+      this.timer = setInterval(() => this.tick(), 1000);
+    }
+
+    disconnectedCallback() {
+      clearInterval(this.timer);
+    }
+
+    tick() {
+      const left = this.end - Date.now();
+      if (left <= 0) {
+        this.hidden = true;
+        clearInterval(this.timer);
+        return;
+      }
+      const pad = (n) => String(n).padStart(2, '0');
+      this.parts.days.textContent = pad(Math.floor(left / 86400000));
+      this.parts.hours.textContent = pad(Math.floor((left / 3600000) % 24));
+      this.parts.minutes.textContent = pad(Math.floor((left / 60000) % 60));
+      this.parts.seconds.textContent = pad(Math.floor((left / 1000) % 60));
+      this.hidden = false;
+    }
+  }
+
+  customElements.define('tg-countdown', TgCountdown);
+}
+
+/** <tg-copy data-code="..."> — copies a coupon code to the clipboard. */
+if (!customElements.get('tg-copy')) {
+  class TgCopy extends HTMLElement {
+    connectedCallback() {
+      this.label = this.querySelector('[data-copy-label]');
+      this.querySelector('[data-copy]')?.addEventListener('click', () => this.copy());
+    }
+
+    async copy() {
+      try {
+        await navigator.clipboard.writeText(this.dataset.code);
+        this.label.textContent = 'Copied!';
+        this.classList.add('is-copied');
+        setTimeout(() => {
+          this.label.textContent = 'Copy';
+          this.classList.remove('is-copied');
+        }, 2000);
+      } catch (e) {
+        // Clipboard blocked (e.g. non-HTTPS preview): the code stays visible to type manually.
+      }
+    }
+  }
+
+  customElements.define('tg-copy', TgCopy);
 }

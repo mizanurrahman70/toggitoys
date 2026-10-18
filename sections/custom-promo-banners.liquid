@@ -1,11 +1,33 @@
 {%- comment -%}
-  Toggi Toys — Promo banners (1–3 rounded tiles)
-  Each tile can be an image or a solid brand color with text + button.
+  Toggi Toys — Promo banners / special offers
+  Style "premium" (default): full-width dark green band, large image tiles in a mosaic
+  (1 tall feature tile + 2 stacked), gold offer text, copyable coupon code, optional countdown.
+  Style "soft": light tinted tiles inside the page width (uses each block's colours).
+  Tiles without an uploaded image show built-in artwork (assets/tg-promo-1..3.svg).
 {%- endcomment -%}
+<script src="{{ 'custom-home.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign premium = false
+  if section.settings.style == 'premium'
+    assign premium = true
+  endif
+  assign count = section.blocks.size | at_least: 1
+  case section.settings.tile_height
+    when 'small'
+      assign tile_h = '48rem'
+    when 'large'
+      assign tile_h = '72rem'
+    else
+      assign tile_h = '60rem'
+  endcase
+-%}
+
 {%- style -%}
   #shopify-section-{{ section.id }} .tg-section {
     --tg-bg: {{ section.settings.bg_color }};
     --tg-heading: {{ section.settings.heading_color }};
+    --tg-pb-h: {{ tile_h }};
   }
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -19,63 +41,147 @@
   }
 {%- endstyle -%}
 
-{%- liquid
-  assign cols = section.blocks.size
-  if cols < 1
-    assign cols = 1
-  endif
--%}
+<div class="tg-section{% if premium %} tg-offers{% endif %} section-{{ section.id }}-padding">
+  <div class="{% if section.settings.full_width %}tg-offers__wrap{% else %}page-width{% endif %}">
+    {%- if section.settings.heading != blank or section.settings.eyebrow != blank or section.settings.subheading != blank -%}
+      <div class="tg-section__header tg-section__header--center{% if section.settings.full_width %} page-width{% endif %}">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="tg-offers__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="tg-heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="tg-subheading">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
 
-<div class="tg-section section-{{ section.id }}-padding">
-  <div class="page-width">
-    {%- if section.settings.heading != blank -%}
-      <div class="tg-section__header">
-        <h2 class="tg-heading">{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.end_date != blank -%}
+          {%- comment -%} Hidden until JS confirms the date is valid and in the future {%- endcomment -%}
+          <tg-countdown class="tg-countdown" data-end="{{ section.settings.end_date | escape }}" hidden>
+            <span class="tg-countdown__label">{{ section.settings.countdown_label | escape }}</span>
+            <span class="tg-countdown__units" role="timer" aria-live="off">
+              <span class="tg-countdown__unit"><b data-days>00</b><small>Days</small></span>
+              <span class="tg-countdown__unit"><b data-hours>00</b><small>Hrs</small></span>
+              <span class="tg-countdown__unit"><b data-minutes>00</b><small>Min</small></span>
+              <span class="tg-countdown__unit"><b data-seconds>00</b><small>Sec</small></span>
+            </span>
+          </tg-countdown>
+        {%- endif -%}
       </div>
     {%- endif -%}
 
-    <div class="tg-promos" style="--tg-cols: {{ cols }};">
+    <div
+      class="tg-promos{% if premium %} tg-promos--premium tg-promos--{{ section.settings.layout }} tg-promos--count-{{ count }}{% endif %}"
+      style="--tg-cols: {{ count }};"
+    >
       {%- for block in section.blocks -%}
         {%- liquid
-          assign tag = 'div'
-          if block.settings.link != blank
-            assign tag = 'a'
+          assign has_image = false
+          if block.settings.image != blank
+            assign has_image = true
+          endif
+          assign art_index = forloop.index0 | modulo: 3 | plus: 1
+          if block.settings.default_art != blank and block.settings.default_art != 'auto'
+            assign art_index = block.settings.default_art
+          endif
+          assign show_art = false
+          if premium and has_image == false and block.settings.default_art != 'none'
+            assign show_art = true
+          endif
+          assign img_loading = 'lazy'
+          assign img_sizes = '(min-width: 990px) 50vw, 100vw'
+          if forloop.first and count == 1
+            assign img_sizes = '100vw'
           endif
         -%}
-        <{{ tag }}
-          class="tg-promo{% if block.settings.image == blank %} tg-promo--no-image{% endif %}"
-          {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %}
-          style="--tg-promo-bg: {{ block.settings.bg_color }}; --tg-promo-text: {{ block.settings.text_color }};"
+        <div
+          class="tg-promo{% if has_image or show_art %} tg-promo--has-image{% else %} tg-promo--no-image{% endif %}"
+          {% unless premium %}
+            style="--tg-promo-bg: {{ block.settings.bg_color }}; --tg-promo-text: {{ block.settings.text_color }};"
+          {% endunless %}
           {{ block.shopify_attributes }}
         >
-          {%- if block.settings.image != blank -%}
+          {%- if has_image -%}
             <div class="tg-promo__media">
-              {{
-                block.settings.image
-                | image_url: width: 1200
-                | image_tag:
-                  widths: '400, 600, 800, 1000, 1200',
-                  sizes: '(min-width: 750px) 50vw, 100vw',
-                  loading: 'lazy',
-                  alt: block.settings.image.alt
-              }}
+              {%- if block.settings.image_mobile != blank -%}
+                <picture>
+                  <source
+                    media="(max-width: 749px)"
+                    srcset="{{ block.settings.image_mobile | image_url: width: 750 }} 750w, {{ block.settings.image_mobile | image_url: width: 1100 }} 1100w"
+                    sizes="100vw"
+                  >
+                  {{
+                    block.settings.image
+                    | image_url: width: 1600
+                    | image_tag:
+                      widths: '600, 800, 1000, 1200, 1600',
+                      sizes: img_sizes,
+                      loading: img_loading,
+                      alt: block.settings.image.alt
+                  }}
+                </picture>
+              {%- else -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 1600
+                  | image_tag:
+                    widths: '600, 800, 1000, 1200, 1600',
+                    sizes: img_sizes,
+                    loading: img_loading,
+                    alt: block.settings.image.alt
+                }}
+              {%- endif -%}
+            </div>
+          {%- elsif show_art -%}
+            <div class="tg-promo__media tg-promo__media--art">
+              <img
+                src="{{ 'tg-promo-' | append: art_index | append: '.svg' | asset_url }}"
+                alt=""
+                width="1200"
+                height="1000"
+                loading="lazy"
+              >
             </div>
           {%- endif -%}
+
           <div class="tg-promo__content">
             {%- if block.settings.eyebrow != blank -%}
               <span class="tg-promo__eyebrow">{{ block.settings.eyebrow | escape }}</span>
             {%- endif -%}
+            {%- if block.settings.offer_text != blank -%}
+              <span class="tg-promo__offer">{{ block.settings.offer_text | escape }}</span>
+            {%- endif -%}
             {%- if block.settings.heading != blank -%}
               <h3 class="tg-promo__heading">{{ block.settings.heading | escape }}</h3>
             {%- endif -%}
-            {%- if block.settings.button_label != blank -%}
-              {%- comment -%} Visual button only; the whole tile is the link {%- endcomment -%}
-              <span class="tg-btn tg-promo__cta tg-btn--{{ block.settings.button_style }}">
-                {{- block.settings.button_label | escape -}}
-              </span>
+
+            {%- if block.settings.code != blank or block.settings.button_label != blank -%}
+              <div class="tg-promo__actions">
+                {%- if block.settings.button_label != blank -%}
+                  <a
+                    class="tg-btn tg-promo__cta{% if premium %} tg-btn--gold{% else %} tg-btn--{{ block.settings.button_style }}{% endif %}"
+                    {% if block.settings.link != blank %}
+                      href="{{ block.settings.link }}"
+                    {% else %}
+                      role="link" aria-disabled="true"
+                    {% endif %}
+                  >
+                    {{- block.settings.button_label | escape -}}
+                    {% render 'tg-icon', icon: 'arrow' %}
+                  </a>
+                {%- endif -%}
+                {%- if block.settings.code != blank -%}
+                  <tg-copy class="tg-promo__code" data-code="{{ block.settings.code | escape }}">
+                    <span>Code: <strong>{{ block.settings.code | escape }}</strong></span>
+                    <button type="button" class="tg-promo__copy" data-copy aria-label="Copy code {{ block.settings.code | escape }}">
+                      <span data-copy-label>Copy</span>
+                    </button>
+                  </tg-copy>
+                {%- endif -%}
+              </div>
             {%- endif -%}
           </div>
-        </{{ tag }}>
+        </div>
       {%- endfor -%}
     </div>
   </div>
@@ -89,14 +195,81 @@
   "max_blocks": 3,
   "settings": [
     {
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "options": [
+        { "value": "premium", "label": "Premium (dark green + gold, image tiles)" },
+        { "value": "soft", "label": "Soft (light tiles)" }
+      ],
+      "default": "premium"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Tile layout (premium)",
+      "info": "Mosaic: first tile tall on the left, others stacked on the right.",
+      "options": [
+        { "value": "mosaic", "label": "Mosaic" },
+        { "value": "columns", "label": "Equal columns" }
+      ],
+      "default": "mosaic"
+    },
+    {
+      "type": "select",
+      "id": "tile_height",
+      "label": "Banner height (desktop)",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small label",
+      "default": "Limited time"
+    },
+    {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "info": "Optional"
+      "info": "Optional",
+      "default": "Special offers"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Exclusive deals for Toggi families"
     },
     {
       "type": "header",
-      "content": "Colors"
+      "content": "Countdown"
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "Offer end date",
+      "info": "Format YYYY-MM-DD, e.g. 2026-12-31. Leave empty to hide. Hides itself after the date."
+    },
+    {
+      "type": "text",
+      "id": "countdown_label",
+      "label": "Countdown label",
+      "default": "Offer ends in"
+    },
+    {
+      "type": "header",
+      "content": "Colors (soft style only)"
     },
     {
       "type": "color",
@@ -122,7 +295,7 @@
       "step": 4,
       "unit": "px",
       "label": "Top padding",
-      "default": 32
+      "default": 64
     },
     {
       "type": "range",
@@ -132,7 +305,7 @@
       "step": 4,
       "unit": "px",
       "label": "Bottom padding",
-      "default": 32
+      "default": 64
     }
   ],
   "blocks": [
@@ -144,7 +317,26 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image",
-          "info": "Optional. Recommended 1200 x 700 px. Keep the left side clear for text."
+          "info": "Lifestyle or product photo, 1600 x 1300 px. Text sits bottom-left, so keep that area calm."
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile image",
+          "info": "Optional. Portrait 1100 x 1300 px."
+        },
+        {
+          "type": "select",
+          "id": "default_art",
+          "label": "Default artwork (no image)",
+          "options": [
+            { "value": "auto", "label": "Automatic" },
+            { "value": "1", "label": "Green + building blocks" },
+            { "value": "2", "label": "Amber + toy car" },
+            { "value": "3", "label": "Teal + teddy bear" },
+            { "value": "none", "label": "None" }
+          ],
+          "default": "auto"
         },
         {
           "type": "text",
@@ -154,9 +346,21 @@
         },
         {
           "type": "text",
+          "id": "offer_text",
+          "label": "Big offer text",
+          "default": "20% OFF"
+        },
+        {
+          "type": "text",
           "id": "heading",
           "label": "Heading",
           "default": "Building blocks for little builders"
+        },
+        {
+          "type": "text",
+          "id": "code",
+          "label": "Coupon code",
+          "info": "Optional. Shoppers tap to copy. Create it in Shopify admin › Discounts."
         },
         {
           "type": "text",
@@ -168,6 +372,10 @@
           "type": "url",
           "id": "link",
           "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Soft style only"
         },
         {
           "type": "select",
@@ -203,11 +411,17 @@
         {
           "type": "banner",
           "settings": {
-            "eyebrow": "Free shipping over ৳4999",
-            "heading": "Ride-ons & RC cars for speedy fun",
-            "bg_color": "#EFF7F1",
-            "text_color": "#135B33",
-            "button_style": "green"
+            "eyebrow": "Weekend deal",
+            "offer_text": "UP TO 20% OFF",
+            "heading": "Ride-ons & RC cars"
+          }
+        },
+        {
+          "type": "banner",
+          "settings": {
+            "eyebrow": "Free delivery",
+            "offer_text": "FREE SHIPPING",
+            "heading": "On orders over ৳4999"
           }
         }
       ]

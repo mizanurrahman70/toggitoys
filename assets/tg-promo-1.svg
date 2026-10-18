@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" width="1200" height="1000">
+  <!-- Toggi Toys default promo art #1 (original artwork; replace with your own photo) -->
+  <defs>
+    <radialGradient id="bg1" cx="0.7" cy="0.35" r="0.85">
+      <stop offset="0" stop-color="#1F7A48"/>
+      <stop offset="1" stop-color="#06200F"/>
+    </radialGradient>
+    <radialGradient id="glow1" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#F2C46D" stop-opacity="0.45"/>
+      <stop offset="0.6" stop-color="#F2C46D" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#F2C46D" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots1" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.4" fill="#FFFFFF" opacity="0.07"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="1000" fill="url(#bg1)"/>
+  <rect width="1200" height="1000" fill="url(#dots1)"/>
+  <circle cx="860" cy="390" r="380" fill="url(#glow1)"/>
+  <circle cx="860" cy="390" r="300" fill="none" stroke="#F2C46D" stroke-opacity="0.18" stroke-width="2"/>
+  <circle cx="860" cy="390" r="345" fill="none" stroke="#F2C46D" stroke-opacity="0.08" stroke-width="2"/>
+  <circle cx="140" cy="120" r="6" fill="#F2C46D" opacity="0.5"/><circle cx="300" cy="80" r="3" fill="#F2C46D" opacity="0.6"/><circle cx="1100" cy="120" r="5" fill="#F2C46D" opacity="0.5"/><circle cx="1060" cy="820" r="8" fill="#F2C46D" opacity="0.25"/><circle cx="520" cy="160" r="4" fill="#F2C46D" opacity="0.4"/><circle cx="230" cy="300" r="3" fill="#F2C46D" opacity="0.4"/>
+  <g transform="translate(190 200) scale(1.4)" opacity="0.9"><path d="M0 -16 L4.5 -4.5 L16 0 L4.5 4.5 L0 16 L-4.5 4.5 L-16 0 L-4.5 -4.5 Z" fill="#F2C46D"/></g><g transform="translate(1110 260) scale(1)" opacity="0.8"><path d="M0 -16 L4.5 -4.5 L16 0 L4.5 4.5 L0 16 L-4.5 4.5 L-16 0 L-4.5 -4.5 Z" fill="#F2C46D"/></g><g transform="translate(600 90) scale(0.8)" opacity="0.7"><path d="M0 -16 L4.5 -4.5 L16 0 L4.5 4.5 L0 16 L-4.5 4.5 L-16 0 L-4.5 -4.5 Z" fill="#F2C46D"/></g><g transform="translate(1130 640) scale(1.2)" opacity="0.7"><path d="M0 -16 L4.5 -4.5 L16 0 L4.5 4.5 L0 16 L-4.5 4.5 L-16 0 L-4.5 -4.5 Z" fill="#F2C46D"/></g><g transform="translate(80 420) scale(0.7)" opacity="0.5"><path d="M0 -16 L4.5 -4.5 L16 0 L4.5 4.5 L0 16 L-4.5 4.5 L-16 0 L-4.5 -4.5 Z" fill="#F2C46D"/></g>
+  <g transform="translate(545 110) scale(1.05)">
+  
+  <ellipse cx="320" cy="442" rx="250" ry="16" fill="#1F2A24" opacity="0.08"/>
+
+  
+  <polygon points="130,300 160,270 290,270 260,300" fill="#3FA463"/>
+  <polygon points="260,300 290,270 290,400 260,430" fill="#135B33"/>
+  <rect x="130" y="300" width="130" height="130" rx="10" fill="#1A7F41"/>
+  <rect x="146" y="316" width="98" height="98" rx="8" fill="none" stroke="#FFFFFF" stroke-width="4" opacity="0.5"/>
+  <text x="195" y="395" text-anchor="middle" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-weight="900" font-size="78" fill="#FFFFFF">A</text>
+
+  
+  <polygon points="300,300 330,270 460,270 430,300" fill="#F58A52"/>
+  <polygon points="430,300 460,270 460,400 430,430" fill="#C94F12"/>
+  <rect x="300" y="300" width="130" height="130" rx="10" fill="#F26B2A"/>
+  <rect x="316" y="316" width="98" height="98" rx="8" fill="none" stroke="#FFFFFF" stroke-width="4" opacity="0.5"/>
+  <text x="365" y="395" text-anchor="middle" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-weight="900" font-size="78" fill="#FFFFFF">B</text>
+
+  
+  <g transform="rotate(-6 280 205)">
+    <polygon points="215,140 245,110 375,110 345,140" fill="#FBC273"/>
+    <polygon points="345,140 375,110 375,240 345,270" fill="#D98A1F"/>
+    <rect x="215" y="140" width="130" height="130" rx="10" fill="#F7A23B"/>
+    <rect x="231" y="156" width="98" height="98" rx="8" fill="none" stroke="#FFFFFF" stroke-width="4" opacity="0.55"/>
+    <text x="280" y="235" text-anchor="middle" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-weight="900" font-size="78" fill="#FFFFFF">C</text>
+  </g>
+
+  
+  <circle cx="525" cy="392" r="50" fill="#8DC63F"/>
+  <path d="M478 375 Q525 350 572 375 L574 395 Q525 370 476 395 Z" fill="#FFFFFF" opacity="0.9"/>
+  <path d="M500 345 Q515 392 500 438" fill="none" stroke="#1A7F41" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="507" cy="365" r="9" fill="#FFFFFF" opacity="0.6"/>
+
+  
+  <path d="M90 150 l10 22 24 3 -18 16 5 24 -21 -12 -21 12 5 -24 -18 -16 24 -3z" fill="#F5E625"/>
+  <path d="M470 205 l6 13 14 2 -10 9 3 14 -13 -7 -13 7 3 -14 -10 -9 14 -2z" fill="#F7A23B"/>
+  <circle cx="80" cy="300" r="9" fill="#F26B2A"/>
+  <circle cx="150" cy="90" r="7" fill="#1A7F41"/>
+  <circle cx="420" cy="70" r="8" fill="#8DC63F"/>
+  <rect x="60" y="380" width="16" height="16" rx="3" fill="#8DC63F" transform="rotate(20 68 388)"/>
+</g>
+</svg>
