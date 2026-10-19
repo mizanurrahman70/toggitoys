@@ -3903,3 +3903,16 @@ html.tg-qv-open {
     top: calc((100% - 4.2rem) / 2);
   }
 }
+
+/* ==========================================================================
+   Stacking fix: keep each custom section's inner z-indexes (card buttons, icons,
+   carousel arrows, labels) inside the section, so they never paint over Dawn's
+   sticky header or drawers.
+   ========================================================================== */
+.tg-section,
+.tg-card,
+.tg-carousel,
+.tg-brand,
+.tg-cat-card {
+  isolation: isolate;
+}
